@@ -495,7 +495,7 @@ var MRKX_KB = (function () {
     "textarea::placeholder{color:#9ca3af}",
     ".send{height:42px;border:1px solid rgba(147,197,253,.5);border-radius:24px;background:#fff;color:#323232;padding:0 18px;font-size:14px;cursor:pointer}.send:hover{opacity:.88}",
     ".note{font-size:11px;color:#9ca3af;text-align:center;padding:2px 14px 9px;background:rgba(0,0,0,.18)}",
-    "@media (max-width:520px){.panel{right:8px;left:8px;bottom:80px;width:auto;max-width:none;height:min(72vh,560px)}.launcher{right:14px;bottom:14px}}",
+    "@media (max-width:520px){textarea{font-size:16px}.panel{right:8px;left:8px;bottom:80px;width:auto;max-width:none;height:min(72vh,560px)}.launcher{right:14px;bottom:14px}}",
     "@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}"
   ].join("\n");
 
@@ -531,6 +531,23 @@ var MRKX_KB = (function () {
     elInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); }
     });
+    /* On phones the on-screen keyboard shrinks the visual viewport: fit the panel into what is visible. */
+    var vv = window.visualViewport, mq = window.matchMedia ? window.matchMedia("(max-width:520px)") : null;
+    function fit() {
+      if (!vv || !mq) return;
+      var kb = mq.matches && S.open && vv.height < window.innerHeight * 0.8;
+      if (kb) {
+        elPanel.style.top = (vv.offsetTop + 8) + "px";
+        elPanel.style.bottom = "auto";
+        elPanel.style.height = Math.max(240, vv.height - 16) + "px";
+        elLauncher.style.display = "none";
+        scrollEnd();
+      } else {
+        elPanel.style.top = elPanel.style.bottom = elPanel.style.height = "";
+        elLauncher.style.display = "";
+      }
+    }
+    if (vv) { vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); }
     elPanel.addEventListener("keydown", function (e) { if (e.key === "Escape") { toggle(false); elLauncher.focus(); } });
   }
   function labels() {
