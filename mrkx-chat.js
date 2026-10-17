@@ -274,7 +274,7 @@ var MRKX_KB = (function () {
     en: {
       title: "MRKX Assistant", sub: "Automated assistant", ph: "Type your message…", send: "Send",
       open: "Open chat", close: "Close chat", renew: "New conversation", renewQ: "Start a new conversation? This clears the current one.", renewYes: "Start over", renewNo: "Keep chatting", note: "Automated assistant. Your messages are only sent to our team if you ask us to.",
-      welcome: "Hi! I'm MRKX Assistant, an automated assistant for MRKX Labs (not a person). I can explain our services, answer common questions and set up a free website and search analysis. If I can't help, I'll pass your question to our team.",
+      welcome: "Hi! I'm MRKX Assistant, an automated assistant for MRKX Labs (not a person). I can explain our services, answer questions and set up a free website and search analysis.",
       askEmail: "What email address should we reply to?",
       badEmail: "That doesn't look like an email address. Could you check it?",
       askName: "And your name? (You can skip this.)",
@@ -311,7 +311,7 @@ var MRKX_KB = (function () {
     is: {
       title: "MRKX aðstoðarmaður", sub: "Sjálfvirkur aðstoðarmaður", ph: "Skrifaðu skilaboð…", send: "Senda",
       open: "Opna spjall", close: "Loka spjalli", renew: "Nýtt spjall", renewQ: "Byrja nýtt spjall? Þetta eyðir núverandi spjalli.", renewYes: "Byrja upp á nýtt", renewNo: "Halda áfram", note: "Sjálfvirkur aðstoðarmaður. Skilaboðin þín eru aðeins send til teymisins ef þú biður um það.",
-      welcome: "Halló! Ég er sjálfvirkur aðstoðarmaður MRKX Labs. Ég svara sem stendur á ensku, en ég get líka sent spurninguna þína áfram til teymisins okkar. Hvað get ég gert fyrir þig?",
+      welcome: "Halló! Ég er sjálfvirkur aðstoðarmaður MRKX Labs og svara sem stendur á ensku, en get sent spurninguna þína áfram til teymisins. Hvað get ég gert fyrir þig?",
       askEmail: "Á hvaða netfang eigum við að svara?",
       badEmail: "Þetta lítur ekki út eins og netfang. Geturðu athugað það?",
       askName: "Og hvað heitir þú? (Þú getur sleppt þessu.)",
@@ -508,7 +508,7 @@ var MRKX_KB = (function () {
     ".launcher{right:var(--lr,14px);bottom:var(--lb,14px)}",
     ".head{gap:12px;padding-bottom:10px;background:rgba(255,255,255,.07)}",
     ".dot{width:38px;height:38px;border-radius:50%;background:linear-gradient(160deg,rgba(147,197,253,.95),rgba(37,99,235,.9));box-shadow:0 0 0 2px rgba(255,255,255,.18),0 4px 14px rgba(37,99,235,.45);display:flex;align-items:center;justify-content:center;position:relative;flex:0 0 auto}",
-    ".dot:after{content:'MX';font-size:12px;font-weight:700;letter-spacing:.5px;color:#fff}",
+    ".dot:after{content:'';width:22px;height:14px;background:url(data:image/png;base64,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) center/contain no-repeat}",
     ".dot:before{content:'';position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#34d399;border:2px solid #0f172a}",
     ".ht b{font-size:15px;letter-spacing:.4px;text-transform:none;font-weight:600}.ht span{font-size:12px}",
     ".log{gap:2px}.m{border-radius:20px;padding:9px 14px;margin-top:8px}.m.g{margin-top:0}",
@@ -532,7 +532,7 @@ var MRKX_KB = (function () {
     "}",
     ".panel.short .chips,.panel.short .note{display:none}",
     "@media " + PHONE_Q + "{.panel{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}",
-    ".panel.short .head{padding-top:max(6px,env(safe-area-inset-top,0px));padding-bottom:4px}.panel.short .x,.panel.short .nw{width:36px;height:36px}.panel.short .dot{width:30px;height:30px}.panel.short .dot:after{font-size:10px}.panel.short .dot:before{width:9px;height:9px}.panel.short .ht span{display:none}.panel.short .ht b{font-size:14px}.panel.short .x{margin-right:6px}.panel.short .dot{margin-right:8px}",
+    ".panel.short .head{padding-top:max(6px,env(safe-area-inset-top,0px));padding-bottom:4px}.panel.short .x,.panel.short .nw{width:36px;height:36px}.panel.short .dot{width:30px;height:30px}.panel.short .dot:after{width:18px;height:11px}.panel.short .dot:before{width:9px;height:9px}.panel.short .ht span{display:none}.panel.short .ht b{font-size:14px}.panel.short .x{margin-right:6px}.panel.short .dot{margin-right:8px}",
     ".panel.short form{margin:2px 10px 6px}.panel.short .log{padding-top:6px}.panel.tiny .head{display:none}",
     "}",
     "@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}"
@@ -564,7 +564,7 @@ var MRKX_KB = (function () {
     root.querySelector(".x").addEventListener("click", function () { toggle(false); });
     var cf = root.querySelector(".cf");
     root.querySelector(".nw").addEventListener("click", function () { cf.hidden = false; root.querySelector(".cn").focus(); });
-    root.querySelector(".cn").addEventListener("click", function () { cf.hidden = true; elInput.focus(); });
+    root.querySelector(".cn").addEventListener("click", function () { cf.hidden = true; focusInput(); });
     root.querySelector(".cy").addEventListener("click", function () { cf.hidden = true; restart(); });
     elForm.addEventListener("submit", function (e) { e.preventDefault(); submit(); });
     elInput.addEventListener("input", grow);
@@ -666,11 +666,14 @@ var MRKX_KB = (function () {
     if (window.__mrkxFit) window.__mrkxFit();
     if (S.open) {
       if (!S.greeted) { S.greeted = true; welcome(); }
-      /* No auto-focus on touch tablets: the keyboard would cover half of the window. */
-      var tablet = window.matchMedia && window.matchMedia("(pointer:coarse)").matches && window.innerWidth > 520;
-      setTimeout(function () { if (!tablet) elInput.focus(); scrollEnd(); }, 30);
+      setTimeout(function () { focusInput(); scrollEnd(); }, 30);
     }
     save();
+  }
+  /* Touch devices: never pop the keyboard up on their own (it would cover the conversation). */
+  function focusInput() {
+    if (window.matchMedia && window.matchMedia("(pointer:coarse)").matches) return;
+    elInput.focus();
   }
   function scrollEnd() { elLog.scrollTop = elLog.scrollHeight; }
   function grow() {
@@ -707,7 +710,7 @@ var MRKX_KB = (function () {
     try { sessionStorage.removeItem(CFG.storageKey); } catch (e) {}
     S = fresh(); S.lang = PAGE_IS ? "is" : "en"; S.open = true; S.greeted = true;
     elLog.innerHTML = ""; showChips(null); labels(); save(); welcome();
-    setTimeout(function () { elInput.focus(); }, 30);
+    setTimeout(function () { focusInput(); }, 30);
   }
   function say(text, chips) {
     var g = GEN;
