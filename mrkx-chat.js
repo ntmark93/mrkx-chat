@@ -466,10 +466,10 @@ var MRKX_KB = (function () {
   var CSS = [
     ":host{all:initial}",
     "*{box-sizing:border-box;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}",
-    ".launcher{position:fixed;right:var(--lr,20px);bottom:var(--lb,20px);width:58px;height:58px;border-radius:50%;border:1px solid rgba(96,165,250,.55);background:linear-gradient(180deg,rgba(96,165,250,.55),rgba(37,99,235,.35));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 30px rgba(0,0,0,.4),0 0 0 4px rgba(96,165,250,.12);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);z-index:2147483647;transition:transform .15s ease,background .15s ease}",
+    ".launcher{position:fixed;right:var(--lr,20px);bottom:var(--lb,20px);width:var(--ls,58px);height:var(--ls,58px);border-radius:50%;border:1px solid rgba(96,165,250,.55);background:linear-gradient(180deg,rgba(96,165,250,.55),rgba(37,99,235,.35));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 30px rgba(0,0,0,.4),0 0 0 4px rgba(96,165,250,.12);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);z-index:2147483647;transition:transform .15s ease,background .15s ease}",
     ".launcher:hover{background:linear-gradient(180deg,rgba(96,165,250,.7),rgba(37,99,235,.5));transform:translateY(-1px)}",
     ".launcher:focus-visible,.chip:focus-visible,.send:focus-visible,.x:focus-visible,textarea:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}",
-    ".launcher svg{width:26px;height:26px}",
+    ".launcher svg{width:45%;height:45%}",
     ".panel{position:fixed;right:var(--lr,20px);bottom:calc(var(--lb,20px) + 70px);width:380px;max-width:calc(100vw - 24px);height:min(600px,calc(100vh - 120px));display:none;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.08) 45%,rgba(255,255,255,.05) 100%),rgba(10,15,31,.55);color:#e5e7eb;border:1px solid rgba(255,255,255,.22);border-top-color:rgba(96,165,250,.6);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 18px 56px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);overflow:hidden;z-index:2147483647}",
     ".panel.open{display:flex}",
     ".head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.14)}",
@@ -502,7 +502,18 @@ var MRKX_KB = (function () {
     ".chips{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 12px 10px}.chips::-webkit-scrollbar{display:none}.chip{flex:0 0 auto;white-space:nowrap}",
     "form{padding:8px 10px;padding-bottom:max(8px,env(safe-area-inset-bottom,0px))}",
     ".panel.kb .note{display:none}.note{padding-bottom:max(9px,env(safe-area-inset-bottom,0px))}.panel.kb form{padding-bottom:8px}",
-    ".launcher{right:var(--lr,14px);bottom:var(--lb,14px)}}",
+    ".launcher{right:var(--lr,14px);bottom:var(--lb,14px)}",
+    ".head{gap:12px;padding-bottom:10px;background:rgba(255,255,255,.07)}",
+    ".dot{width:38px;height:38px;border-radius:50%;background:linear-gradient(160deg,rgba(147,197,253,.95),rgba(37,99,235,.9));box-shadow:0 0 0 2px rgba(255,255,255,.18),0 4px 14px rgba(37,99,235,.45);display:flex;align-items:center;justify-content:center;position:relative;flex:0 0 auto}",
+    ".dot:after{content:'MX';font-size:12px;font-weight:700;letter-spacing:.5px;color:#fff}",
+    ".dot:before{content:'';position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#34d399;border:2px solid #0f172a}",
+    ".ht b{font-size:15px;letter-spacing:.4px;text-transform:none;font-weight:600}.ht span{font-size:12px}",
+    ".log{gap:2px}.m{border-radius:20px;padding:9px 14px;margin-top:8px}.m.g{margin-top:0}",
+    ".b.gn{border-bottom-left-radius:6px}.b.g{border-top-left-radius:6px}.b.g.gn{border-radius:6px 20px 20px 6px}",
+    ".u.gn{border-bottom-right-radius:6px}.u.g{border-top-right-radius:6px}.u.g.gn{border-radius:20px 6px 6px 20px}",
+    ".b{border-bottom-left-radius:20px}.u{border-bottom-right-radius:20px}.b.gn{border-bottom-left-radius:6px}.u.gn{border-bottom-right-radius:6px}",
+    "form{align-items:center;gap:8px}textarea{border-radius:22px;height:44px;padding:11px 16px}",
+    ".send{width:44px;height:44px;padding:0;border-radius:50%;font-size:0;flex:0 0 auto;background:#fff url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 19V5'/><path d='M5 12l7-7 7 7'/></svg>\") center/22px no-repeat}}",
     "@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}"
   ].join("\n");
 
@@ -539,7 +550,7 @@ var MRKX_KB = (function () {
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); }
     });
     /* Line the launcher up with the site's cookie-preferences button (same vertical centre, mirrored side inset). */
-    var cookieBtn = null, tries = 0;
+    var cookieBtn = null, tries = 0, mqPhone = window.matchMedia ? window.matchMedia("(max-width:520px)") : null;
     function findCookie(root) {
       var all = root.querySelectorAll("*");
       for (var i = 0; i < all.length; i++) {
@@ -555,6 +566,8 @@ var MRKX_KB = (function () {
       var r = cookieBtn.getBoundingClientRect();
       if (!r.width || !r.height) return false;
       var vh = document.documentElement.clientHeight;
+      if (mqPhone && mqPhone.matches) host.style.setProperty("--ls", Math.round(Math.min(r.width, r.height)) + "px");
+      else host.style.removeProperty("--ls");
       var lh = elLauncher.offsetHeight || 58;
       var bottom = Math.max(8, Math.round(vh - (r.top + r.height / 2) - lh / 2));
       var side = Math.max(8, Math.round(r.left));
@@ -619,6 +632,8 @@ var MRKX_KB = (function () {
   function addBubble(role, text) {
     var d = document.createElement("div");
     d.className = "m " + (role === "u" ? "u" : "b");
+    var last = elLog.lastElementChild;
+    if (last && last.classList.contains(role === "u" ? "u" : "b")) { last.classList.add("gn"); d.classList.add("g"); }
     d.innerHTML = fmt(text);
     elLog.appendChild(d);
     scrollEnd();
