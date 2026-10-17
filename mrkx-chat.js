@@ -272,7 +272,7 @@ var MRKX_KB = (function () {
   /* ---------- strings ---------- */
   var STR = {
     en: {
-      title: "MRKX Assistant", sub: "Automated assistant", ph: "Type your message…", send: "Send",
+      title: "MRKX Assistant", sub: "Automated assistant", heroT: "How can I help?", heroS: "I'm an automated assistant (not a person). I can explain our services and set up a free website and search analysis.", ph: "Type your message…", send: "Send",
       open: "Open chat", close: "Close chat", renew: "New conversation", renewQ: "Start a new conversation? This clears the current one.", renewYes: "Start over", renewNo: "Keep chatting", note: "Automated assistant. Your messages are only sent to our team if you ask us to.",
       welcome: "Hi! I'm MRKX Assistant, an automated assistant for MRKX Labs (not a person). I can explain our services, answer common questions and set up a free website and search analysis. If I can't help, I'll pass your question to our team.",
       askEmail: "What email address should we reply to?",
@@ -309,7 +309,7 @@ var MRKX_KB = (function () {
       reAsk: "Back to your request:"
     },
     is: {
-      title: "MRKX aðstoðarmaður", sub: "Sjálfvirkur aðstoðarmaður", ph: "Skrifaðu skilaboð…", send: "Senda",
+      title: "MRKX aðstoðarmaður", sub: "Sjálfvirkur aðstoðarmaður", heroT: "Hvernig get ég aðstoðað?", heroS: "Ég er sjálfvirkur aðstoðarmaður, ekki manneskja. Ég get sent spurninguna þína áfram til teymisins.", ph: "Skrifaðu skilaboð…", send: "Senda",
       open: "Opna spjall", close: "Loka spjalli", renew: "Nýtt spjall", renewQ: "Byrja nýtt spjall? Þetta eyðir núverandi spjalli.", renewYes: "Byrja upp á nýtt", renewNo: "Halda áfram", note: "Sjálfvirkur aðstoðarmaður. Skilaboðin þín eru aðeins send til teymisins ef þú biður um það.",
       welcome: "Halló! Ég er sjálfvirkur aðstoðarmaður MRKX Labs. Ég svara sem stendur á ensku, en ég get líka sent spurninguna þína áfram til teymisins okkar. Hvað get ég gert fyrir þig?",
       askEmail: "Á hvaða netfang eigum við að svara?",
@@ -514,6 +514,28 @@ var MRKX_KB = (function () {
     ".b{border-bottom-left-radius:20px}.u{border-bottom-right-radius:20px}.b.gn{border-bottom-left-radius:6px}.u.gn{border-bottom-right-radius:6px}",
     "form{align-items:center;gap:8px}textarea{border-radius:22px;height:44px;padding:11px 16px}",
     ".send{width:44px;height:44px;padding:0;border-radius:50%;font-size:0;flex:0 0 auto;background:#fff url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 19V5'/><path d='M5 12l7-7 7 7'/></svg>\") center/22px no-repeat}}",
+    ".hero,.pill{display:none}",
+    "@media (max-width:520px){",
+    ".head{background:none;border-bottom:0;padding:max(10px,env(safe-area-inset-top,0px)) 14px 6px;gap:0;justify-content:space-between;position:relative;z-index:2}",
+    ".dot{display:none}.x{order:0}.ht{order:1;text-align:center}.nw{order:2}",
+    ".x,.nw{width:44px;height:44px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;color:#e5e7eb;border:1px solid rgba(255,255,255,.2);background-color:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);flex:0 0 auto}",
+    ".x{font-size:0;background-image:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e5e7eb' stroke-width='2' stroke-linecap='round'><path d='M6 6l12 12M18 6L6 18'/></svg>\");background-repeat:no-repeat;background-position:center;background-size:18px}",
+    ".nw svg{width:20px;height:20px}",
+    ".ht b{font-size:14px;font-weight:600}.ht span{display:none}.panel.empty .ht{visibility:hidden}",
+    ".panel.empty .log{display:none}",
+    ".panel.empty .hero{display:flex;flex:1;min-height:0;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 28px 20px;text-align:center}",
+    ".orb{width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(191,219,254,.95),rgba(59,130,246,.85) 55%,rgba(30,64,175,.9));box-shadow:0 0 0 1px rgba(255,255,255,.25),0 10px 36px rgba(37,99,235,.55);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:700;letter-spacing:.5px}",
+    ".hero h2{margin:0;font:400 31px/1.15 Georgia,'Times New Roman',serif;color:#f1f5f9;letter-spacing:-.2px}",
+    ".hero p{margin:0;font-size:14px;line-height:1.5;color:#aab4c8;max-width:300px}",
+    ".panel.empty.kb .hero{gap:10px;padding-bottom:6px}.panel.empty.kb .hero p{display:none}.panel.empty.kb .orb{width:44px;height:44px;font-size:14px}.panel.empty.kb .hero h2{font-size:24px}",
+    ".panel.empty .chips{flex-wrap:wrap;justify-content:center;overflow:visible;padding:0 16px 12px}",
+    "form{display:grid;grid-template-columns:1fr auto;grid-template-areas:'ta ta' 'pl sd';align-items:center;gap:6px 8px;margin:4px 10px 6px;padding:12px 10px 10px 16px;border:1px solid rgba(255,255,255,.2);border-radius:28px;background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.05));box-shadow:inset 0 1px 0 rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}",
+    "form:focus-within{border-color:rgba(96,165,250,.7)}.panel.kb form{padding:12px 10px 10px 16px;margin-bottom:8px}",
+    "textarea{grid-area:ta;border:0;background:transparent;border-radius:0;padding:2px 0;height:26px;min-height:26px;max-height:120px;box-shadow:none}textarea:focus-visible{outline:none}",
+    ".pill{grid-area:pl;justify-self:start;display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:100px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:13px;color:#cfd6ee}.pill:before{content:'';width:7px;height:7px;border-radius:50%;background:#34d399}",
+    ".send{grid-area:sd}",
+    ".note{background:none;padding:0 16px max(10px,env(safe-area-inset-bottom,0px))}",
+    "}",
     "@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}"
   ].join("\n");
 
@@ -526,9 +548,10 @@ var MRKX_KB = (function () {
       '<button class="launcher" type="button" aria-expanded="false" aria-controls="panel"></button>' +
       '<section class="panel" id="panel" role="dialog" aria-label="">' +
       '<div class="head"><span class="dot"></span><div class="ht"><b></b><span></span></div><button class="nw" type="button" aria-label=""><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v4h-4"/></svg></button><button class="x" type="button" aria-label="">×</button></div>' +
+      '<div class="hero"><span class="orb">MX</span><h2></h2><p></p></div>' +
       '<div class="cf" hidden><span></span><button type="button" class="cy"></button><button type="button" class="cn"></button></div>' +
       '<div class="log" role="log" aria-live="polite"></div><div class="chips"></div>' +
-      '<form autocomplete="off"><textarea rows="1" maxlength="' + CFG.maxLen + '" aria-label=""></textarea><button class="send" type="submit"></button></form>' +
+      '<form autocomplete="off"><textarea rows="1" maxlength="' + CFG.maxLen + '" aria-label=""></textarea><span class="pill"></span><button class="send" type="submit"></button></form>' +
       '<div class="note"></div></section>';
     document.body.appendChild(host);
     elLauncher = root.querySelector(".launcher");
@@ -546,6 +569,7 @@ var MRKX_KB = (function () {
     root.querySelector(".cn").addEventListener("click", function () { cf.hidden = true; elInput.focus(); });
     root.querySelector(".cy").addEventListener("click", function () { cf.hidden = true; restart(); });
     elForm.addEventListener("submit", function (e) { e.preventDefault(); submit(); });
+    elInput.addEventListener("input", grow);
     elInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); }
     });
@@ -623,6 +647,8 @@ var MRKX_KB = (function () {
     elInput.placeholder = T("ph"); elInput.setAttribute("aria-label", T("ph"));
     root.querySelector(".send").textContent = T("send");
     root.querySelector(".note").textContent = T("note");
+    root.querySelector(".hero h2").textContent = T("heroT"); root.querySelector(".hero p").textContent = T("heroS");
+    root.querySelector(".pill").textContent = T("title");
     elLauncher.setAttribute("aria-label", T("open"));
   }
   function toggle(open) {
@@ -634,9 +660,22 @@ var MRKX_KB = (function () {
       if (!S.greeted) { S.greeted = true; welcome(); }
       setTimeout(function () { elInput.focus(); scrollEnd(); }, 30);
     }
+    updateEmpty();
     save();
   }
   function scrollEnd() { elLog.scrollTop = elLog.scrollHeight; }
+  /* Phone layout: show the centred greeting until the visitor has written something. */
+  function updateEmpty() {
+    var has = false;
+    for (var i = 0; i < S.hist.length; i++) if (S.hist[i].r === "u") { has = true; break; }
+    elPanel.classList.toggle("empty", !has);
+  }
+  function grow() {
+    elInput.style.height = "auto";
+    var h = elInput.scrollHeight + (elInput.offsetHeight - elInput.clientHeight);
+    elInput.style.height = Math.min(h, 120) + "px";
+    if (!elInput.value) elInput.style.height = "";
+  }
   function addBubble(role, text) {
     var d = document.createElement("div");
     d.className = "m " + (role === "u" ? "u" : "b");
@@ -664,7 +703,7 @@ var MRKX_KB = (function () {
     GEN++; Q = Promise.resolve();
     try { sessionStorage.removeItem(CFG.storageKey); } catch (e) {}
     S = fresh(); S.lang = PAGE_IS ? "is" : "en"; S.open = true; S.greeted = true;
-    elLog.innerHTML = ""; showChips(null); labels(); save(); welcome();
+    elLog.innerHTML = ""; showChips(null); labels(); updateEmpty(); save(); welcome();
     setTimeout(function () { elInput.focus(); }, 30);
   }
   function say(text, chips) {
@@ -701,7 +740,7 @@ var MRKX_KB = (function () {
   function submit() {
     var raw = elInput.value.replace(/\s+/g, " ").trim();
     if (!raw) return;
-    elInput.value = "";
+    elInput.value = ""; grow();
     userSays(raw, false);
   }
   function chipClick(c) {
@@ -716,6 +755,7 @@ var MRKX_KB = (function () {
     var bad = !fromChip && sensitive(raw);
     addBubble("u", bad ? "•••" : raw);
     S.hist.push({ r: "u", t: bad ? "[removed: sensitive data]" : raw });
+    updateEmpty();
     save();
     if (bad) return say(T("sensitive"));
     return handle(raw, fromChip, chip);
@@ -1033,6 +1073,7 @@ var MRKX_KB = (function () {
     S.lang = S.lang || (PAGE_IS ? "is" : "en");
     build();
     restore();
+    updateEmpty();
     window.MRKXChat = {
       open: function () { toggle(true); },
       close: function () { toggle(false); },
