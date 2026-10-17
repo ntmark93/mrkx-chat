@@ -1,9 +1,10 @@
 (function(){
 /* MRKX Assistant knowledge base (English answers, studio voice "we").
-   Facts only from mrkxlabs.com. Prices: published starting prices only. */
+   Facts only from mrkxlabs.com. Prices: starting prices only (Oct 2026 list: website 450k, search foundation 220k, app 1.2M ISK, plus VAT). */
 var MRKX_KB = (function () {
-  var P_WEB = "250,000 ISK";
-  var P_SEO = "150,000 ISK";
+  var P_WEB = "450,000 ISK";
+  var P_SEO = "220,000 ISK";
+  var P_APP = "1,200,000 ISK";
 
   var links = {
     home: "/", services: "/services", website: "/services/websites", seo: "/services/seo",
@@ -59,8 +60,8 @@ var MRKX_KB = (function () {
       a: ["We build automation for repetitive, rule-based work such as lead handling, CRM updates, follow-up emails, reporting, notifications and booking flows. Work that needs human judgment is supported rather than replaced. It's priced per project. [Services](/services)"],
       chips: [{ t: "What can be automated?", go: "automation_what" }, { t: "Book a consultation", go: "consultation" }] },
 
-    { id: "svc_app", kind: "topic", topic: "app", kw: ["mobile app", "app development", "ios app", "android app", "build an app", "an app", "application", "app store", "google play"],
-      a: ["We design and develop mobile apps, but we first check whether an app is the right solution at all. It makes sense when users need repeat access, accounts, offline use or push notifications. It's priced per project. [Services](/services)"],
+    { id: "svc_app", kind: "topic", topic: "app", kw: ["mobile app", "mobile apps", "app", "apps", "app development", "ios app", "android app", "build an app", "build apps", "an app", "application", "app store", "google play", "native app", "smartphone app", "mobile application"],
+      a: ["We design and develop mobile apps, but we first check whether an app is the right solution at all. It makes sense when users need repeat access, accounts, offline use or push notifications. App projects start from " + P_APP + " plus VAT, and the final price depends on scope. [Services](/services)"],
       chips: [{ t: "Do I need an app?", go: "app_need" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "pricing", kind: "question", kw: ["price", "prices", "pricing", "cost", "costs", "how much", "quote", "budget", "rate", "rates", "fee", "fees", "vat", "charge", "package", "packages", "estimate", "starting from", "afford"],
@@ -243,7 +244,7 @@ var MRKX_KB = (function () {
     { key: "pro", words: ["consultant", "consulting", "agency", "lawyer", "accountant", "coach", "freelancer", "designer", "photographer", "studio", "clinic", "salon", "gym"], line: "For professional services, trust signals and a clear explanation of what you do are what turns visitors into enquiries." }
   ];
 
-  return { intents: intents, links: links, priceWeb: P_WEB, priceSeo: P_SEO,
+  return { intents: intents, links: links, priceWeb: P_WEB, priceSeo: P_SEO, priceApp: P_APP,
            fallbackFirst: fallbackFirst, fallbackSecond: fallbackSecond, bizMap: bizMap };
 })();
 
@@ -874,11 +875,12 @@ var MRKX_KB = (function () {
   }
 
   function priceText(topic) {
-    var w = KB.priceWeb, s = KB.priceSeo;
+    var w = KB.priceWeb, s = KB.priceSeo, a = KB.priceApp;
     if (topic === "website") return "Our Business Website projects start from " + w + " plus VAT. The final price depends on the number of pages, languages, integrations and content, so the best next step is a short consultation, where we shape the price around your project.";
     if (topic === "seo") return "Our Search Foundation work starts from " + s + " plus VAT. What you need beyond that depends on your site and goals, so we shape the scope and the price in a short consultation.";
-    if (topic === "landing" || topic === "brand" || topic === "automation" || topic === "app") return "That one is priced per project, because the scope varies a lot. In a short consultation we look at your goals and give you a clear price for it. For reference, our published starting prices are " + w + " for a Business Website and " + s + " for Search Foundation, both plus VAT.";
-    return "We have two published starting prices: Business Website from " + w + " and Search Foundation from " + s + ", both plus VAT. Everything else (landing pages, automation, apps, brand systems) is priced per project. The best way to get a real price is a short consultation, where we shape the scope around your goals.";
+    if (topic === "app") return "Our mobile app projects start from " + a + " plus VAT. We first check whether an app is the right solution at all, and the final price depends on the features, platforms and integrations. A short consultation is the best next step, where we shape the scope and the price around your project.";
+    if (topic === "landing" || topic === "brand" || topic === "automation") return "That one is priced per project, because the scope varies a lot. In a short consultation we look at your goals and give you a clear price for it. For reference, our starting prices are " + w + " for a Business Website, " + s + " for Search Foundation and " + a + " for a mobile app, all plus VAT.";
+    return "Our starting prices are: Business Website from " + w + ", Search Foundation from " + s + " and Mobile App from " + a + ", all plus VAT. Everything else (landing pages, automation, brand systems) is priced per project. The best way to get a real price is a short consultation, where we shape the scope around your goals.";
   }
   function priceChips() { return [{ t: "Book a consultation", go: "consultation" }, { t: "Free analysis", go: "free_analysis" }]; }
 
