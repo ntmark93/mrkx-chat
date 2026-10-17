@@ -132,6 +132,10 @@ var MRKX_KB = (function () {
       a: ["It can start as a defined project, but search visibility keeps changing with competitors, user behaviour and platform requirements. The usual approach is to build a strong base first and then refine it based on data."],
       chips: [{ t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }] },
 
+    { id: "monthly_plans", kind: "faq", kw: ["monthly plan", "monthly plans", "monthly package", "monthly packages", "monthly price", "monthly fee", "per month", "retainer", "subscription", "care plan", "growth plan", "partner plan", "ongoing support", "ongoing package", "minimum term", "contract length", "minimum contract", "minimum commitment", "lock in", "cancel monthly"],
+      a: ["We offer three monthly plans, all plus VAT, with a 6-month minimum and a 48-hour response time. Care (30,000 ISK/month): hosting and domain oversight, security updates, one small content change per month and a short monthly status note. Growth (80,000 ISK/month): everything in Care plus monthly SEO work (Search Console, titles, local SEO), Google Business Profile upkeep and a monthly report. Partner (140,000 ISK/month): everything in Growth plus up to 3 hours of development per month, a fixed monthly call and a quarterly strategy review. Capacity is limited, so the Partner plan is available for a small number of clients."],
+      chips: [{ t: "Book a consultation", go: "consultation" }, { t: "Pricing", go: "pricing" }] },
+
     { id: "local_seo", kind: "faq", kw: ["local seo", "google business profile", "google maps", "google my business", "near me", "local search", "reviews"],
       a: ["Local SEO improves your visibility and trust for location-based searches by aligning your website, your Google Business Profile, reviews and business details. A Google Business Profile alone isn't enough, because your website has to reinforce the same information."],
       chips: [{ t: "SEO service", go: "svc_seo" }, { t: "Free analysis", go: "free_analysis" }] },
