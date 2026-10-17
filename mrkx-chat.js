@@ -463,6 +463,9 @@ var MRKX_KB = (function () {
   var host, root, elPanel, elLauncher, elLog, elInput, elForm, elChips;
   var Q = Promise.resolve();
 
+  /* Phone layout: narrow screens, and touch phones held sideways (short height). */
+  var PHONE_Q = "(max-width:520px),(max-height:520px) and (orientation:landscape) and (pointer:coarse)";
+
   var CSS = [
     ":host{all:initial}",
     "*{box-sizing:border-box;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}",
@@ -495,7 +498,7 @@ var MRKX_KB = (function () {
     "textarea::placeholder{color:#9ca3af}",
     ".send{height:42px;border:1px solid rgba(147,197,253,.5);border-radius:24px;background:#fff;color:#323232;padding:0 18px;font-size:14px;cursor:pointer}.send:hover{opacity:.88}",
     ".note{font-size:11px;color:#9ca3af;text-align:center;padding:2px 14px 9px;background:rgba(0,0,0,.18)}",
-    "@media (max-width:520px){textarea{font-size:16px}",
+    "@media " + PHONE_Q + "{textarea{font-size:16px}",
     ".panel{left:0;right:0;top:0;bottom:0;width:auto;max-width:none;height:100vh;height:100dvh;border-radius:0;border-left:0;border-right:0;border-top:0}",
     ".head{padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top,0px))}",
     ".log{padding:12px 12px 8px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.m{max-width:88%;font-size:15px}",
@@ -514,7 +517,7 @@ var MRKX_KB = (function () {
     ".b{border-bottom-left-radius:20px}.u{border-bottom-right-radius:20px}.b.gn{border-bottom-left-radius:6px}.u.gn{border-bottom-right-radius:6px}",
     "form{align-items:center;gap:8px}textarea{border-radius:22px;height:44px;padding:11px 16px}",
     ".send{width:44px;height:44px;padding:0;border-radius:50%;font-size:0;flex:0 0 auto;background:#fff url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23323232' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 19V5'/><path d='M5 12l7-7 7 7'/></svg>\") center/22px no-repeat}}",
-    "@media (max-width:520px){",
+    "@media " + PHONE_Q + "{",
     ".head{background:none;border-bottom:0;padding:max(10px,env(safe-area-inset-top,0px)) 14px 6px;gap:0;justify-content:space-between;position:relative;z-index:2}",
     ".x{order:0;margin-right:10px}.dot{order:1;margin-right:12px}.ht{margin-right:8px}.ht{order:2;text-align:left}.nw{order:3}",
     ".x,.nw{width:44px;height:44px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;color:#e5e7eb;border:1px solid rgba(255,255,255,.2);background-color:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.22);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);flex:0 0 auto}",
@@ -526,6 +529,11 @@ var MRKX_KB = (function () {
     "textarea{grid-area:ta;align-self:center;border:0;background:transparent;border-radius:0;padding:6px 0;height:32px;min-height:32px;max-height:120px;box-shadow:none}textarea:focus-visible{outline:none}",
     ".send{grid-area:sd}",
     ".note{background:none;padding:0 16px max(10px,env(safe-area-inset-bottom,0px))}",
+    "}",
+    ".panel.short .chips,.panel.short .note{display:none}",
+    "@media " + PHONE_Q + "{.panel{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}",
+    ".panel.short .head{padding-top:max(6px,env(safe-area-inset-top,0px));padding-bottom:4px}.panel.short .x,.panel.short .nw{width:36px;height:36px}.panel.short .dot{width:30px;height:30px}.panel.short .dot:after{font-size:10px}.panel.short .dot:before{width:9px;height:9px}.panel.short .ht span{display:none}.panel.short .ht b{font-size:14px}.panel.short .x{margin-right:6px}.panel.short .dot{margin-right:8px}",
+    ".panel.short form{margin:2px 10px 6px}.panel.short .log{padding-top:6px}.panel.tiny .head{display:none}",
     "}",
     "@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}"
   ].join("\n");
@@ -564,7 +572,7 @@ var MRKX_KB = (function () {
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); }
     });
     /* Line the launcher up with the site's cookie-preferences button (same vertical centre, mirrored side inset). */
-    var cookieBtn = null, tries = 0, mqPhone = window.matchMedia ? window.matchMedia("(max-width:520px)") : null;
+    var cookieBtn = null, tries = 0, mqPhone = window.matchMedia ? window.matchMedia(PHONE_Q) : null;
     function findCookie(root) {
       var all = root.querySelectorAll("*");
       for (var i = 0; i < all.length; i++) {
@@ -607,7 +615,7 @@ var MRKX_KB = (function () {
     if (window.ResizeObserver) { try { new ResizeObserver(function () { try { alignToCookie(); } catch (e) {} }).observe(document.documentElement); } catch (e) {} }
     window.addEventListener("orientationchange", function () { setTimeout(function () { try { alignToCookie(); } catch (e) {} }, 400); });
     /* On phones the on-screen keyboard shrinks the visual viewport: fit the panel into what is visible. */
-    var vv = window.visualViewport, mq = window.matchMedia ? window.matchMedia("(max-width:520px)") : null;
+    var vv = window.visualViewport, mq = window.matchMedia ? window.matchMedia(PHONE_Q) : null;
     function fit() {
       if (!vv || !mq) return;
       if (mq.matches && S.open) {
@@ -616,14 +624,26 @@ var MRKX_KB = (function () {
         elPanel.style.bottom = "auto";
         elPanel.style.height = vv.height + "px";
         elPanel.classList.toggle("kb", kb);
+        elPanel.classList.toggle("short", vv.height < 380);
+        elPanel.classList.toggle("tiny", vv.height < 260);
+        scrollEnd();
+      } else if (S.open && vv.height < window.innerHeight * 0.85) {
+        /* Tablet (e.g. iPad landscape) with the on-screen keyboard up: keep the window inside the visible area. */
+        elPanel.style.top = "auto";
+        elPanel.style.bottom = Math.max(8, Math.round(window.innerHeight - vv.offsetTop - vv.height + 8)) + "px";
+        elPanel.style.height = Math.max(220, Math.min(600, Math.round(vv.height - 16))) + "px";
+        elPanel.classList.add("kb");
+        elPanel.classList.toggle("short", vv.height < 380);
         scrollEnd();
       } else {
         elPanel.style.top = elPanel.style.bottom = elPanel.style.height = "";
-        elPanel.classList.remove("kb");
+        elPanel.classList.remove("kb"); elPanel.classList.remove("short"); elPanel.classList.remove("tiny");
       }
     }
     window.__mrkxFit = fit;
     if (vv) { vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); }
+    window.addEventListener("resize", fit);
+    window.addEventListener("orientationchange", function () { setTimeout(fit, 350); });
     elPanel.addEventListener("keydown", function (e) { if (e.key === "Escape") { toggle(false); elLauncher.focus(); } });
   }
   function labels() {
@@ -646,7 +666,9 @@ var MRKX_KB = (function () {
     if (window.__mrkxFit) window.__mrkxFit();
     if (S.open) {
       if (!S.greeted) { S.greeted = true; welcome(); }
-      setTimeout(function () { elInput.focus(); scrollEnd(); }, 30);
+      /* No auto-focus on touch tablets: the keyboard would cover half of the window. */
+      var tablet = window.matchMedia && window.matchMedia("(pointer:coarse)").matches && window.innerWidth > 520;
+      setTimeout(function () { if (!tablet) elInput.focus(); scrollEnd(); }, 30);
     }
     save();
   }
