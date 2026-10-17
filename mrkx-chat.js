@@ -565,7 +565,14 @@ var MRKX_KB = (function () {
       if (!cookieBtn) return false;
       var r = cookieBtn.getBoundingClientRect();
       if (!r.width || !r.height) return false;
-      var vh = document.documentElement.clientHeight;
+      var vh = document.documentElement.clientHeight, vw = document.documentElement.clientWidth;
+      if (r.width > 100 || r.height > 100) {
+        /* The consent dialog itself is open (large): keep the launcher clear of it so it never covers its buttons. */
+        host.style.removeProperty("--ls"); host.style.removeProperty("--lr");
+        if (r.width > vw * 0.6) host.style.setProperty("--lb", Math.round(vh - r.top + 12) + "px");
+        else host.style.removeProperty("--lb");
+        return true;
+      }
       if (mqPhone && mqPhone.matches) host.style.setProperty("--ls", Math.round(Math.min(r.width, r.height)) + "px");
       else host.style.removeProperty("--ls");
       var lh = elLauncher.offsetHeight || 58;
@@ -581,6 +588,7 @@ var MRKX_KB = (function () {
       if (!ok && ++tries < 30) setTimeout(poll, 1000);
     })();
     window.addEventListener("resize", function () { try { alignToCookie(); } catch (e) {} });
+    setInterval(function () { try { alignToCookie(); } catch (e) {} }, 1500);
     [1500, 3500, 7000, 12000].forEach(function (ms) { setTimeout(function () { try { alignToCookie(); } catch (e) {} }, ms); });
     if (window.ResizeObserver) { try { new ResizeObserver(function () { try { alignToCookie(); } catch (e) {} }).observe(document.documentElement); } catch (e) {} }
     window.addEventListener("orientationchange", function () { setTimeout(function () { try { alignToCookie(); } catch (e) {} }, 400); });
