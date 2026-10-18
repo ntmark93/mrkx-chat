@@ -411,6 +411,104 @@ var MRKX_SECTIONS = {
   }
 };
 
+/* MRKX Assistant: FAQ knowledge, taken from mrkxlabs.com/faq (83 questions, answers lightly condensed, same claims).
+   t = service topic, q = question as on the FAQ page, a = answer. */
+var MRKX_FAQ = [
+  /* ---- Landing pages ---- */
+  { t: "landing", q: "Do I need a landing page if I already have a website?", a: "A website and a landing page serve different purposes. Your website introduces the full business and supports several visitor journeys; a landing page is a focused destination for one campaign, audience, service or offer. Sending campaign traffic to a general homepage often forces visitors to search for the relevant information themselves." },
+  { t: "landing", q: "Can you guarantee a specific conversion rate?", a: "No credible provider can guarantee a conversion rate without understanding the traffic, market, offer, pricing, competition, customer intent and sales process. We focus on a strategically sound page, reliable measurement, identifying the assumptions behind the offer and a foundation that can be improved using evidence." },
+  { t: "landing", q: "Will a new landing page fix my advertising campaign?", a: "Only if the landing page is the real bottleneck. Poor targeting, irrelevant keywords, weak ads, limited demand, an uncompetitive offer, unreliable tracking or slow sales follow-up can't be solved by page design alone. We evaluate the landing page as part of the wider acquisition and conversion path." },
+  { t: "landing", q: "How long should a landing page be?", a: "Long enough to support the decision, but not longer. A simple, familiar, low-risk offer may need very little explanation; a complex, expensive or unfamiliar service may need more proof, process information, comparison, objection handling and risk reduction. The length should follow the complexity of the decision, not a fixed template." },
+  { t: "landing", q: "Should a landing page have navigation?", a: "Not always. Removing the main navigation can reduce distraction on a focused campaign page, but some visitors may need supporting information, legal pages, company details or extra credibility signals. The right decision depends on the campaign and the visitor's needs." },
+  { t: "landing", q: "Is copywriting included in a landing page project?", a: "Copywriting can be included in the project scope. Conversion copy isn't placeholder text added after the design; it requires an understanding of the audience, offer, objections, available evidence and desired action. The depth of research and writing depends on the project." },
+  { t: "landing", q: "Can you connect the landing page to our existing systems?", a: "In many cases, yes. The page may be connected to CRM software, email systems, booking platforms, payment providers, analytics tools, advertising platforms, spreadsheets or automation workflows. Integration requirements should be identified before development begins." },
+  { t: "landing", q: "Does a landing page need SEO?", a: "It depends on the purpose. A short-term paid campaign page may not need to compete in organic search, while a service landing page meant to attract search traffic needs a different content, indexing, internal-linking and technical SEO strategy. We decide this intentionally rather than letting search visibility happen by accident." },
+  { t: "landing", q: "Can the landing page be optimized after launch?", a: "Yes. Optimisation can use conversion data, campaign performance, lead quality, customer feedback, form behaviour, usability findings and structured experiments when there is enough traffic. The method should match the amount and quality of evidence available." },
+
+  /* ---- Websites ---- */
+  { t: "website", q: "What is included in a professional website design and development project?", a: "A professional website project includes more than visual design and page building. It covers the structural, technical, content, performance, SEO, accessibility, security, analytics, integration and maintenance layers: information architecture, page hierarchy, responsive front end, CMS or content structure, technical SEO foundations, performance optimisation, accessibility basics, form handling, analytics setup, integrations and post-launch quality checks. We treat a website as a complete digital system; the exact scope depends on the business, goals, functionality and chosen technology." },
+  { t: "website", q: "Is website design the same as website development?", a: "No. Design defines the visual and user-experience layer: layout, spacing, typography, hierarchy, visual identity, content presentation and navigation flow. Development turns it into a working technical system: responsive behaviour, browser compatibility, front end, content management, forms, tracking, technical SEO settings, integrations and launch preparation. A site can look well designed and still be technically weak (slow, broken on mobile, poor headings, no tracking, hard to update), so a professional site needs both." },
+  { t: "website", q: "Why does information architecture matter?", a: "Information architecture defines how the website is organised: page hierarchy, navigation logic, URL structure, service-page planning, internal linking and content grouping. Without it a site can be confusing even if it looks polished, and search engines may get weak signals about how pages relate. For service businesses the homepage introduces the business while individual service pages explain each offer properly, giving a clearer structure, stronger internal linking and a better technical foundation." },
+  { t: "website", q: "Do I need separate pages for each service?", a: "In most cases, yes. If each service has a different audience, problem, process, technical explanation or search intent, separate service pages are usually the stronger structure. A single overview page can introduce the offers but rarely explains each in depth. Dedicated pages allow detailed explanations, specific FAQs, links to case studies and more focused search intent." },
+  { t: "website", q: "What is technical SEO in a website build?", a: "Technical SEO is the foundation that helps search engines crawl, index and understand a website. It isn't a shortcut or ranking trick. It can include crawlable pages, indexable structure, clear title tags, meta descriptions, logical headings, canonical handling, XML sitemap setup, structured data where appropriate, optimised URLs and internal links. We consider it during the build, not only after launch; it doesn't replace long-term SEO strategy, content or authority building." },
+  { t: "website", q: "Will a new website automatically rank on Google?", a: "No. A new website doesn't rank well just because it's well designed or technically clean. A professional site creates a stronger foundation, but rankings depend on content quality, competition, search intent, authority, location, technical structure, internal linking, indexing and ongoing optimisation. Technical SEO during the build avoids preventable problems, but it doesn't guarantee immediate rankings." },
+  { t: "website", q: "Why are headings important?", a: "Headings aren't only visual styling; they define the structure of the page. A clear H1 describes the main topic and H2/H3 headings organise supporting sections in a logical order, which helps users scan and understand the content and helps search engines understand the hierarchy. If headings are used only for visual size, the page becomes harder to interpret." },
+  { t: "website", q: "Why does website performance matter?", a: "Performance affects how quickly users can access content, how stable the page feels while loading and how responsive it is during interaction. It's influenced by image sizes, scripts, fonts, animations, tracking and cookie tools, embedded maps, video players, booking and payment tools and other third-party resources. We review media, scripts, embeds, layouts, responsive behaviour and tracking tools during the build, so each technical element has a clear purpose and doesn't needlessly damage the experience." },
+  { t: "website", q: "What are Core Web Vitals?", a: "Core Web Vitals are user-experience metrics for loading performance, interactivity and visual stability. Largest Contentful Paint measures how quickly the main content loads, Interaction to Next Paint how responsive the page feels, and Cumulative Layout Shift whether the page moves unexpectedly while loading. They aren't the only measure of quality, but they can reveal heavy images, slow scripts, unstable layouts, poor mobile performance or excessive third-party load." },
+  { t: "website", q: "Is accessibility part of website development?", a: "Yes. Accessibility means making the site easier to perceive, navigate, understand and operate for as many people as possible, including people using keyboards, screen readers, assistive technologies, mobile devices and different browsers. Basics include semantic headings, readable contrast, meaningful alt text, labelled form fields, clear links, keyboard-aware interaction, visible focus states, logical content order and responsive readability. This doesn't mean every site automatically gets full legal accessibility certification without a dedicated audit." },
+  { t: "website", q: "Can I edit the website myself after launch?", a: "Yes, where appropriate. Editable content may include text, images, blog posts, portfolio items, FAQs, service content, case studies or selected CMS-based sections. Not every part should be freely editable: core layout structure, tracking setup, technical SEO configuration, integrations, design systems and responsive behaviour are handled carefully. The goal is practical editing control without making the website fragile." },
+  { t: "website", q: "What is the difference between structured content and manually built pages?", a: "Structured content is organised into repeatable content types and fields: a service can have a title, descriptions, image, related FAQ, SEO title, meta description and call-to-action; a portfolio item can have a project name, industry, challenge, solution, result and gallery. Manually built pages rely on copied sections and one-off layouts, which is harder to maintain as the site grows. Structured content makes the site more scalable and consistent." },
+  { t: "website", q: "Are integrations included in a website project?", a: "Integrations can be included depending on the scope. A website integration connects the site to another system: a contact form, CRM, email notifications, booking platform, payment provider, automation workflow, spreadsheet, calendar, marketing platform or external API. They're planned carefully because they affect operations; a form may need to send an email, store a lead, trigger an automated reply or update a CRM. When included, they're treated as part of the website system." },
+  { t: "website", q: "How do you handle website forms?", a: "A form should not only look correct; it should submit reliably, validate input, reduce spam, notify the right people and support tracking. Depending on the project that includes contact, quote, booking, newsletter and CRM-connected forms, automated notifications, confirmation messages and analytics events. A weak setup can lead to lost leads, spam, failed notifications or missing conversion tracking, so forms are tested as functional systems." },
+  { t: "website", q: "Do you set up analytics and tracking?", a: "Yes, analytics and tracking can be part of the website foundation: GA4 setup, Search Console connection, form submission tracking, CTA tracking, traffic-source visibility, key event setup and basic conversion-path measurement. The goal isn't to track everything randomly but to define which actions matter and make them measurable. A website without tracking creates blind spots." },
+  { t: "website", q: "What happens after the website is launched?", a: "Launch isn't the end. After launch the site should be checked in real conditions: testing forms, responsive behaviour, metadata, analytics events, Search Console setup, indexing status, broken links, redirects, important user flows and performance. Some issues only appear when real users, devices, search engines and third-party systems interact with the site." },
+  { t: "website", q: "Can the website be expanded later?", a: "Yes, if it's built with scalability in mind. A scalable site supports future service pages, portfolio items, case studies, blog posts, FAQs, landing pages, multilingual versions, additional integrations and content updates without a complete rebuild. That takes structure: reusable templates, CMS content types, consistent design patterns, internal linking logic, documentation and technical discipline." },
+  { t: "website", q: "Is multilingual website structure important?", a: "Yes. A multilingual website isn't just a translated copy. It needs clear page relationships, localised URLs, language-specific metadata, translated navigation, consistent structure and attention to how search engines understand the language versions. Without planning, pages become inconsistent between languages, links point to the wrong version and metadata gets duplicated. It should be considered at the architecture stage." },
+  { t: "website", q: "How is website security handled?", a: "Security is handled at the practical website level: safer form handling, spam reduction, controlled CMS or admin access, careful use of third-party tools, reliable integration planning and clear technical ownership. Not every business site needs enterprise security infrastructure, but every site should avoid unnecessary risk and stay stable and maintainable after launch." },
+  { t: "website", q: "Why should a website be treated as a system instead of a brochure?", a: "Because a modern business website is connected to search engines, mobile devices, analytics, forms, content management, third-party scripts, automation workflows and business processes. Treated as a brochure, important layers get ignored and the site may be hard to find, hard to update, slow on mobile, unclear for search engines, inaccessible, insecure or impossible to measure. Design is one layer; the value comes from combining structure, usability, technical SEO, performance, accessibility, measurement, integrations and maintainability." },
+
+  /* ---- Automation ---- */
+  { t: "automation", q: "What exactly can be automated?", a: "The best candidates are repetitive, structured, rule-based or data-driven tasks: lead handling, CRM updates, follow-up emails, onboarding steps, reporting, notifications, task creation, booking workflows and internal admin processes. If a task needs complex human judgement every time, it may not suit full automation, but automation can still support it by preparing information, creating reminders or organising the next step." },
+  { t: "automation", q: "Can automation replace human work?", a: "The goal isn't to remove people from the business; it's to remove unnecessary repetition from the system. Automation is most valuable when it reduces manual admin, repeated data entry, missed follow-ups and slow internal handoffs, while keeping people in control of important decisions." },
+  { t: "automation", q: "Is AI automation safe?", a: "It can be useful, but only when it's controlled. AI shouldn't get more authority than the workflow requires. For higher-risk tasks the system should include approval points, limited permissions, review steps and clear boundaries around what the AI can access or change." },
+  { t: "automation", q: "Why not just use Zapier, Make or n8n myself?", a: "You can, and for simple workflows these tools are often enough. The difference appears when a workflow becomes important to the business: then you need data mapping, error handling, duplicate prevention, access control, logs, testing, documentation and a recovery path. Tools can create automations; they don't automatically create reliable systems." },
+  { t: "automation", q: "What happens if the automation breaks?", a: "A serious automation system shouldn't fail silently. Depending on the workflow it should include notifications, logs, fallback paths, retry logic and a clear owner who knows what to do if something fails. Automation should make operations easier to manage, not harder to diagnose." },
+  { t: "automation", q: "Do you only build no-code automations?", a: "No. We use no-code or low-code tools where they're the right fit, but the approach depends on the workflow. Some projects work with platforms like Zapier, Make, n8n, Airtable, Notion, Google Workspace or CRM integrations; others need APIs, webhooks, custom backend logic, databases or a hybrid setup. The tool is chosen after the workflow is understood." },
+
+  /* ---- Mobile apps ---- */
+  { t: "app", q: "Do I actually need a mobile app?", a: "Not every business needs one. Some problems are better solved with a stronger website, web application, booking system, customer portal, internal tool or automated workflow. We identify whether a mobile app is the right solution before development begins." },
+  { t: "app", q: "When does a mobile app make sense?", a: "When users need repeated access, account-based functionality, offline support, push notifications, saved preferences, location-based features, camera access, faster workflows or a focused experience they return to regularly." },
+  { t: "app", q: "Can my website just be turned into an app?", a: "A mobile app shouldn't simply be a website placed inside an app shell. It should provide a meaningful mobile experience with clear functionality, structure and value beyond what the mobile web already offers." },
+  { t: "app", q: "How many features should the first version include?", a: "The features needed to prove the core action. The first version shouldn't try to become the final product immediately; a focused first version is easier to launch, test, improve and maintain." },
+  { t: "app", q: "Is a smaller first version a weaker product?", a: "No. A smaller first version can be stronger if it's built around the right user behaviour. The goal isn't to reduce quality but to avoid unnecessary complexity before the product direction is proven." },
+  { t: "app", q: "Should my app be native, cross-platform or web-based?", a: "It depends on the product. Native development may be better for platform-specific performance or advanced device features, cross-platform when the business needs iOS and Android efficiently, and a web-based solution may be enough when app-store distribution isn't necessary." },
+  { t: "app", q: "Why does mobile app architecture matter?", a: "Architecture affects how stable, maintainable, testable and scalable the app becomes. An app isn't only interface design; it includes data flow, authentication, APIs, permissions, error handling, analytics, security and release processes." },
+  { t: "app", q: "Why is mobile app performance important?", a: "Performance directly affects trust. If an app opens slowly, freezes, drains battery, crashes or reacts late, users experience it as a product problem, not just a technical one." },
+  { t: "app", q: "What does good mobile UX include?", a: "More than a clean layout: navigation, loading states, feedback, empty states, error states, permission explanations, recovery paths and behaviour under real conditions such as weak internet or interrupted sessions." },
+  { t: "app", q: "When should privacy and data safety be considered?", a: "From the beginning. Privacy, permissions and data safety affect the app structure, user experience, third-party tools, store submission and long-term risk." },
+  { t: "app", q: "What is needed before submitting an app to the App Store or Google Play?", a: "The app should be complete, tested and technically stable, with store assets, metadata, privacy information, data-safety details, screenshots, login or demo access if needed and a clear release plan." },
+  { t: "app", q: "Is launch the end of the app project?", a: "No. After launch an app still needs monitoring, updates, bug fixes, dependency maintenance, operating-system compatibility checks, analytics review, user feedback and future improvements." },
+
+  /* ---- Brand systems ---- */
+  { t: "brand", q: "Is a brand system the same as a logo?", a: "No. A logo is one part of the identity; a brand system defines how the full identity works across visuals, messaging, layout, digital platforms, marketing assets and future content. A logo can make a business visible; a brand system makes it consistent and recognisable." },
+  { t: "brand", q: "Do small businesses really need a brand system?", a: "Yes, if they want to look professional across more than one channel. Even small businesses use websites, Google Business Profile, social media, ads, email, proposals, invoices and presentations, and without a system these touchpoints start to feel disconnected. A brand system helps build trust without redesigning everything each time a new asset is needed." },
+  { t: "brand", q: "Why not just buy a cheap logo?", a: "A cheap logo may give you a visual mark but usually doesn't solve the real brand problem. It doesn't define typography, content style, colour usage, website structure, button behaviour, social templates, mobile readability, accessibility rules or future design direction, so you may still have to guess everything else later." },
+  { t: "brand", q: "What makes a brand system technical?", a: "The technical part is how the identity is prepared for real digital use: colour values, contrast-safe combinations, typography scales, spacing rules, responsive behaviour, component logic, file formats, design variables, export structure and documentation for designers and developers. It's about how reliably the brand can be implemented." },
+  { t: "brand", q: "Can a brand system be used for a website or mobile app later?", a: "Yes, and that's one of the main reasons to create it properly. A strong system gives future websites, landing pages, mobile interfaces, SEO content and marketing campaigns a consistent foundation and reduces guesswork." },
+  { t: "brand", q: "What happens if a business has no brand system?", a: "The brand usually becomes inconsistent over time: different people make different decisions, colours drift, fonts change, layouts lose structure, social media stops matching the website and new assets feel disconnected. It isn't always dramatic at first, but it slowly weakens recognition, trust and professional appearance." },
+  { t: "brand", q: "Is a brand system only visual design?", a: "No. A serious brand system includes visual identity but also structure, communication, digital usage rules and practical implementation logic. The visual layer makes the brand recognisable; the system makes it usable." },
+
+  /* ---- SEO ---- */
+  { t: "seo", q: "Is SEO a guaranteed way to rank first on Google?", a: "No. Serious SEO shouldn't be sold as a guaranteed first-place ranking. Search engines use complex systems no outside company controls. What can be controlled is the quality of the technical foundation, page structure, content clarity, local relevance and measurement. We don't sell ranking promises; we build the conditions that make organic visibility possible, measurable and commercially useful." },
+  { t: "seo", q: "How long does SEO take to show results?", a: "SEO usually works through controlled improvement, not instant change. Some technical fixes can be detected quickly, especially those that remove crawl, indexing or page-structure problems. Stronger organic growth often takes longer because search engines need time to crawl changes, evaluate pages and respond to competition. The timeline depends on the current state of the site, market competition, technical issues, content quality, authority and how specific the search opportunity is." },
+  { t: "seo", q: "Is SEO a one-time project or an ongoing process?", a: "It can start as a focused project, but search visibility is never completely static. A site can be technically improved, restructured and optimised in one phase, but search behaviour, competitors, content expectations, local signals and platform requirements change over time. For many businesses the best approach is to build a strong foundation first, then improve based on data." },
+  { t: "seo", q: "Why should I invest in SEO if results are not guaranteed?", a: "Because the alternative is leaving organic visibility to chance. SEO doesn't guarantee a specific ranking, but it reduces avoidable weakness: the site becomes easier to crawl and understand, better aligned with search intent, more credible to users and more useful as a business entry point." },
+  { t: "seo", q: "What is technical SEO?", a: "Technical SEO is the work that helps search engines access, crawl, render, understand and index the right pages: sitemap structure, robots.txt, noindex settings, canonical URLs, redirects, internal links, heading hierarchy, JavaScript rendering, mobile usability, performance, structured data and Search Console validation. Without this foundation, content may exist on the site but fail to perform in search." },
+  { t: "seo", q: "Can a beautiful website still have poor SEO?", a: "Yes. A site can look polished to users and still be hard for search engines to understand: important content hidden behind weak structure or JavaScript issues, poor internal linking, duplicate URLs, missing metadata, slow loading or unclear hierarchy. Visual quality matters, but search readiness depends on what the site communicates technically and structurally." },
+  { t: "seo", q: "Does a modern website builder hurt SEO?", a: "Not automatically. Modern platforms can support SEO, but they still need correct configuration, clean page structure, crawlable content, clear metadata, proper indexing settings, performance control, structured data and consistent internal linking. The platform isn't the strategy; the implementation is." },
+  { t: "seo", q: "Why does JavaScript matter for SEO?", a: "JavaScript can affect how search engines see a page. If important content, links, metadata or structured data only appear after scripts run, the page needs careful testing; search engines may process JavaScript, but rendering adds complexity. We check what users see, what browsers render and what search engines can actually access." },
+  { t: "seo", q: "What is the difference between crawlability and indexability?", a: "Crawlability means search engines can access and follow a page; indexability means the page is eligible to be stored and shown in results. A page can be crawlable but not indexable if it has a noindex directive, and a page blocked from crawling may stop search engines seeing important instructions. A small technical setting can decide whether a page can appear in search at all." },
+  { t: "seo", q: "Is SEO just about keywords?", a: "No. Keywords reveal what people search for, but SEO isn't keyword stuffing. A strong page needs a clear purpose, useful information, topic relevance, proper headings, internal links, metadata, local signals and a path toward action. The goal is to answer the search intent better than competing pages, not to repeat a phrase." },
+  { t: "seo", q: "Do service pages matter for SEO?", a: "Yes, often more than generic blog content. A service page can target a specific commercial search intent, explain the offer in depth, answer objections, show expertise, support local relevance and guide the visitor toward contact. We treat service pages as structured business entry points." },
+  { t: "seo", q: "Do we need blog posts for SEO?", a: "Not always. Blogs are useful when they answer real questions, support topical authority and connect to service pages, but generic articles published just to do SEO are usually weak. For many small and service-based businesses the priority is clear core pages, strong service pages, local relevance and technical correctness before large amounts of blog content." },
+  { t: "seo", q: "What makes SEO content good?", a: "Good SEO content is specific, useful, structured and written for real decision-making. It explains the problem, answers practical questions, shows expertise, removes confusion and helps the visitor decide what to do next. It shouldn't sound like generic AI text or repeat the same keyword in slightly different ways." },
+  { t: "seo", q: "Is SEO still relevant with AI search?", a: "Yes. AI search doesn't remove the need for SEO; it raises the standard for technical clarity, useful content, structured information and trust signals. Search engines and AI systems still need accessible pages, clear service definitions, reliable information and content that can be interpreted correctly." },
+  { t: "seo", q: "Do I need AEO, GEO or a separate AI SEO strategy?", a: "Not as a replacement for SEO. Terms like AEO and GEO describe visibility in AI search experiences, but the practical foundation is still SEO: crawlable pages, useful content, clear structure, trustworthy information and consistent business signals. We don't chase AI-search hacks; we build pages that are easier for search engines, AI systems and customers to understand." },
+  { t: "seo", q: "Do I need an llms.txt file for Google Search?", a: "No, not for Google Search visibility. The priority is making the site technically accessible, well structured, useful and clear. Special files or artificial AI-focused tricks aren't a substitute for a strong search foundation." },
+  { t: "seo", q: "Should content be written differently for AI systems?", a: "Written more clearly, not more artificially. AI systems and search engines benefit from pages that are well organised, specific, helpful and supported by real context. That doesn't mean breaking every answer into tiny fragments or rewriting the site only for machines; the best approach is useful content for people with a structure machines can interpret." },
+  { t: "seo", q: "What is local SEO?", a: "Local SEO helps a business become more visible and trustworthy for location-based searches. It connects the website, Google Business Profile, service areas, business categories, reviews, contact details, local content, structured data and business information into one consistent presence. For local businesses this can matter as much as traditional website SEO." },
+  { t: "seo", q: "Is a Google Business Profile enough for local SEO?", a: "No. A Google Business Profile is important but shouldn't work alone. The website needs to support the same business information, services, location relevance, contact details and trust signals; if the website and profile don't reinforce each other, the presence becomes weaker and less consistent." },
+  { t: "seo", q: "Why are reviews important for local SEO?", a: "Reviews help customers evaluate trust before they contact a business, and when they're genuine, relevant and consistent over time they can support local prominence and credibility. They're not only a ranking consideration but part of the decision path." },
+  { t: "seo", q: "Does schema markup improve rankings?", a: "Schema isn't a ranking shortcut. Structured data helps search engines understand information on a page more explicitly and can support eligible rich results in some cases, but it shouldn't be treated as a magic ranking factor. We use schema as a clarity layer." },
+  { t: "seo", q: "Are meta titles and descriptions enough for SEO?", a: "No. Titles and descriptions matter but are only one part of the system. The visible content, headings, URL, internal links, structure, search intent and technical setup all need to communicate the same meaning; a good meta title can't fix a weak page." },
+  { t: "seo", q: "Should every FAQ use FAQ schema?", a: "No. FAQ content should be written because it helps users make better decisions, not because it promises a search enhancement. Where structured data is appropriate it should describe visible content accurately, but the primary purpose of an FAQ is clarity, trust and objection handling." },
+  { t: "seo", q: "Do Core Web Vitals matter for SEO?", a: "Yes, but they're not the whole strategy. Core Web Vitals measure loading performance, responsiveness and visual stability and support user experience and technical quality, but a fast page with weak content, unclear structure or poor search intent is still weak. Performance supports SEO; it doesn't replace strategy." },
+  { t: "seo", q: "Is a high PageSpeed score enough?", a: "No. A strong score is useful but doesn't guarantee organic visibility or business results. Search performance also depends on relevance, content quality, page structure, internal linking, local signals, authority and the competitive landscape. Speed matters most when the page also has purpose." },
+  { t: "seo", q: "What should SEO reporting include?", a: "It should explain what changed, why and what it means. Useful reporting may include indexed pages, search queries, impressions, clicks, page performance, technical issues, local visibility, service-page visibility and conversion paths. A report shouldn't hide behind charts; it should make the work understandable." },
+  { t: "seo", q: "Is more traffic always better?", a: "No. More traffic is only useful if it brings the right visitors to the right pages. A business doesn't need random visibility; it needs relevant visibility that can turn into trust, contact, booking, enquiry or sale. The goal is qualified organic growth, not traffic for its own sake." },
+  { t: "seo", q: "Why can SEO traffic increase without more leads?", a: "Because traffic and conversion are different problems. A page may attract visitors but fail to explain the offer, build trust, answer objections or guide users to the next step, which turns the SEO problem into a structure and conversion problem too. We connect SEO with page architecture, content clarity and business action." }
+];
+
 /* MRKX Assistant: rule-based chat widget. No LLM, no external calls except the optional handoff endpoint.
    Replies in English; Icelandic: UI labels, greeting and handoff flow only (needs native proofreading). */
 (function () {
@@ -567,6 +665,7 @@ var MRKX_SECTIONS = {
   }
   /* ---------- detailed service sections ---------- */
   var SEC = (typeof MRKX_SECTIONS !== "undefined") ? MRKX_SECTIONS : {};
+  var RT_MIN = 0.34, RT_FAQ = 0.5;
   var DETAIL_CUE = /\b(detail|details|detailed|in depth|in-depth|elaborate|explain|full description|more about|more info|more information|everything about|deep dive|tell me everything)\b/i;
   Object.keys(SEC).forEach(function (k) {
     SEC[k].items.forEach(function (x) { x._p = x.kw.map(function (p) { var t = toks(p); return { t: t, w: t.length === 1 ? 1.5 : Math.min(2 + 0.5 * (t.length - 2), 3.5) }; }); });
@@ -584,20 +683,88 @@ var MRKX_SECTIONS = {
     });
     return out;
   }
+  var SUMMARY = {
+    website: "A professional website is a complete digital system, not a brochure: structure, design, development, technical SEO foundations, performance, accessibility, analytics, integrations and long-term maintainability. Business Website projects start from " + KB.priceWeb + " plus VAT.",
+    seo: "We treat SEO as search infrastructure, not a ranking trick: technical foundation, page architecture, clear content, local relevance, structured data and measurement. We don't sell ranking promises. Search Foundation work starts from " + KB.priceSeo + " plus VAT.",
+    landing: "A landing page is built for one audience, one offer and one next step, with the message, proof, form and tracking planned together instead of the design first. Landing pages are priced per project.",
+    brand: "A brand system is more than a logo: it defines how a business looks, communicates and stays consistent across its website, social media, ads and future digital products. It's priced per project.",
+    automation: "We design automation as reliable workflow systems that start from your process, not from a tool: leads, CRM, onboarding, notifications and reporting, with error handling and human control where it matters. It's priced per project.",
+    app: "We treat a mobile app as a product system, not just screens: first we check whether an app is the right solution, then plan the core action, architecture, performance, privacy and store launch. App projects start from " + KB.priceApp + " plus VAT."
+  };
   function secOverview(key, prefix) {
     var d = SEC[key]; S.topic = key; S.lastMore = null;
+    var names = d.items.map(function (x) { return x.t; });
     var chips = d.items.slice(0, 8).map(function (x, i) { return { t: x.t, go: "sec:" + key + ":" + i }; });
     chips.push({ t: "Pricing", go: "pricing" });
-    return finish((prefix || "") + d.intro + " [" + d.name.charAt(0).toUpperCase() + d.name.slice(1) + " service](" + pathLink(d.url) + ")", chips, null, true);
+    var text = (prefix || "") + (SUMMARY[key] || d.intro) + "\n\nI can go into detail on: " + names.join(", ") + ". Tap a topic below, or just type your question. [" + d.name.charAt(0).toUpperCase() + d.name.slice(1) + " service](" + pathLink(d.url) + ")";
+    S.last = "sec";
+    return finish(text, chips, null, true);
   }
   function secAnswer(key, idx, prefix) {
     var d = SEC[key], x = d.items[idx]; S.topic = key; S.lastMore = null;
-    var chips = [], n = d.items.length;
-    for (var s = 1; s <= 2; s++) { var j = (idx + s) % n; chips.push({ t: d.items[j].t, go: "sec:" + key + ":" + j }); }
+    S.secSeen = S.secSeen || {}; (S.secSeen[key] = S.secSeen[key] || []);
+    if (S.secSeen[key].indexOf(idx) < 0) S.secSeen[key].push(idx);
+    var chips = [], n = d.items.length, seen = S.secSeen[key];
+    for (var s = 1; s < n && chips.length < 2; s++) { var j = (idx + s) % n; if (seen.indexOf(j) < 0) chips.push({ t: d.items[j].t, go: "sec:" + key + ":" + j }); }
     chips.push({ t: "All topics", go: "sec:" + key });
     chips.push({ t: "Book a consultation", go: "consultation" });
+    S.last = "sec";
     return finish((prefix || "") + x.a.replace(/\]\((\/[^)]*)\)/g, function (m, u) { return "](" + pathLink(u) + ")"; }), chips, null, true);
   }
+  function secNext(key, prefix) {
+    var d = SEC[key], seen = (S.secSeen && S.secSeen[key]) || [];
+    for (var i = 0; i < d.items.length; i++) if (seen.indexOf(i) < 0) return secAnswer(key, i, prefix);
+    return secOverview(key, prefix);
+  }
+
+  /* ---------- free-text retrieval over the FAQ and the service sections ---------- */
+  var STOP = {}; "a an the and or of to in on for with is are was be can could do does did how what why when where which who whom i you we it my your our me us this that these those there here at by from as about into than then so if not no yes any some more most much many very just also please tell give want need like would should will have has had get got let know".split(" ").forEach(function (w) { STOP[w] = 1; });
+  var DOCS = [];
+  (typeof MRKX_FAQ !== "undefined" ? MRKX_FAQ : []).forEach(function (f) { DOCS.push({ kind: "faq", topic: f.t, title: f.q, text: f.a, hi: f.q, lo: f.a }); });
+  Object.keys(SEC).forEach(function (k) { SEC[k].items.forEach(function (x, i) { DOCS.push({ kind: "sec", topic: k, idx: i, title: x.t, text: x.a, hi: x.t, mid: x.kw.join(" "), lo: x.a }); }); });
+  function content(s) { return toks(s).filter(function (t) { return t.length > 1 && !STOP[t]; }); }
+  var DF = {};
+  DOCS.forEach(function (d) {
+    d.th = {}; d.tl = {}; d.tm = {};
+    content(d.hi).forEach(function (t) { d.th[t] = 1; });
+    content(d.mid || "").forEach(function (t) { d.tm[t] = 1; });
+    content(d.lo).forEach(function (t) { d.tl[t] = 1; });
+    Object.keys(d.th).concat(Object.keys(d.tm), Object.keys(d.tl)).filter(function (t, i, a) { return a.indexOf(t) === i; }).forEach(function (t) { DF[t] = (DF[t] || 0) + 1; });
+  });
+  function idf(t) { return Math.log(1 + DOCS.length / (DF[t] || 0.5)); }
+  function retrieve(raw, msgTopic) {
+    var q = content(raw).filter(function (t, i, a) { return a.indexOf(t) === i; });
+    if (!q.length) return null;
+    var best = null, second = 0, total = 0;
+    q.forEach(function (t) { total += idf(t) * 3; });
+    DOCS.forEach(function (d) {
+      var sc = 0, mt = 0;
+      q.forEach(function (t) { if (d.th[t] || d.tm[t] || d.tl[t]) mt++; if (d.th[t]) sc += idf(t) * 3; else if (d.tm[t]) sc += idf(t) * 1.6; else if (d.tl[t]) sc += idf(t); });
+      if (!sc) return;
+      var bias = (d.topic === msgTopic || d.topic === S.topic) ? 1.35 : 1;
+      sc = sc * bias / total;
+      if (!best || sc > best.sc) { second = best ? best.sc : 0; best = { d: d, sc: sc, mt: mt }; } else if (sc > second) second = sc;
+    });
+    if (best) best.second = second;
+    return best;
+  }
+  function docAnswer(d, prefix) {
+    S.topic = d.topic; S.lastMore = null;
+    var i = DOCS.indexOf(d);
+    var related = DOCS.filter(function (x) { return x !== d && x.topic === d.topic && x.kind === "faq"; });
+    // related = the 2 FAQ questions that share most terms with this one
+    var mine = Object.keys(d.th).concat(Object.keys(d.tl));
+    related.sort(function (a, b) { return overlap(b, mine) - overlap(a, mine); });
+    var chips = related.slice(0, 2).map(function (x) { var t = x.title.replace(/\?$/, ""); return { t: t.length > 38 ? t.slice(0, 36).replace(/\s+\S*$/, "") + "..." : t, go: "doc:" + DOCS.indexOf(x) }; });
+    chips.push({ t: "All " + SEC[d.topic].name + " topics", go: "sec:" + d.topic });
+    chips.push({ t: "Book a consultation", go: "consultation" });
+    var text = (prefix || "") + d.text.replace(/\]\((\/[^)]*)\)/g, function (m, u) { return "](" + pathLink(u) + ")"; });
+    if (d.kind === "faq") text += " [" + SEC[d.topic].name.charAt(0).toUpperCase() + SEC[d.topic].name.slice(1) + " service](" + pathLink(SEC[d.topic].url) + ")";
+    if (d.kind === "sec") { S.secSeen = S.secSeen || {}; (S.secSeen[d.topic] = S.secSeen[d.topic] || []); if (S.secSeen[d.topic].indexOf(d.idx) < 0) S.secSeen[d.topic].push(d.idx); }
+    S.last = "sec";
+    return finish(text, chips, null, false);
+  }
+  function overlap(d, mine) { var n = 0; mine.forEach(function (t) { if (d.th[t] || d.tl[t] || d.tm[t]) n += idf(t); }); return n; }
 
   function topicOf(M) {
     var best = null, bs = 0;
@@ -988,8 +1155,9 @@ var MRKX_SECTIONS = {
     if (nm && !S.slots.name) { S.slots.name = nm[1].charAt(0).toUpperCase() + nm[1].slice(1); nameLine = T("thanksName", { name: S.slots.name }) + " "; }
 
     // 7. "tell me more"
-    if (/^(more|tell me more|go on|details|elaborate|and|continue|why|really|can you elaborate|more info|more information)$/.test(words(raw))) {
-      if (S.lastMore && S.topic && SEC[S.topic]) { S.lastMore = null; return secOverview(S.topic, nameLine); }
+    if (/^(more|tell me more|go on|details|more details?|more detail please|elaborate|and|continue|keep going|next|next one|why|really|can you elaborate|more info|more information|details please)$/.test(words(raw))) {
+      if (S.topic && SEC[S.topic] && S.last && /^(svc_|sec|doc)/.test(String(S.last))) { S.lastMore = null; return secNext(S.topic, nameLine); }
+      if (S.topic && SEC[S.topic] && S.lastMore) { S.lastMore = null; return secNext(S.topic, nameLine); }
       if (S.lastMore) { var mt = S.lastMore; S.lastMore = null; return finish(nameLine + mt, [{ t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }], null, true); }
       return say(nameLine + T("moreNone"), [{ t: "Services", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }]);
     }
@@ -1027,8 +1195,12 @@ var MRKX_SECTIONS = {
     var msgTopic0 = topicOf(M);
     var sec = bestSection(M, msgTopic0);
     var cue = DETAIL_CUE.test(raw), priceQ = /\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/i.test(raw) || /\banalysis\b/i.test(raw);
+    var rt0 = (!priceQ) ? retrieve(raw, msgTopic0) : null;
+    if (rt0 && rt0.d.kind === "faq" && rt0.sc >= RT_FAQ && rt0.mt >= 2 && !cue && (!best || best.it.kind === "faq" || best.it.kind === "topic")) { S.fails = 0; return docAnswer(rt0.d, nameLine); }
     if (sec && (cue || !best || best.it.kind === "topic" || sec.sc >= best.sc - 0.5) && !(priceQ && !(best && best.sc < sec.sc))) return secAnswer(sec.key, sec.idx, nameLine);
     if (cue && !priceQ && (msgTopic0 || S.topic) && SEC[msgTopic0 || S.topic] && (!best || best.it.kind === "topic" || best.sc < 3)) return secOverview(msgTopic0 || S.topic, nameLine);
+    var rt = (!priceQ || cue) ? retrieve(raw, msgTopic0) : null;
+    if (rt && rt.sc >= RT_MIN && rt.mt >= 2 && (!best || best.sc < 2.5 || best.it.kind === "topic") && words(raw).split(" ").length >= 2) { S.fails = 0; return docAnswer(rt.d, nameLine); }
     if (best && best.sc >= 1.5) {
       S.fails = 0;
       if (best.it.kind === "topic") S.topic = best.it.topic;
@@ -1070,6 +1242,7 @@ var MRKX_SECTIONS = {
     if (id === "flow:skip") return flowInput("__skip__");
     if (id === "flow:agree") return flowInput("__agree__");
     if (id === "flow:dupyes") { S.pending = null; S.flow = { type: "handoff", step: null, data: S.dupData || {} }; S.flow.data.noteAsked = false; return nextStep(); }
+    if (id.indexOf("doc:") === 0) { var dd = DOCS[parseInt(id.slice(4), 10)]; if (dd) return docAnswer(dd, opt.prefix || ""); }
     if (id.indexOf("sec:") === 0) {
       var sp = id.split(":");
       if (SEC[sp[1]]) return sp.length > 2 ? secAnswer(sp[1], parseInt(sp[2], 10), opt.prefix || "") : secOverview(sp[1], opt.prefix || "");
