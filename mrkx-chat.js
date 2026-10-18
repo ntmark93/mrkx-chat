@@ -895,6 +895,27 @@ var MRKX_DISC = {
     automation: "We design automation as reliable workflow systems that start from your process, not from a tool: leads, CRM, onboarding, notifications and reporting, with error handling and human control where it matters. It's priced per project.",
     app: "We treat a mobile app as a product system, not just screens: first we check whether an app is the right solution, then plan the core action, architecture, performance, privacy and store launch. App projects start from " + KB.priceApp + " plus VAT."
   };
+  /* ---------- phone: long answers are split into a short first bubble + "Tell me more" ---------- */
+  function splitPhone(text) {
+    var isPhone = false;
+    try { isPhone = !!(window.matchMedia && window.matchMedia(PHONE_Q).matches); } catch (e) {}
+    S.cont = null;
+    if (!isPhone || text.length < 380) return { head: text, chip: null };
+    var parts = text.split(/(?<=[.!?])\s+(?=[A-Z0-9\[])/), head = "", i = 0;
+    while (i < parts.length - 1 && (i < 2 || head.length < 150) && head.length + parts[i].length < 330) { head += (head ? " " : "") + parts[i]; i++; }
+    var rest = parts.slice(i).join(" ");
+    if (!head || rest.length < 120) return { head: text, chip: null };
+    S.cont = rest; S.keepCont = 1;
+    return { head: head, chip: { t: "Tell me more", go: "cont" } };
+  }
+  function contAnswer(prefix) {
+    var t = S.cont; S.cont = null; S.keepCont = 0;
+    var chips = [];
+    if (S.topic && SEC[S.topic]) { var seen = (S.secSeen && S.secSeen[S.topic]) || [], n = SEC[S.topic].items.length; for (var j = 0; j < n && chips.length < 1; j++) if (seen.indexOf(j) < 0) chips.push({ t: SEC[S.topic].items[j].t, go: "sec:" + S.topic + ":" + j }); chips.push({ t: "All topics", go: "sec:" + S.topic }); }
+    chips.push({ t: "Book a consultation", go: "consultation" });
+    S.last = "sec";
+    return finish((prefix || "") + t, chips, null, true);
+  }
   function secOverview(key, prefix) {
     var d = SEC[key]; S.topic = key; S.lastMore = null;
     var names = d.items.map(function (x) { return x.t; });
@@ -913,7 +934,9 @@ var MRKX_DISC = {
     chips.push({ t: "All topics", go: "sec:" + key });
     chips.push({ t: "Book a consultation", go: "consultation" });
     S.last = "sec";
-    return discAfter(finish((prefix || "") + x.a.replace(/\]\((\/[^)]*)\)/g, function (m, u) { return "](" + pathLink(u) + ")"; }), chips, null, true), key);
+    var t0 = (prefix || "") + x.a.replace(/\]\((\/[^)]*)\)/g, function (m, u) { return "](" + pathLink(u) + ")"; });
+    var sp = splitPhone(t0); if (sp.chip) chips.unshift(sp.chip);
+    return sp.chip ? finish(sp.head, chips, null, true) : discAfter(finish(sp.head, chips, null, true), key);
   }
   function secNext(key, prefix) {
     var d = SEC[key], seen = (S.secSeen && S.secSeen[key]) || [];
@@ -966,7 +989,8 @@ var MRKX_DISC = {
     if (d.kind === "faq") text += " [" + SEC[d.topic].name.charAt(0).toUpperCase() + SEC[d.topic].name.slice(1) + " service](" + pathLink(SEC[d.topic].url) + ")";
     if (d.kind === "sec") { S.secSeen = S.secSeen || {}; (S.secSeen[d.topic] = S.secSeen[d.topic] || []); if (S.secSeen[d.topic].indexOf(d.idx) < 0) S.secSeen[d.topic].push(d.idx); }
     S.last = "sec";
-    return discAfter(finish(text, chips, null, false), d.topic);
+    var sp2 = splitPhone(text); if (sp2.chip) chips.unshift(sp2.chip);
+    return sp2.chip ? finish(sp2.head, chips, null, false) : discAfter(finish(sp2.head, chips, null, false), d.topic);
   }
   function overlap(d, mine) { var n = 0; mine.forEach(function (t) { if (d.th[t] || d.tl[t] || d.tm[t]) n += idf(t); }); return n; }
 
@@ -1359,6 +1383,7 @@ var MRKX_DISC = {
     if (nm && !S.slots.name) { S.slots.name = nm[1].charAt(0).toUpperCase() + nm[1].slice(1); nameLine = T("thanksName", { name: S.slots.name }) + " "; }
 
     // 7. "tell me more"
+    if (S.cont && /^(more|tell me more|go on|details|more details?|elaborate|continue|keep going|more info|more information|yes|yes please|ok|okay|sure)$/.test(words(raw))) return contAnswer(nameLine);
     if (/^(more|tell me more|go on|details|more details?|more detail please|elaborate|and|continue|keep going|next|next one|why|really|can you elaborate|more info|more information|details please)$/.test(words(raw))) {
       if (S.topic && SEC[S.topic] && S.last && /^(svc_|sec|doc)/.test(String(S.last))) { S.lastMore = null; return secNext(S.topic, nameLine); }
       if (S.topic && SEC[S.topic] && S.lastMore) { S.lastMore = null; return secNext(S.topic, nameLine); }
@@ -1431,6 +1456,7 @@ var MRKX_DISC = {
 
   /* route by intent id or action id */
   function route(id, opt) {
+    if (id === "cont") return S.cont ? contAnswer("") : say(T("moreNone"), [{ t: "Services", go: "services" }, { t: "Pricing", go: "pricing" }]);
     opt = opt || {};
     if (id.indexOf("q:") === 0) {
       var parts = id.split(":");
@@ -1478,6 +1504,7 @@ var MRKX_DISC = {
   /* finish an answer: set memory, pending, qualification, CTA */
   function finish(text, chips, it, noCount) {
     var id = it && it.id;
+    if (S.keepCont) S.keepCont = 0; else S.cont = null;
     if (it && it.topic) S.topic = it.topic;
     if (it && it.more) S.lastMore = it.more; else if (!noCount) S.lastMore = null;
     S.pending = it && it.pending ? it.pending : null;
