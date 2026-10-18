@@ -42,32 +42,32 @@ var MRKX_KB = (function () {
     { id: "svc_website", kind: "topic", topic: "website", kw: ["website", "web site", "web design", "web development", "business website", "company website", "build a site", "new site", "webpage", "homepage", "site design", "redesign"],
       a: ["Our website work covers structure, design, development and the technical SEO foundations: page hierarchy, responsive build, performance, accessibility basics, analytics and integrations. Business Website projects start from " + P_WEB + " plus VAT. [Website service](/services/websites)"],
       more: "We plan the information architecture before the visual design: page hierarchy, navigation, URL structure, service-page planning and internal linking. The build covers a responsive front end tested across devices and browsers, a content structure that is easy to edit without breaking the design, technical SEO foundations (metadata, headings, sitemap, structured data), performance and layout stability, accessibility basics, safe form handling, GA4 and Search Console setup, and integrations such as CRM, email, booking or payments. We also plan for growth with reusable templates and multilingual readiness, and check forms, indexing, analytics events and links after launch. [Website service](/services/websites)",
-      chips: [{ t: "More detail", go: "more" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "How do you work?", go: "process" }] },
+      chips: [{ t: "More detail", go: "sec:website" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "How do you work?", go: "process" }] },
 
     { id: "svc_seo", kind: "topic", topic: "seo", kw: ["seo", "search engine", "google ranking", "rank on google", "found on google", "search visibility", "search foundation", "organic traffic", "keywords"],
       a: ["Our SEO strategy work covers page structure, relevant content, technical foundations, metadata, internal linking and local search readiness. Our Search Foundation work starts from " + P_SEO + " plus VAT. [SEO service](/services/seo)"],
       more: "We treat SEO as part of your site's architecture, not a checklist. It starts with the technical foundation (crawling, indexing, sitemap, canonicals, redirects, structured data, speed), then search intent and page architecture, so each important service has a page with a clear purpose. We add content clarity, metadata, local SEO for Icelandic businesses (website, Google Business Profile, consistent details) and measurement through Search Console and analytics. We also keep the site clear for AI search, without shortcuts. We don't promise rankings, because search engines decide those. [SEO service](/services/seo)",
-      chips: [{ t: "More detail", go: "more" }, { t: "Pricing", go: "pricing" }, { t: "How long does SEO take?", go: "seo_time" }, { t: "Free analysis", go: "free_analysis" }] },
+      chips: [{ t: "More detail", go: "sec:seo" }, { t: "Pricing", go: "pricing" }, { t: "How long does SEO take?", go: "seo_time" }, { t: "Free analysis", go: "free_analysis" }] },
 
     { id: "svc_landing", kind: "topic", topic: "landing", kw: ["landing page", "landing pages", "campaign page", "ad page", "conversion page", "lead page", "funnel"],
       a: ["A landing page is a focused page for one campaign, audience or offer, built to turn interest into enquiries. Copy, structure and tracking are planned together instead of adding text after the design. Landing pages are priced per project, so it's best to talk it through in a short consultation. [Services](/services)"],
       more: "We start from the decision the visitor has to make, not from a template. That means clarifying the audience and campaign, the offer, the message and the proof, then the design, the form and the tracking. A typical project can include strategy, conversion copy, wireframes and custom design, responsive development, form and email setup, CRM or booking connections, analytics and testing before launch. We don't claim a universal best headline or layout. We look for the real bottleneck first. [Landing page service](/services/landing-page)",
-      chips: [{ t: "More detail", go: "more" }, { t: "Landing page vs website", go: "landing_vs_site" }, { t: "Book a consultation", go: "consultation" }] },
+      chips: [{ t: "More detail", go: "sec:landing" }, { t: "Landing page vs website", go: "landing_vs_site" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "svc_brand", kind: "topic", topic: "brand", kw: ["brand", "branding", "brand system", "logo", "visual identity", "brand identity", "brand design"],
       a: ["A brand system is more than a logo. It defines how your identity works across visuals, messaging, your website and future assets, so everything feels consistent and trustworthy. It's priced per project. [Services](/services)"],
       more: "A brand system can include positioning, logo usage rules, colour and typography systems, spacing and layout principles, image and icon direction, tone of voice, and rules for your website, landing pages and social media. We also cover the technical layer: accessible colour combinations, responsive type, export-ready assets, a Figma-ready structure and usage documentation, so the system actually works after handoff. The exact scope depends on your business and what needs to be supported. [Brand system service](/services/brand-system)",
-      chips: [{ t: "More detail", go: "more" }, { t: "Brand system vs logo", go: "brand_vs_logo" }, { t: "Book a consultation", go: "consultation" }] },
+      chips: [{ t: "More detail", go: "sec:brand" }, { t: "Brand system vs logo", go: "brand_vs_logo" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "svc_automation", kind: "topic", topic: "automation", kw: ["automation", "automate", "automations", "workflow", "crm", "zapier", "n8n", "make.com", "business automation"],
       a: ["We build automation for repetitive, rule-based work such as lead handling, CRM updates, follow-up emails, reporting, notifications and booking flows. Work that needs human judgment is supported rather than replaced. It's priced per project. [Services](/services)"],
       more: "We start from the workflow, not from a tool: where information enters, where it needs to go and who approves what. Typical areas are lead handling and CRM updates, website form workflows, client onboarding, follow-up emails, internal tasks and notifications, bookings, reporting and document handling. A reliable system also has validation, duplicate handling, retries, error alerts, logs and clear ownership, so a failure never goes unnoticed. AI is used only where interpretation adds value, with a human approving the risky steps. [Automation service](/services/automation-systems)",
-      chips: [{ t: "More detail", go: "more" }, { t: "What can be automated?", go: "automation_what" }, { t: "Book a consultation", go: "consultation" }] },
+      chips: [{ t: "More detail", go: "sec:automation" }, { t: "What can be automated?", go: "automation_what" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "svc_app", kind: "topic", topic: "app", kw: ["mobile app", "mobile apps", "app", "apps", "app development", "ios app", "android app", "build an app", "build apps", "an app", "application", "app store", "google play", "native app", "smartphone app", "mobile application"],
       a: ["We design and develop mobile apps, but we first check whether an app is the right solution at all. It makes sense when users need repeat access, accounts, offline use or push notifications. App projects start from " + P_APP + " plus VAT, and the final price depends on scope. [Services](/services)"],
       more: "We start with the product decision: who the app is for, the one core action the first version must prove, and whether an app is the right format at all. Then we plan the structure behind the screens: accounts, data, APIs, permissions, error and loading states, security and analytics. We also treat performance, privacy and permissions as part of the design, choose native or cross-platform based on what the product needs, and prepare for App Store and Google Play review. After launch, updates and maintenance are planned in from the beginning. [Mobile app service](/services/mobile-app-design-development)",
-      chips: [{ t: "More detail", go: "more" }, { t: "Do I need an app?", go: "app_need" }, { t: "Book a consultation", go: "consultation" }] },
+      chips: [{ t: "More detail", go: "sec:app" }, { t: "Do I need an app?", go: "app_need" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "pricing", kind: "question", kw: ["price", "prices", "pricing", "cost", "costs", "how much", "quote", "budget", "rate", "rates", "fee", "fees", "vat", "charge", "package", "packages", "estimate", "starting from", "afford"],
       a: [] /* built in bot.js using topic */ },
@@ -257,6 +257,160 @@ var MRKX_KB = (function () {
            fallbackFirst: fallbackFirst, fallbackSecond: fallbackSecond, bizMap: bizMap };
 })();
 
+/* MRKX Assistant: detailed service knowledge, one section per topic of each service page.
+   Facts only from mrkxlabs.com/services/*. No rankings, results or timelines are promised anywhere in here. */
+var MRKX_SECTIONS = {
+  website: {
+    name: "website", url: "/services/websites",
+    intro: "Our website work covers the full build, from structure to measurement. Pick a topic and I'll go into detail:",
+    items: [
+      { t: "What's included", kw: ["included", "include", "includes", "what is included", "scope", "deliverables", "what do you build", "what do i get", "everything"],
+        a: "A website project covers far more than visual design. It includes information architecture, a responsive front end, a structured and editable content setup, technical SEO foundations, performance, accessibility basics, secure form handling, analytics and measurement, integrations with your business tools, and maintenance and scalability planning. Choose any of these and I'll explain how we handle it. The exact scope depends on pages, languages, integrations and content. [Website service](/services/websites)" },
+      { t: "Structure", kw: ["information architecture", "site structure", "website structure", "page structure", "page hierarchy", "navigation", "url structure", "service pages", "sitemap planning", "plan the pages"],
+        a: "Every website project starts with information architecture, before any visual design. We define which pages are needed, how they relate, how the navigation works and how visitors move from general to specific content. That covers page hierarchy, URL structure, service-page planning, content grouping and internal linking. For a service business, each offer gets its own page with more depth and more focused SEO targeting, instead of one overloaded homepage. A planned structure also keeps the site from turning messy as pages are added later." },
+      { t: "Design & build", kw: ["responsive", "front end", "frontend", "browser", "safari", "tablet", "mobile friendly", "device", "devices", "how is it built", "development"],
+        a: "The front end is built from consistent layout rules, reusable components, typography systems and clear interface states (hover, focus, form errors), not random sections placed by hand. Responsive means more than shrinking the desktop view: we think about content order, navigation, button placement, forms and readability separately for mobile, tablet and desktop, including mouse, keyboard and touch. We also check browser differences across Safari, Chrome, Firefox, iOS and Android, so the site behaves the same in real use and not only in a preview." },
+      { t: "Editing & content", kw: ["cms", "content management", "editable", "edit the content", "update content", "manage content", "content structure", "content types", "editor"],
+        a: "A business website should be easy to update without becoming unstable. We organise recurring content (services, portfolio items, case studies, FAQs, blog posts, legal pages) into structured content types, so new pages stay consistent and nothing has to be copied by hand. You get practical control over the content you really need to manage, while the structure, design consistency, SEO settings and technical setup stay protected. Good content structure also helps SEO and makes future growth easier." },
+      { t: "Technical SEO", kw: ["technical seo", "seo foundation", "seo foundations", "metadata", "meta description", "title tag", "heading", "headings", "canonical", "sitemap", "structured data", "indexing"],
+        a: "SEO foundations are part of the build from day one, not an afterthought. That includes crawlable and indexable pages, clean title tags and meta descriptions, a logical heading hierarchy, canonical handling, an XML sitemap, structured data where it fits, internal links and a clear URL structure. This gives the site a strong technical base. It doesn't replace ongoing SEO strategy, content production or link building, and it doesn't promise rankings. [SEO service](/services/seo)" },
+      { t: "Performance", kw: ["performance", "page speed", "site speed", "fast", "speed", "core web vitals", "image optimization", "layout stability", "loading", "slow"],
+        a: "Performance is part of quality: how quickly content appears, how stable the page feels while loading and how responsive it is. We handle image optimisation, script control, third-party embeds, loading behaviour, layout stability, responsive media and Core Web Vitals awareness. Many sites are slow not because of the design but because too many tools load at once (analytics, pixels, cookie banners, chat widgets, maps, video). Each script should have a purpose. The goal is not a perfect test score but a site that feels fast and stable in real conditions." },
+      { t: "Accessibility", kw: ["accessibility", "accessible", "screen reader", "contrast", "wcag", "alt text", "keyboard navigation", "disability"],
+        a: "We build with accessibility principles from the start: semantic headings, readable contrast, meaningful alt text, clear link text, labelled form fields, keyboard-aware interaction, visible focus states and responsive readability. The aim is to avoid common mistakes such as fake headings, unlabelled forms, missing focus states and low contrast. We're careful about one thing: building with accessibility in mind does not mean claiming full legal compliance, which would need a dedicated accessibility audit." },
+      { t: "Security & forms", kw: ["security", "secure", "spam", "form handling", "contact form", "access control", "reliability", "permissions", "hacked"],
+        a: "Even a standard business website has parts that need care: contact forms, editor access, tracking scripts, embeds and integrations. We reduce avoidable risk with safer form handling (validation, spam reduction, reliable notifications), controlled access so editors can't accidentally damage structure or SEO settings, and careful use of third-party scripts, since each one is a dependency. If a form connects to email, a CRM or a spreadsheet, we test the whole flow. We handle this practically; it isn't enterprise cybersecurity." },
+      { t: "Analytics", kw: ["analytics", "ga4", "google analytics", "search console", "tracking", "measurement", "measure", "conversion tracking", "events"],
+        a: "A website should be measurable from launch. We can set up GA4, connect Search Console and track the actions that matter: contact form submissions, phone and email clicks, bookings, quote requests, service-page visits and key CTA clicks. We deliberately don't track everything blindly; we define the meaningful actions first. Search Console shows which pages and queries get impressions and whether there are indexing problems, which matters especially after launching new service pages." },
+      { t: "Integrations", kw: ["integration", "integrations", "crm", "booking", "payment", "payments", "api", "email notification", "connect the website", "workflow"],
+        a: "A website often has to connect to the systems behind the business: forms, CRM tools, email notifications, booking and payment systems, spreadsheets, calendars and external APIs. We plan these as part of the website system, not as small add-ons, because a poorly built form flow can lose leads silently. We also stay realistic about third-party limits such as authentication, limited documentation and unsupported workflows, and explain them before promising an automated process. [Automation service](/services/automation-systems)" },
+      { t: "After launch", kw: ["maintenance", "scalability", "scalable", "multilingual", "post launch", "grow", "templates", "qa", "future updates"],
+        a: "We build for change: reusable templates for new services, case studies or localised pages, editable content, documentation and multilingual readiness (localised URLs, language-specific metadata, translated navigation). After launch we check forms, responsive behaviour, indexing status, analytics events, broken links, metadata, speed issues and redirects. Launch is when the site enters real use, not when quality control ends." }
+    ]
+  },
+
+  seo: {
+    name: "SEO", url: "/services/seo",
+    intro: "We treat SEO as search infrastructure, not a ranking trick. Pick a topic and I'll go into detail:",
+    items: [
+      { t: "Technical foundation", kw: ["technical seo", "technical foundation", "crawl", "crawling", "indexing", "index", "robots", "noindex", "canonical", "redirect", "redirects", "sitemap", "search console"],
+        a: "Before content can perform, the site must be accessible. Technical SEO makes sure search engines can crawl and render your pages, understand the hierarchy and index the right URLs. We review sitemap logic, robots.txt, noindex settings, canonical URLs, redirects, internal links, heading hierarchy, mobile rendering, page speed, JavaScript behaviour, structured data and Search Console validation. A polished site that search engines can't crawl or index correctly is a hidden website, so we check the infrastructure before treating content as the fix." },
+      { t: "Page architecture", kw: ["search intent", "page architecture", "site structure", "service page", "service pages", "page structure", "keywords", "keyword"],
+        a: "Every SEO page needs a reason to exist. A homepage can't answer every search, and a thin services page rarely earns enough trust from a serious buyer. So each important service gets a clear search purpose, a defined audience, a logical place in the site and a path to the next step. We don't start with keywords alone; we build around the questions a real customer asks before they trust, compare, contact or buy." },
+      { t: "Content", kw: ["content", "copy", "copywriting", "blog", "blog posts", "write", "writing", "articles"],
+        a: "We build content around clarity, not volume. Strong SEO content is specific, useful and grounded in real decisions: it explains what matters, where mistakes happen and how a better system works, rather than repeating a keyword. For service businesses it should show that you understand the problem, answer objections and guide the visitor to the next step. The goal is to make each page easier for search engines to interpret and easier for customers to trust." },
+      { t: "AI search", kw: ["ai search", "ai overview", "ai overviews", "chatgpt", "generative", "llm", "ai seo", "geo", "aeo"],
+        a: "AI search doesn't remove the need for SEO; it raises the standard. We don't chase AI-search hacks, empty acronyms or artificial mention campaigns, which may disappear with the next update. We focus on the fundamentals that make a business easy to understand for search engines and AI systems alike: accessible pages, structured information, clear service definitions, helpful answers, consistent business details and content with real substance. The goal is to make the business clear enough to be interpreted correctly." },
+      { t: "Local SEO", kw: ["local seo", "local search", "google business profile", "google maps", "maps", "near me", "reviews", "icelandic business", "iceland"],
+        a: "For local businesses, SEO is also about being understood in a specific market. Local SEO connects your website, Google Business Profile, service areas, categories, reviews, contact details, structured data and location relevance into one consistent presence. Local customers often search with immediate intent: who provides this, where, and can I trust them. Many Icelandic businesses have incomplete profiles or unclear service pages, so a clearer structure can be a real advantage. We build local SEO around clarity, consistency and trust, not just map visibility." },
+      { t: "Structured data & metadata", kw: ["structured data", "schema", "schema markup", "metadata", "meta description", "title tag", "titles", "rich results", "json ld"],
+        a: "Schema is a clarity layer, not a ranking shortcut. Structured data helps machines interpret organisation details, local business information, services, pages, breadcrumbs and FAQs where appropriate. Metadata matters too, but isn't the whole strategy: the title tag, meta description, heading, URL and visible content should all communicate the same core meaning. We align them so every page sends a clear signal about what it covers, who it's for and what to do next." },
+      { t: "Performance", kw: ["performance", "page speed", "site speed", "core web vitals", "fast", "speed", "slow"],
+        a: "Performance supports SEO, but speed alone is not a strategy. A fast page is valuable because it improves access, usability and conversion; a fast page with weak content is still weak. We treat performance as part of the larger system: pages that load reliably, stay stable, work across devices and support the visitor's next step, not just a better score." },
+      { t: "Measurement", kw: ["measurement", "measure", "report", "reports", "reporting", "analytics", "accountability", "traffic", "results", "track"],
+        a: "SEO shouldn't hide behind vague monthly reports. You should understand what was fixed, what improved, what is still weak and how it connects to business outcomes. We look at measurable signals: indexed pages, search queries, impressions, clicks, technical issues, page performance, service-page visibility, local presence and conversion paths. Traffic alone isn't the goal; the question is whether the right searches bring the right visitors to the right pages, and whether they can act." },
+      { t: "What the work includes", kw: ["what is included", "what does it include", "scope", "deliverables", "what do you do", "approach", "process", "how do you work", "seo review"],
+        a: "Our SEO work can include a technical SEO review, site structure improvement, service-page planning, metadata optimisation, structured data, local SEO alignment, Search Console review, performance checks, internal linking, content restructuring and analytics visibility. Each part has a purpose: technical SEO makes the site accessible, content structure makes the business understandable, local SEO makes it relevant in its market, and measurement makes the work accountable. We don't sell ranking promises; we build the conditions that make visibility possible and measurable. [SEO service](/services/seo)" }
+    ]
+  },
+
+  landing: {
+    name: "landing page", url: "/services/landing-page",
+    intro: "A landing page is built for one audience, one offer and one next step. Pick a topic and I'll go into detail:",
+    items: [
+      { t: "Why pages fail", kw: ["why landing pages fail", "fail", "not converting", "low conversion", "underperform", "problems", "mistakes"],
+        a: "Landing pages rarely fail because of one button or colour. They fail because the decision path is unclear. Typical causes: the page doesn't match the campaign message that brought the visitor, it talks about the company instead of the customer, the offer is hard to understand, claims come without evidence, too many actions compete for attention, the form asks too much or too little, or the page goes live without reliable measurement. Design alone can't compensate for an undefined offer." },
+      { t: "Audience & offer", kw: ["audience", "offer", "campaign", "traffic source", "strategy", "research", "who is it for"],
+        a: "Before any layout, we clarify who the page is for and why they arrive: the audience, traffic source, level of awareness, campaign message, the problem or desired outcome and the action the campaign should generate. Someone coming from a high-intent Google search needs a different experience from someone discovering you on social media. We also help sharpen the offer itself: what the customer gets, why it's relevant, how it differs from alternatives, what evidence supports it and what could stop the visitor from acting." },
+      { t: "Messaging & copy", kw: ["copy", "copywriting", "messaging", "headline", "message", "conversion copy", "text", "wording"],
+        a: "The page is structured around the questions a potential customer needs answered before acting: am I in the right place, what exactly is offered, what outcome can it create, how does it work, why trust you, how is it different, what happens after I respond. The goal isn't to put every piece of information on the page; it's to remove the important uncertainties that stop the right visitor from taking the next step. Copy starts from the customer's problem or goal, with your business as the credible way forward." },
+      { t: "Design & UX", kw: ["design", "ux", "user experience", "visual hierarchy", "layout", "wireframe", "mobile", "hierarchy"],
+        a: "The design supports the decision path. Typography, spacing, imagery, contrast, content order, proof placement and call-to-action position are used to control attention and make the most important information hard to miss; the aim is not to decorate the offer. We design mobile separately instead of shrinking the desktop version, looking at content order, tap targets, CTA visibility, form behaviour and performance on small screens." },
+      { t: "Trust & proof", kw: ["trust", "proof", "evidence", "testimonials", "reviews", "case study", "case studies", "credibility", "social proof"],
+        a: "Words like premium, trusted and results-driven are easy to publish; the real question is whether the visitor has a reason to believe them. Depending on the project we use testimonials, case studies, client logos, reviews, project outcomes, screenshots, demonstrations, credentials, process explanations or examples of completed work. Different claims create different doubts, so evidence is placed where the uncertainty occurs, not added as an afterthought at the bottom of the page." },
+      { t: "Forms & conversion", kw: ["form", "forms", "cta", "call to action", "button", "booking", "lead form", "conversion mechanics", "submission"],
+        a: "We define how the visitor moves from interest to action: the primary call to action, button language, CTA placement, form length, required and optional fields, qualification logic, booking steps, confirmation messages and what happens after submission. A short form may raise volume but lower quality, and a long one adds friction, so the right choice depends on the offer, the visitor's intent and your sales process. Every field should have a purpose, and the form must handle errors, confirm success and send the data to the right place." },
+      { t: "Tracking", kw: ["tracking", "analytics", "measurement", "measure", "conversion tracking", "events", "ads", "lead quality"],
+        a: "Measurement is planned before the page gets campaign traffic. Depending on the project we can track primary CTA clicks, form starts and submissions, phone calls, bookings, downloads, purchases and advertising conversions. Where the wider system allows it, we also look at lead quality and downstream outcomes, not just the number of submissions. Without dependable measurement, optimisation becomes guesswork." },
+      { t: "What a project includes", kw: ["included", "include", "includes", "what is included", "scope", "deliverables", "what do i get", "project"],
+        a: "The exact scope depends on the campaign, your assets and existing systems. A professional landing-page project can include strategy and research, messaging and copy (value proposition, headline, proof structure, FAQ, form microcopy), UX and design (information architecture, wireframe, custom design, responsive layout, trust placement), development and integrations (performance, accessible forms, email notifications, CRM, booking, payment, analytics) and testing before launch (forms, conversion events, browsers, error states, integrations). [Landing page service](/services/landing-page)" },
+      { t: "Systems behind it", kw: ["crm", "automation", "email", "integration", "integrations", "follow up", "notifications", "systems behind"],
+        a: "A landing page is only as strong as the system behind it. It can lose opportunities if notifications fail, an enquiry goes to the wrong person, the automated reply breaks, the CRM doesn't record the lead, the business responds too slowly or nobody can tell which campaign produced a result. Depending on the project we can connect the page with email systems, CRM platforms, booking tools, payment providers, spreadsheets, advertising platforms, analytics or custom automation workflows. [Automation service](/services/automation-systems)" },
+      { t: "Testing & optimisation", kw: ["testing", "a b test", "ab test", "optimization", "optimisation", "improve", "cro", "experiment"],
+        a: "There's no universal best headline, page length, button colour or form structure, so optimisation starts by finding the real bottleneck: traffic quality, campaign targeting, message mismatch, weak positioning, thin proof, unclear copy, form friction, technical performance, unreliable tracking or poor follow-up. When traffic is high enough we test variations against a defined hypothesis; when it isn't, we improve through campaign analysis, user feedback, usability review, form diagnostics and controlled sequential changes. We don't call a variation a winner based on a handful of visitors." }
+    ]
+  },
+
+  brand: {
+    name: "brand system", url: "/services/brand-system",
+    intro: "A brand system defines how a business looks, communicates and stays consistent. Pick a topic and I'll go into detail:",
+    items: [
+      { t: "Brand system vs logo", kw: ["logo", "brand vs logo", "more than a logo", "difference", "what is a brand system"],
+        a: "A logo is a visual mark; a brand system defines how that identity works in real situations. A logo alone doesn't explain how a website should look, how typography scales, how colours behave on buttons, how content should sound or how future assets get made. That's where brands start to break: the logo looks good in isolation, but the business feels inconsistent across its website, social media, ads, documents and email. A brand system turns visual identity into a usable operating structure." },
+      { t: "What it includes", kw: ["include", "includes", "included", "what is included", "contain", "elements", "components", "what do i get", "deliverables", "receive"],
+        a: "A brand system can include positioning and identity direction, logo usage rules, a colour system with functional logic, a typography hierarchy with responsive direction, layout and spacing principles, image and icon direction, tone of voice, social media and marketing asset structure, website and landing-page visual rules, accessibility and contrast considerations, export-ready assets, a Figma-ready structure and usage documentation. The value isn't the number of assets but how clearly they work together; the exact scope depends on your business and current brand. [Brand system service](/services/brand-system)" },
+      { t: "Fragmented branding", kw: ["inconsistent", "fragmented", "consistency", "consistent", "drift", "different people", "freelancers"],
+        a: "Most brand problems show up after the brand starts being used. One person makes a social post, another edits a web section, a freelancer designs an ad, a developer builds a page, each making small visual decisions without a shared system. Over time colours shift, fonts become inconsistent, layouts lose structure and the tone changes with whoever writes. Every new asset then takes longer and every campaign risks weakening the identity. A brand system gives future decisions a clear reference point." },
+      { t: "Digital & technical layer", kw: ["digital", "technical", "tokens", "responsive", "figma", "design tokens", "typography scale", "accessibility", "contrast", "website"],
+        a: "Modern branding has a technical layer. A digital brand system should work across websites, mobile interfaces, responsive layouts, SEO content structures and campaign pages. That can include structured colour logic, typography scales, responsive spacing, reusable layout rules, interface-ready components, accessibility-safe colour combinations, export-ready assets and documentation that supports implementation. For more advanced systems, decisions can become tokens and variables so colours, sizes, spacing and radius stay consistent between design files and code. This is what separates a usable system from a static brand board." },
+      { t: "Details that matter", kw: ["favicon", "details", "small screens", "mobile", "buttons", "dark", "contrast", "fonts", "font"],
+        a: "Small brand details have large consequences. A logo that works on a slide may fail as a favicon; a premium font may load badly on a website; a beautiful palette may fail accessibility for text or buttons; a heading style may be unreadable on mobile. We consider these before they become problems and define how the brand behaves on small screens, in dark sections, inside forms, on call-to-action buttons, in navigation, in social templates and on content-heavy pages." },
+      { t: "Guidelines & handoff", kw: ["guidelines", "handoff", "hand off", "brand guidelines", "documentation", "pdf", "usage", "assets"],
+        a: "Guidelines are useful but aren't the whole system. A PDF can explain rules without guaranteeing they're followed: files get lost, people use outdated assets and contractors make assumptions. So we organise the system practically, with a clear file structure, usable assets, real examples, digital-ready formats and a defined hierarchy that makes correct usage easier than incorrect usage. A brand system shouldn't be created only to be approved; it should be created to be used." },
+      { t: "Our approach", kw: ["approach", "process", "how do you work", "different", "why mrkx", "infrastructure", "strategy"],
+        a: "We treat branding as digital business infrastructure, not decoration. Before designing, we look at your business, positioning, audience, services, digital touchpoints and the role the brand plays across the customer journey. Then we build a system that connects identity with execution, so the brand isn't designed separately from the website, content, SEO structure, mobile experience or future marketing. Colours, typography, layout rules and voice are tested against real use: buttons, service pages, mobile screens, CTAs and emails." }
+    ]
+  },
+
+  automation: {
+    name: "automation", url: "/services/automation-systems",
+    intro: "We design automation as workflow systems, starting from your process and not from a tool. Pick a topic and I'll go into detail:",
+    items: [
+      { t: "What we automate", kw: ["what can be automated", "what can you automate", "areas", "examples", "use cases", "tasks", "cover", "covers"],
+        a: "We can help automate repeated operational steps that slow teams down or make follow-up inconsistent: lead capture and routing, CRM updates, website form workflows, booking and appointment processes, client onboarding, email follow-up sequences, internal notifications, task creation, spreadsheet and database synchronisation, reporting, document handling, AI-assisted classification, customer request summaries and repetitive admin. The best opportunities are usually things your business repeats every day, every week or every time a new customer arrives." },
+      { t: "Leads & CRM", kw: ["lead", "leads", "crm", "lead handling", "follow up", "qualification", "pipeline"],
+        a: "New leads can be captured, categorised, stored, assigned and followed up automatically. That can include form submissions, lead-source tracking, CRM updates, internal notifications, follow-up reminders, qualification logic and a structured handoff to the right person. Instead of manually checking where a lead came from and what happens next, the system creates a cleaner first-response process." },
+      { t: "Client onboarding", kw: ["onboarding", "client onboarding", "welcome", "new client", "customer onboarding"],
+        a: "Onboarding often repeats the same steps: collecting information, creating folders, sending welcome emails, assigning tasks, scheduling meetings, preparing documents and updating internal systems. Automation can turn that into a consistent workflow. The goal isn't to remove the personal relationship; it's to remove the repetitive administration around it." },
+      { t: "Tasks & notifications", kw: ["tasks", "task", "notifications", "notification", "alerts", "internal", "project board", "slack"],
+        a: "Small operational delays often happen because the right person doesn't know something needs attention. Automation can create tasks, send alerts, update project boards, notify teams and keep internal systems synchronised when specific events happen. This reduces missed steps, slow responses and communication gaps." },
+      { t: "Reliability", kw: ["reliable", "reliability", "errors", "error handling", "monitoring", "fail", "failure", "logs", "retry", "break", "breaks"],
+        a: "A workflow isn't finished just because it worked once. A serious automation system is designed for incomplete data, duplicate entries, failed API calls, expired connections and unexpected behaviour. That means clear trigger logic, input validation, field mapping, duplicate handling, retry logic, error notifications, execution logs, access control, fallback paths, documentation and clear ownership. If a workflow fails silently, it isn't saving time; it's creating hidden risk. The system should also show what happened when something goes wrong." },
+      { t: "How it's built", kw: ["technical", "layers", "workflow logic", "integration logic", "data structure", "api", "apis", "webhook", "webhooks", "tools", "zapier", "make com", "n8n", "how is it built"],
+        a: "A good automation system has several layers. Workflow logic defines the process (trigger, condition, action, notification, log). Integration logic connects tools through APIs, webhooks, low-code platforms, databases, spreadsheets, CRMs, email and calendars, handling authentication, field mapping and failed requests. Data structure comes next: we first ask which system is the source of truth. Then error handling and monitoring, and finally human control over which steps stay manual or need approval." },
+      { t: "AI in workflows", kw: ["ai", "artificial intelligence", "chatgpt", "gpt", "llm", "ai assisted", "ai agent", "ai agents"],
+        a: "AI can help where a workflow needs interpretation rather than simple rules: summarising customer requests, classifying leads, drafting responses, extracting information from documents or prioritising tickets. But it shouldn't be added everywhere. If a simple rule is safer, cheaper and more predictable, we use the rule. A responsible AI-assisted workflow defines what the AI can read, suggest and change, when approval is required, how outputs are reviewed and which data must stay protected. We use AI as a controlled support layer, not an uncontrolled employee." },
+      { t: "Process first", kw: ["process", "where to start", "messy", "unclear", "approach", "how do you work", "before automation"],
+        a: "Bad automation doesn't fix a messy process; it makes the mess move faster. So we begin with the workflow, not a template: the current process, the systems involved, the data being moved, decision points, manual steps, exceptions and risks. Not everything should be automated immediately. If the workflow is unclear, the data unreliable or the risk too high, the first step is simplifying the process. We help identify what to automate, what to improve first and where human approval should stay." }
+    ]
+  },
+
+  app: {
+    name: "mobile app", url: "/services/mobile-app-design-development",
+    intro: "We treat a mobile app as a product system, not just a set of screens. Pick a topic and I'll go into detail:",
+    items: [
+      { t: "Do you need an app?", kw: ["do i need an app", "need an app", "should i build an app", "app or website", "right solution", "worth it", "is an app", "web app"],
+        a: "Not every business problem needs a mobile app. Some are better solved with a stronger website, a web application, a booking system, a customer portal, an internal tool or an automated workflow. An app makes sense when the mobile experience adds clear value: repeat usage, accounts, offline access, push notifications, saved preferences, location features, camera access or a focused experience users return to regularly. We question the format before choosing the technology, and if a simpler system fits better, we say so." },
+      { t: "First version", kw: ["first version", "mvp", "minimum", "core action", "features", "scope", "prototype", "start small"],
+        a: "The first version shouldn't try to include every future feature. App projects become expensive and unclear mostly because too much is added too early. Before features, we define the core action: the main thing the user needs to do, book, request, track, submit or repeat in the app. With that clear, the journey and interface become simpler and the technical foundation follows real product logic. A good first version isn't a weak one; it's a focused version built to prove the right thing." },
+      { t: "Architecture", kw: ["architecture", "structure", "backend", "accounts", "authentication", "login", "data models", "api", "apis", "database", "permissions", "technical"],
+        a: "The visible interface is only one part. Behind it sits the structure that controls how the product works: user accounts, authentication, data models, APIs, business logic, permissions, app and loading states, error handling, analytics, security and the release process. If this is weak, the app may look fine in a prototype but be hard to test, maintain or scale. We plan this structure before changes become expensive." },
+      { t: "Performance", kw: ["performance", "speed", "fast", "slow", "crash", "battery", "startup", "caching", "stable", "stability"],
+        a: "Mobile performance directly shapes how users feel about the product: slow opening, freezing, battery drain, awkward loading or crashes create doubt, while a responsive app creates trust. It's decided early by technical choices such as startup time, caching, rendering, dependencies, API calls, SDK usage, image handling, data loading and background processes. We consider performance during planning, design, development and testing on real devices." },
+      { t: "UX in real conditions", kw: ["ux", "user experience", "design", "ui", "offline", "weak connection", "error states", "loading states", "navigation", "screens"],
+        a: "Mobile UX is about what happens when something changes or fails: what the user sees while content loads, when the connection is weak, when a request fails, when they deny a permission, when they close the app halfway through or return later. Mobile users are often distracted or moving, so we design clear navigation, helpful feedback, loading, empty and error states, permission explanations and recovery paths, not only the ideal flow." },
+      { t: "Privacy & permissions", kw: ["privacy", "permissions", "data safety", "personal data", "gdpr", "location", "camera", "notifications", "push", "sdk", "data"],
+        a: "Privacy and security shape an app from the start; they aren't end-of-project paperwork. Apps can involve user accounts, personal data, messages, location, push notifications, payments, uploaded files, analytics, third-party SDKs and external integrations, and each affects how the app is planned, built, explained and submitted to the stores. Permissions affect trust too: asking for camera, location or contacts too early or without a reason makes users hesitate. We consider what data is collected, why, where it goes and how that affects the user experience and store review." },
+      { t: "Launch & stores", kw: ["app store", "google play", "store", "stores", "launch", "release", "submission", "review", "publish", "testflight"],
+        a: "Launching is more than finishing development. We prepare for real release: device testing, performance checks, crash handling, store assets, descriptions, privacy information, permission review, analytics setup, demo access if needed and a complete build ready for App Store and Google Play review. Privacy details, data-safety information, screenshots, metadata, login access and build completeness all affect the review process, so store submission isn't treated as a last-minute upload." },
+      { t: "Technology", kw: ["native", "cross platform", "cross-platform", "react native", "flutter", "swift", "kotlin", "ios", "android", "technology", "tech stack", "framework"],
+        a: "The technology should be chosen around the product, not the other way around. Native development suits apps that depend heavily on platform-specific performance, device features or complex background behaviour. A cross-platform approach suits businesses that want to launch on iOS and Android efficiently with one shared codebase. There's no universal answer; it depends on the business case, performance needs, integrations, user expectations, maintenance, timeline, budget and roadmap." },
+      { t: "After launch", kw: ["maintenance", "updates", "support", "after launch", "bug fixes", "long term", "monitoring", "roadmap"],
+        a: "A mobile app needs work after launch: updates, monitoring, bug fixes, dependency maintenance, operating-system compatibility checks, analytics review, user feedback and future improvements. We plan for this from the beginning and build apps as structured digital products, not isolated design projects, so they stay useful, reliable and maintainable. [Mobile app service](/services/mobile-app-design-development)" }
+    ]
+  }
+};
+
 /* MRKX Assistant: rule-based chat widget. No LLM, no external calls except the optional handoff endpoint.
    Replies in English; Icelandic: UI labels, greeting and handoff flow only (needs native proofreading). */
 (function () {
@@ -411,6 +565,40 @@ var MRKX_KB = (function () {
     });
     return out;
   }
+  /* ---------- detailed service sections ---------- */
+  var SEC = (typeof MRKX_SECTIONS !== "undefined") ? MRKX_SECTIONS : {};
+  var DETAIL_CUE = /\b(detail|details|detailed|in depth|in-depth|elaborate|explain|full description|more about|more info|more information|everything about|deep dive|tell me everything)\b/i;
+  Object.keys(SEC).forEach(function (k) {
+    SEC[k].items.forEach(function (x) { x._p = x.kw.map(function (p) { var t = toks(p); return { t: t, w: t.length === 1 ? 1.5 : Math.min(2 + 0.5 * (t.length - 2), 3.5) }; }); });
+  });
+  function bestSection(M, msgTopic) {
+    var out = null;
+    Object.keys(SEC).forEach(function (k) {
+      if (k !== msgTopic && k !== S.topic) return;
+      SEC[k].items.forEach(function (x, i) {
+        var sc = 0;
+        x._p.forEach(function (p) { if (hasSeq(M, p.t)) sc += p.w; });
+        if (k === msgTopic) sc += sc ? 0.3 : 0;
+        if (sc > 0 && (!out || sc > out.sc)) out = { key: k, idx: i, sc: sc };
+      });
+    });
+    return out;
+  }
+  function secOverview(key, prefix) {
+    var d = SEC[key]; S.topic = key; S.lastMore = null;
+    var chips = d.items.slice(0, 8).map(function (x, i) { return { t: x.t, go: "sec:" + key + ":" + i }; });
+    chips.push({ t: "Pricing", go: "pricing" });
+    return finish((prefix || "") + d.intro + " [" + d.name.charAt(0).toUpperCase() + d.name.slice(1) + " service](" + pathLink(d.url) + ")", chips, null, true);
+  }
+  function secAnswer(key, idx, prefix) {
+    var d = SEC[key], x = d.items[idx]; S.topic = key; S.lastMore = null;
+    var chips = [], n = d.items.length;
+    for (var s = 1; s <= 2; s++) { var j = (idx + s) % n; chips.push({ t: d.items[j].t, go: "sec:" + key + ":" + j }); }
+    chips.push({ t: "All topics", go: "sec:" + key });
+    chips.push({ t: "Book a consultation", go: "consultation" });
+    return finish((prefix || "") + x.a.replace(/\]\((\/[^)]*)\)/g, function (m, u) { return "](" + pathLink(u) + ")"; }), chips, null, true);
+  }
+
   function topicOf(M) {
     var best = null, bs = 0;
     KB.intents.forEach(function (it) {
@@ -799,15 +987,9 @@ var MRKX_KB = (function () {
     var nameLine = "";
     if (nm && !S.slots.name) { S.slots.name = nm[1].charAt(0).toUpperCase() + nm[1].slice(1); nameLine = T("thanksName", { name: S.slots.name }) + " "; }
 
-    // 6b. explicit request for detail about a named service ("detailed info about SEO")
-    if (/\b(detail|details|detailed|in depth|in-depth|elaborate|explain|full description|more about|more info|more information|what does it include|what is included|what do you include|whats included|include|includes|included|cover|covers)\b/i.test(raw) && !/\b(price|prices|pricing|cost|how much|quote|analysis)\b/i.test(raw)) {
-      var dt = topicOf(M), dit = null;
-      KB.intents.forEach(function (x) { if (x.kind === "topic" && x.topic === dt && x.more) dit = x; });
-      if (dit) { S.topic = dit.topic; S.lastMore = null; return finish(nameLine + dit.more, [{ t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }], null, true); }
-    }
-
     // 7. "tell me more"
     if (/^(more|tell me more|go on|details|elaborate|and|continue|why|really|can you elaborate|more info|more information)$/.test(words(raw))) {
+      if (S.lastMore && S.topic && SEC[S.topic]) { S.lastMore = null; return secOverview(S.topic, nameLine); }
       if (S.lastMore) { var mt = S.lastMore; S.lastMore = null; return finish(nameLine + mt, [{ t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }], null, true); }
       return say(nameLine + T("moreNone"), [{ t: "Services", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }]);
     }
@@ -842,11 +1024,16 @@ var MRKX_KB = (function () {
     // 8. intent matching
     var ranked = scoreAll(M);
     var best = ranked[0];
+    var msgTopic0 = topicOf(M);
+    var sec = bestSection(M, msgTopic0);
+    var cue = DETAIL_CUE.test(raw), priceQ = /\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/i.test(raw) || /\banalysis\b/i.test(raw);
+    if (sec && (cue || !best || best.it.kind === "topic" || sec.sc >= best.sc - 0.5) && !(priceQ && !(best && best.sc < sec.sc))) return secAnswer(sec.key, sec.idx, nameLine);
+    if (cue && !priceQ && (msgTopic0 || S.topic) && SEC[msgTopic0 || S.topic] && (!best || best.it.kind === "topic" || best.sc < 3)) return secOverview(msgTopic0 || S.topic, nameLine);
     if (best && best.sc >= 1.5) {
       S.fails = 0;
       if (best.it.kind === "topic") S.topic = best.it.topic;
       var msgTopic = topicOf(M);
-      return route(best.it.id, { msgTopic: msgTopic, prefix: nameLine });
+      return route(best.it.id, { msgTopic: msgTopic, prefix: nameLine, secChip: sec && best.it.kind === "faq" ? { t: "More detail", go: "sec:" + sec.key + ":" + sec.idx } : null });
     }
 
     // 9. url / email given out of the blue → likely wants analysis or handoff
@@ -883,6 +1070,10 @@ var MRKX_KB = (function () {
     if (id === "flow:skip") return flowInput("__skip__");
     if (id === "flow:agree") return flowInput("__agree__");
     if (id === "flow:dupyes") { S.pending = null; S.flow = { type: "handoff", step: null, data: S.dupData || {} }; S.flow.data.noteAsked = false; return nextStep(); }
+    if (id.indexOf("sec:") === 0) {
+      var sp = id.split(":");
+      if (SEC[sp[1]]) return sp.length > 2 ? secAnswer(sp[1], parseInt(sp[2], 10), opt.prefix || "") : secOverview(sp[1], opt.prefix || "");
+    }
     if (id === "more") {
       if (S.lastMore) { var mt2 = S.lastMore; S.lastMore = null; return finish(mt2, [{ t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }], null, true); }
       return say(T("moreNone"), [{ t: "Services", go: "services" }, { t: "Pricing", go: "pricing" }]);
@@ -891,7 +1082,8 @@ var MRKX_KB = (function () {
     if (id === "human" && S.lang === "is") { S.pending = "handoff"; return say(T("askHandoff"), [{ t: T("yes"), go: "handoff_start" }, { t: T("notNow"), go: "decline" }]); }
     var it = byId(id);
     if (!it) return say(T("moreNone"));
-    return finish((opt.prefix || "") + pick(it.a, it.id), it.chips, it);
+    var cc = it.chips; if (opt.secChip) cc = [opt.secChip].concat(cc || []);
+    return finish((opt.prefix || "") + pick(it.a, it.id), cc, it);
   }
 
   function priceText(topic) {
