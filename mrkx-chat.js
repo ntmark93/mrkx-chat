@@ -8,6 +8,7 @@ var MRKX_KB = (function () {
 
   var links = {
     home: "/", services: "/services", website: "/services/websites", seo: "/services/seo",
+    landing: "/services/landing-page", brand: "/services/brand-system", automation: "/services/automation-systems", app: "/services/mobile-app-design-development",
     about: "/about", contact: "/contact", faq: "/faq", portfolio: "/portfolio"
   };
 
@@ -40,29 +41,33 @@ var MRKX_KB = (function () {
 
     { id: "svc_website", kind: "topic", topic: "website", kw: ["website", "web site", "web design", "web development", "business website", "company website", "build a site", "new site", "webpage", "homepage", "site design", "redesign"],
       a: ["Our website work covers structure, design, development and the technical SEO foundations: page hierarchy, responsive build, performance, accessibility basics, analytics and integrations. Business Website projects start from " + P_WEB + " plus VAT. [Website service](/services/websites)"],
-      more: "We plan the information architecture before the visual design: page hierarchy, navigation, URL structure and internal linking. After launch we also review forms, responsiveness, metadata, analytics, indexing and performance under real conditions.",
-      chips: [{ t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "How do you work?", go: "process" }] },
+      more: "We plan the information architecture before the visual design: page hierarchy, navigation, URL structure, service-page planning and internal linking. The build covers a responsive front end tested across devices and browsers, a content structure that is easy to edit without breaking the design, technical SEO foundations (metadata, headings, sitemap, structured data), performance and layout stability, accessibility basics, safe form handling, GA4 and Search Console setup, and integrations such as CRM, email, booking or payments. We also plan for growth with reusable templates and multilingual readiness, and check forms, indexing, analytics events and links after launch. [Website service](/services/websites)",
+      chips: [{ t: "More detail", go: "more" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "How do you work?", go: "process" }] },
 
     { id: "svc_seo", kind: "topic", topic: "seo", kw: ["seo", "search engine", "google ranking", "rank on google", "found on google", "search visibility", "search foundation", "organic traffic", "keywords"],
       a: ["Our SEO strategy work covers page structure, relevant content, technical foundations, metadata, internal linking and local search readiness. Our Search Foundation work starts from " + P_SEO + " plus VAT. [SEO service](/services/seo)"],
-      more: "We focus on what we can influence: technical foundations, page structure, content clarity, local relevance and measurement. We don't promise rankings, because search engines decide those.",
-      chips: [{ t: "Pricing", go: "pricing" }, { t: "How long does SEO take?", go: "seo_time" }, { t: "Free analysis", go: "free_analysis" }] },
+      more: "We treat SEO as part of your site's architecture, not a checklist. It starts with the technical foundation (crawling, indexing, sitemap, canonicals, redirects, structured data, speed), then search intent and page architecture, so each important service has a page with a clear purpose. We add content clarity, metadata, local SEO for Icelandic businesses (website, Google Business Profile, consistent details) and measurement through Search Console and analytics. We also keep the site clear for AI search, without shortcuts. We don't promise rankings, because search engines decide those. [SEO service](/services/seo)",
+      chips: [{ t: "More detail", go: "more" }, { t: "Pricing", go: "pricing" }, { t: "How long does SEO take?", go: "seo_time" }, { t: "Free analysis", go: "free_analysis" }] },
 
     { id: "svc_landing", kind: "topic", topic: "landing", kw: ["landing page", "landing pages", "campaign page", "ad page", "conversion page", "lead page", "funnel"],
       a: ["A landing page is a focused page for one campaign, audience or offer, built to turn interest into enquiries. Copy, structure and tracking are planned together instead of adding text after the design. Landing pages are priced per project, so it's best to talk it through in a short consultation. [Services](/services)"],
-      chips: [{ t: "Landing page vs website", go: "landing_vs_site" }, { t: "Book a consultation", go: "consultation" }] },
+      more: "We start from the decision the visitor has to make, not from a template. That means clarifying the audience and campaign, the offer, the message and the proof, then the design, the form and the tracking. A typical project can include strategy, conversion copy, wireframes and custom design, responsive development, form and email setup, CRM or booking connections, analytics and testing before launch. We don't claim a universal best headline or layout. We look for the real bottleneck first. [Landing page service](/services/landing-page)",
+      chips: [{ t: "More detail", go: "more" }, { t: "Landing page vs website", go: "landing_vs_site" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "svc_brand", kind: "topic", topic: "brand", kw: ["brand", "branding", "brand system", "logo", "visual identity", "brand identity", "brand design"],
       a: ["A brand system is more than a logo. It defines how your identity works across visuals, messaging, your website and future assets, so everything feels consistent and trustworthy. It's priced per project. [Services](/services)"],
-      chips: [{ t: "Brand system vs logo", go: "brand_vs_logo" }, { t: "Book a consultation", go: "consultation" }] },
+      more: "A brand system can include positioning, logo usage rules, colour and typography systems, spacing and layout principles, image and icon direction, tone of voice, and rules for your website, landing pages and social media. We also cover the technical layer: accessible colour combinations, responsive type, export-ready assets, a Figma-ready structure and usage documentation, so the system actually works after handoff. The exact scope depends on your business and what needs to be supported. [Brand system service](/services/brand-system)",
+      chips: [{ t: "More detail", go: "more" }, { t: "Brand system vs logo", go: "brand_vs_logo" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "svc_automation", kind: "topic", topic: "automation", kw: ["automation", "automate", "automations", "workflow", "crm", "zapier", "n8n", "make.com", "business automation"],
       a: ["We build automation for repetitive, rule-based work such as lead handling, CRM updates, follow-up emails, reporting, notifications and booking flows. Work that needs human judgment is supported rather than replaced. It's priced per project. [Services](/services)"],
-      chips: [{ t: "What can be automated?", go: "automation_what" }, { t: "Book a consultation", go: "consultation" }] },
+      more: "We start from the workflow, not from a tool: where information enters, where it needs to go and who approves what. Typical areas are lead handling and CRM updates, website form workflows, client onboarding, follow-up emails, internal tasks and notifications, bookings, reporting and document handling. A reliable system also has validation, duplicate handling, retries, error alerts, logs and clear ownership, so a failure never goes unnoticed. AI is used only where interpretation adds value, with a human approving the risky steps. [Automation service](/services/automation-systems)",
+      chips: [{ t: "More detail", go: "more" }, { t: "What can be automated?", go: "automation_what" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "svc_app", kind: "topic", topic: "app", kw: ["mobile app", "mobile apps", "app", "apps", "app development", "ios app", "android app", "build an app", "build apps", "an app", "application", "app store", "google play", "native app", "smartphone app", "mobile application"],
       a: ["We design and develop mobile apps, but we first check whether an app is the right solution at all. It makes sense when users need repeat access, accounts, offline use or push notifications. App projects start from " + P_APP + " plus VAT, and the final price depends on scope. [Services](/services)"],
-      chips: [{ t: "Do I need an app?", go: "app_need" }, { t: "Book a consultation", go: "consultation" }] },
+      more: "We start with the product decision: who the app is for, the one core action the first version must prove, and whether an app is the right format at all. Then we plan the structure behind the screens: accounts, data, APIs, permissions, error and loading states, security and analytics. We also treat performance, privacy and permissions as part of the design, choose native or cross-platform based on what the product needs, and prepare for App Store and Google Play review. After launch, updates and maintenance are planned in from the beginning. [Mobile app service](/services/mobile-app-design-development)",
+      chips: [{ t: "More detail", go: "more" }, { t: "Do I need an app?", go: "app_need" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "pricing", kind: "question", kw: ["price", "prices", "pricing", "cost", "costs", "how much", "quote", "budget", "rate", "rates", "fee", "fees", "vat", "charge", "package", "packages", "estimate", "starting from", "afford"],
       a: [] /* built in bot.js using topic */ },
@@ -794,6 +799,13 @@ var MRKX_KB = (function () {
     var nameLine = "";
     if (nm && !S.slots.name) { S.slots.name = nm[1].charAt(0).toUpperCase() + nm[1].slice(1); nameLine = T("thanksName", { name: S.slots.name }) + " "; }
 
+    // 6b. explicit request for detail about a named service ("detailed info about SEO")
+    if (/\b(detail|details|detailed|in depth|in-depth|elaborate|explain|full description|more about|more info|more information|what does it include|what is included|what do you include|whats included|include|includes|included|cover|covers)\b/i.test(raw) && !/\b(price|prices|pricing|cost|how much|quote|analysis)\b/i.test(raw)) {
+      var dt = topicOf(M), dit = null;
+      KB.intents.forEach(function (x) { if (x.kind === "topic" && x.topic === dt && x.more) dit = x; });
+      if (dit) { S.topic = dit.topic; S.lastMore = null; return finish(nameLine + dit.more, [{ t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }], null, true); }
+    }
+
     // 7. "tell me more"
     if (/^(more|tell me more|go on|details|elaborate|and|continue|why|really|can you elaborate|more info|more information)$/.test(words(raw))) {
       if (S.lastMore) { var mt = S.lastMore; S.lastMore = null; return finish(nameLine + mt, [{ t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }], null, true); }
@@ -871,6 +883,10 @@ var MRKX_KB = (function () {
     if (id === "flow:skip") return flowInput("__skip__");
     if (id === "flow:agree") return flowInput("__agree__");
     if (id === "flow:dupyes") { S.pending = null; S.flow = { type: "handoff", step: null, data: S.dupData || {} }; S.flow.data.noteAsked = false; return nextStep(); }
+    if (id === "more") {
+      if (S.lastMore) { var mt2 = S.lastMore; S.lastMore = null; return finish(mt2, [{ t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }], null, true); }
+      return say(T("moreNone"), [{ t: "Services", go: "services" }, { t: "Pricing", go: "pricing" }]);
+    }
     if (id === "pricing") return finish((opt.prefix || "") + priceText(opt.msgTopic || S.topic), priceChips(), { id: "pricing", kind: "question" });
     if (id === "human" && S.lang === "is") { S.pending = "handoff"; return say(T("askHandoff"), [{ t: T("yes"), go: "handoff_start" }, { t: T("notNow"), go: "decline" }]); }
     var it = byId(id);
