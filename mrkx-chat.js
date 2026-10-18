@@ -509,6 +509,104 @@ var MRKX_FAQ = [
   { t: "seo", q: "Why can SEO traffic increase without more leads?", a: "Because traffic and conversion are different problems. A page may attract visitors but fail to explain the offer, build trust, answer objections or guide users to the next step, which turns the SEO problem into a structure and conversion problem too. We connect SEO with page architecture, content clarity and business action." }
 ];
 
+/* MRKX Assistant: discovery questions. After a service answer the bot asks 1-2 short questions to understand the visitor's
+   situation, answers each one with a tailored line, then suggests the next step (free analysis or consultation).
+   o.r = tailored reply; o.offer = optional next-step offer ("analysis" | "consult"). No prices or promises beyond the published ones. */
+var MRKX_DISC = {
+  website: [
+    { id: "kind", short: "Website", q: "Quick question so I can point you the right way: is this a brand-new site, or are you improving one you already have?",
+      opts: [
+        { t: "A new site", r: "For a new site the best start is planning the structure first: which pages you need, what each one must achieve and how visitors move between them. Design comes after that." },
+        { t: "Improve my current one", r: "Good to know. With an existing site we start by checking what works and what holds it back: structure, speed, technical SEO foundations and how forms and tracking behave. The free analysis does a first version of exactly that.", offer: "analysis" },
+        { t: "Just exploring", r: "No pressure at all. It helps to know that a website project covers much more than design: structure, technical SEO, performance, accessibility, analytics and integrations." }
+      ] },
+    { id: "size", short: "Size", q: "And roughly how big do you expect it to be?",
+      opts: [
+        { t: "A few pages", r: "A small site works well when every page has a clear job. Each service usually still gets its own page, so it can be explained properly." },
+        { t: "5-15 pages", r: "That's a typical business site: a homepage, separate service pages, about, contact and supporting pages like FAQ or case studies, planned as one structure." },
+        { t: "Larger or multilingual", r: "For a larger or multilingual site the structure matters even more: localised URLs, language-specific metadata and reusable templates, planned before the design starts." },
+        { t: "Not sure yet", r: "That's fine. Working out the right page structure is part of the first step, so we can shape it together." }
+      ] }
+  ],
+  seo: [
+    { id: "site", short: "Website", q: "To point you the right way: do you already have a website?",
+      opts: [
+        { t: "Yes, I have one", r: "Then the best first step is a look at what search engines actually see: crawling, indexing, page structure, metadata and local signals. The free analysis covers a first review of that.", offer: "analysis" },
+        { t: "Not yet", r: "That's actually a good moment for SEO: if the structure and technical foundations are planned together with the site, you avoid fixing them later." }
+      ] },
+    { id: "market", short: "Customers", q: "And where are your customers?",
+      opts: [
+        { t: "Local, my town or region", r: "For a local business, local SEO matters: your Google Business Profile, clear service and location information, reviews and a website that reinforces the same details." },
+        { t: "Across Iceland", r: "Then clear service pages that match what people search for, consistent business details and a solid technical foundation are the core." },
+        { t: "Tourists or international", r: "Then language structure matters too: separate language versions with localised URLs and language-specific metadata, so search engines understand each version." },
+        { t: "Not sure yet", r: "No problem. Who you want to reach decides how the pages and content are structured, so it's one of the first things we'd clarify together." }
+      ] }
+  ],
+  landing: [
+    { id: "traffic", short: "Traffic", q: "Quick question: where would the visitors come from?",
+      opts: [
+        { t: "Paid ads", r: "Then message match is critical: the page should feel like a direct continuation of the ad, and tracking should be planned before the campaign starts." },
+        { t: "Email or social", r: "Then the page should continue the message that brought people there, with one clear next step and measurement that shows which source produces results." },
+        { t: "Google search", r: "Then the page also needs a search strategy: content, indexing, internal linking and technical SEO, decided on purpose and not left to chance." },
+        { t: "Not decided yet", r: "That's fine. The traffic source decides the message, so defining it is one of the first steps of the project." }
+      ] },
+    { id: "goal", short: "Action", q: "And what should a visitor do on the page?",
+      opts: [
+        { t: "Send an enquiry", r: "For enquiries the form is key: every field should have a purpose, errors should be handled and the message should reach the right person." },
+        { t: "Book something", r: "For bookings the path matters: availability, confirmation and reminders should work reliably, and we can connect the page to your booking tool." },
+        { t: "Buy or order", r: "For purchases, trust and clarity decide: a clear offer, visible proof and a payment flow that is tested end to end." },
+        { t: "Sign up or download", r: "For sign-ups a short, focused form and a clear promise of what happens next usually work best." }
+      ] }
+  ],
+  brand: [
+    { id: "start", short: "Starting point", q: "To understand where you are: what do you have today?",
+      opts: [
+        { t: "Nothing yet", r: "Then you can build it properly from the start: positioning, colours, typography, tone of voice and rules, so every future asset follows the same system." },
+        { t: "Just a logo", r: "That's common. A logo is one part of the identity, so the next step is defining how colours, type, layout and voice work together on your website, social media and documents." },
+        { t: "An identity that feels inconsistent", r: "That's exactly what a brand system fixes: it gives every future decision a clear reference, so colours, fonts, layouts and tone stop drifting." }
+      ] },
+    { id: "use", short: "Use", q: "And where would it be used first?",
+      opts: [
+        { t: "Website", r: "Then the system should come with website and landing-page visual rules, accessible colour combinations and responsive typography." },
+        { t: "Social media and ads", r: "Then templates and asset structure matter: how layouts, imagery and tone of voice are applied across posts and campaigns." },
+        { t: "Everywhere", r: "Then it's worth building the full system with documentation and export-ready assets, so anyone working with your brand can apply it correctly." }
+      ] }
+  ],
+  automation: [
+    { id: "task", short: "Repeated task", q: "To understand what would help most: what do you repeat most often?",
+      opts: [
+        { t: "Handling enquiries and follow-up", r: "That's a classic: leads can be captured, categorised, stored in a CRM or spreadsheet, assigned and followed up, with a notification to the right person." },
+        { t: "Onboarding new clients", r: "Onboarding is a good candidate: collecting information, creating folders, sending welcome emails, assigning tasks and scheduling can run as one consistent workflow." },
+        { t: "Bookings", r: "Booking flows can handle confirmations, reminders and updates to calendars or spreadsheets, so nothing depends on someone remembering." },
+        { t: "Reports and admin", r: "Reporting and repetitive admin often automate well: data synced between tools, reports prepared on a schedule, documents handled consistently." },
+        { t: "Something else", r: "Tell me a bit more about it in your own words. The best automation candidates are usually things you repeat every day or every week." }
+      ] },
+    { id: "tools", short: "Tools", q: "And what do you use today?",
+      opts: [
+        { t: "Google Workspace", r: "That works well: Gmail, Sheets, Calendar and Forms can be connected into workflows without replacing what you already use." },
+        { t: "A CRM", r: "Good: then the workflow can keep the CRM up to date automatically, with duplicate handling and notifications when something needs attention." },
+        { t: "Spreadsheets and email", r: "That's very common, and a fine starting point. Before building anything we'd look at where the data should live and which steps can follow clear rules." },
+        { t: "Not much yet", r: "Then the first step is simplifying the process, and automation comes after. We help decide what to automate, what to improve first and where a person should stay in the loop." }
+      ] }
+  ],
+  app: [
+    { id: "users", short: "Users", q: "To understand the idea: who would use the app?",
+      opts: [
+        { t: "My customers", r: "Then it has to earn its place on their phone: repeat use, accounts, notifications or offline access are the usual reasons an app beats a website." },
+        { t: "My staff", r: "For internal use, an app is sometimes the right answer and sometimes a web tool or workflow fits better. We check the format first." },
+        { t: "Both", r: "That usually means different roles and permissions, which is worth planning in the structure from the start." },
+        { t: "Not sure yet", r: "That's a normal place to start. Defining who it's for is the first product decision." }
+      ] },
+    { id: "core", short: "Core action", q: "And what is the one thing it must do well?",
+      opts: [
+        { t: "Booking or scheduling", r: "A good core action to build around: availability, confirmations and reminders, with the first version kept focused." },
+        { t: "Orders or payments", r: "Payments add privacy, security and store-review requirements, so we plan them from the beginning." },
+        { t: "Accounts and content", r: "Accounts and personalised content point to a real app case, with authentication, data structure and permissions planned early." },
+        { t: "I'm not sure yet", r: "Then it's worth defining it before any design: the first version should prove one core action, and everything else can come later.", offer: "consult" }
+      ] }
+  ]
+};
+
 /* MRKX Assistant: rule-based chat widget. No LLM, no external calls except the optional handoff endpoint.
    Replies in English; Icelandic: UI labels, greeting and handoff flow only (needs native proofreading). */
 (function () {
@@ -663,6 +761,60 @@ var MRKX_FAQ = [
     });
     return out;
   }
+  /* ---------- discovery questions ---------- */
+  var DISC = (typeof MRKX_DISC !== "undefined") ? MRKX_DISC : {};
+  function discState() { S.disc = S.disc || { asked: {}, ans: {}, skips: 0, tick: 0, last: -9 }; return S.disc; }
+  function nextDisc(topic) {
+    var qs = DISC[topic], ds = discState();
+    if (!qs || S.pending || S.flow || S.awaiting || ds.skips >= 2 || (S.ignored || 0) >= 2) return null;
+    if (ds.tick - ds.last < 2) return null;
+    for (var i = 0; i < qs.length; i++) if (!ds.asked[topic + ":" + qs[i].id]) return qs[i];
+    return null;
+  }
+  function askDisc(topic, q) {
+    var ds = discState(); ds.asked[topic + ":" + q.id] = 1; ds.last = ds.tick;
+    S.awaiting = "disc:" + topic + ":" + q.id;
+    var chips = q.opts.map(function (o, i) { return { t: o.t, go: "d:" + topic + ":" + q.id + ":" + i }; });
+    chips.push({ t: "Skip", go: "d:skip" });
+    save();
+    return say(q.q, chips);
+  }
+  function discAfter(p, topic) {
+    var ds = discState(); ds.tick++;
+    var q = nextDisc(topic);
+    if (!q) return p;
+    return Promise.resolve(p).then(function () { return askDisc(topic, q); });
+  }
+  function discAnswer(topic, qid, idx, free) {
+    var ds = discState(), qs = DISC[topic] || [], q = null;
+    qs.forEach(function (x) { if (x.id === qid) q = x; });
+    S.awaiting = null;
+    if (!q) return say(T("declined"));
+    var o = (idx !== null && idx !== undefined) ? q.opts[idx] : null;
+    var label = o ? o.t : String(free || "").slice(0, 100);
+    ds.ans[topic + ":" + qid] = label;
+    S.slots.details = ((S.slots.details ? S.slots.details + "; " : "") + q.short + ": " + label).slice(0, 300);
+    if (o && o.offer === "analysis" && !S.sent) S.slots.hasSite = 1;
+    var reply = o ? o.r : "Thanks, noted: " + label.slice(0, 60) + ".";
+    var left = qs.filter(function (x) { return !ds.asked[topic + ":" + x.id]; });
+    S.topic = topic; S.last = "disc";
+    var p;
+    if (left.length) {
+      p = say(reply);
+      ds.last = ds.tick - 2;
+      return Promise.resolve(p).then(function () { return askDisc(topic, left[0]); });
+    }
+    // last question of the topic answered: suggest a next step
+    var offerA = (o && o.offer === "analysis") || S.slots.hasSite;
+    var wantsAnalysis = offerA && !S.offeredAnalysis && !S.sent;
+    var closing;
+    if (wantsAnalysis) { S.offeredAnalysis = true; S.pending = "analysis"; closing = reply + "\n\nShall I set up the free website and search analysis for you?"; save(); return say(closing, [{ t: "Yes, set it up", go: "analysis_start" }, { t: "What's in it?", go: "analysis_detail" }, { t: "Not now", go: "decline" }]); }
+    S.pending = "consult";
+    closing = reply + "\n\nThanks, that gives me a good picture. A short consultation is the quickest way to shape the scope and the price around your project. Would you like me to pass your details to the team?";
+    save();
+    return say(closing, [{ t: "Yes, please", go: "handoff_start_consult" }, { t: "More detail", go: "sec:" + topic }, { t: "Not now", go: "decline" }]);
+  }
+
   /* ---------- detailed service sections ---------- */
   var SEC = (typeof MRKX_SECTIONS !== "undefined") ? MRKX_SECTIONS : {};
   var RT_MIN = 0.34, RT_FAQ = 0.5;
@@ -709,7 +861,7 @@ var MRKX_FAQ = [
     chips.push({ t: "All topics", go: "sec:" + key });
     chips.push({ t: "Book a consultation", go: "consultation" });
     S.last = "sec";
-    return finish((prefix || "") + x.a.replace(/\]\((\/[^)]*)\)/g, function (m, u) { return "](" + pathLink(u) + ")"; }), chips, null, true);
+    return discAfter(finish((prefix || "") + x.a.replace(/\]\((\/[^)]*)\)/g, function (m, u) { return "](" + pathLink(u) + ")"; }), chips, null, true), key);
   }
   function secNext(key, prefix) {
     var d = SEC[key], seen = (S.secSeen && S.secSeen[key]) || [];
@@ -762,7 +914,7 @@ var MRKX_FAQ = [
     if (d.kind === "faq") text += " [" + SEC[d.topic].name.charAt(0).toUpperCase() + SEC[d.topic].name.slice(1) + " service](" + pathLink(SEC[d.topic].url) + ")";
     if (d.kind === "sec") { S.secSeen = S.secSeen || {}; (S.secSeen[d.topic] = S.secSeen[d.topic] || []); if (S.secSeen[d.topic].indexOf(d.idx) < 0) S.secSeen[d.topic].push(d.idx); }
     S.last = "sec";
-    return finish(text, chips, null, false);
+    return discAfter(finish(text, chips, null, false), d.topic);
   }
   function overlap(d, mine) { var n = 0; mine.forEach(function (t) { if (d.th[t] || d.tl[t] || d.tm[t]) n += idf(t); }); return n; }
 
@@ -1133,7 +1285,7 @@ var MRKX_FAQ = [
 
   function handle(raw, fromChip, chip) {
     // 1. chip actions
-    if (chip && chip.go) { if (String(chip.go).indexOf("q:") !== 0) dropAwaiting(); return route(chip.go); }
+    if (chip && chip.go) { if (String(chip.go).indexOf("q:") !== 0 && String(chip.go).indexOf("d:") !== 0) dropAwaiting(); return route(chip.go); }
 
     // 2. active flow consumes input
     if (S.flow) { var r = flowInput(raw); if (r !== false) return r; }
@@ -1196,11 +1348,11 @@ var MRKX_FAQ = [
     var sec = bestSection(M, msgTopic0);
     var cue = DETAIL_CUE.test(raw), priceQ = /\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/i.test(raw) || /\banalysis\b/i.test(raw);
     var rt0 = (!priceQ) ? retrieve(raw, msgTopic0) : null;
-    if (rt0 && rt0.d.kind === "faq" && rt0.sc >= RT_FAQ && rt0.mt >= 2 && !cue && (!best || best.it.kind === "faq" || best.it.kind === "topic")) { S.fails = 0; return docAnswer(rt0.d, nameLine); }
+    if (rt0 && rt0.d.kind === "faq" && rt0.sc >= RT_FAQ && rt0.mt >= 2 && !cue && (!best || best.it.kind === "faq" || (best.it.kind === "topic" && content(raw).length >= 3))) { S.fails = 0; return docAnswer(rt0.d, nameLine); }
     if (sec && (cue || !best || best.it.kind === "topic" || sec.sc >= best.sc - 0.5) && !(priceQ && !(best && best.sc < sec.sc))) return secAnswer(sec.key, sec.idx, nameLine);
     if (cue && !priceQ && (msgTopic0 || S.topic) && SEC[msgTopic0 || S.topic] && (!best || best.it.kind === "topic" || best.sc < 3)) return secOverview(msgTopic0 || S.topic, nameLine);
     var rt = (!priceQ || cue) ? retrieve(raw, msgTopic0) : null;
-    if (rt && rt.sc >= RT_MIN && rt.mt >= 2 && (!best || best.sc < 2.5 || best.it.kind === "topic") && words(raw).split(" ").length >= 2) { S.fails = 0; return docAnswer(rt.d, nameLine); }
+    if (rt && rt.sc >= RT_MIN && rt.mt >= 2 && (!best || best.sc < 2.5 || (best.it.kind === "topic" && content(raw).length >= 3)) && words(raw).split(" ").length >= 2) { S.fails = 0; return docAnswer(rt.d, nameLine); }
     if (best && best.sc >= 1.5) {
       S.fails = 0;
       if (best.it.kind === "topic") S.topic = best.it.topic;
@@ -1242,6 +1394,8 @@ var MRKX_FAQ = [
     if (id === "flow:skip") return flowInput("__skip__");
     if (id === "flow:agree") return flowInput("__agree__");
     if (id === "flow:dupyes") { S.pending = null; S.flow = { type: "handoff", step: null, data: S.dupData || {} }; S.flow.data.noteAsked = false; return nextStep(); }
+    if (id === "d:skip") { discState().skips++; S.awaiting = null; save(); return say(T("declined"), [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }]); }
+    if (id.indexOf("d:") === 0) { var dp = id.split(":"); return discAnswer(dp[1], dp[2], parseInt(dp[3], 10)); }
     if (id.indexOf("doc:") === 0) { var dd = DOCS[parseInt(id.slice(4), 10)]; if (dd) return docAnswer(dd, opt.prefix || ""); }
     if (id.indexOf("sec:") === 0) {
       var sp = id.split(":");
@@ -1284,6 +1438,7 @@ var MRKX_FAQ = [
       if (bm) { text += "\n\n" + bm.line; S.slots["pl_" + it.topic] = 1; }
     }
     var p = say(text, chips);
+    if (it && it.kind === "topic" && DISC[it.topic] && !S.pending && !S.flow && !S.awaiting) { var dq0 = (discState().tick++, nextDisc(it.topic)); if (dq0) { save(); return Promise.resolve(p).then(function () { return askDisc(it.topic, dq0); }); } }
     // qualification / offer (one per turn, never when a question is already open)
     var skipQual = it && (it.noCount || it.kind === "rule" || /^(pricing|objection|free_analysis|consultation|human|about_bot|greet|analysis_detail)$/.test(it.id));
     if (counts && !S.pending && !S.flow && !skipQual && !/\?\s*$/.test(text)) {
@@ -1328,6 +1483,14 @@ var MRKX_FAQ = [
   function awaitingInput(raw, M) {
     var kind = S.awaiting;
     if (/\?\s*$/.test(raw)) { dropAwaiting(); return false; }
+    if (kind.indexOf("disc:") === 0) {
+      var dpp = kind.split(":");
+      var rk = scoreAll(M)[0], rr = retrieve(raw, dpp[1]);
+      var askLike = /^(tell|what|whats|how|why|when|where|which|who|can|could|do|does|did|is|are|will|would|should|explain|give|show|i want|i need|i would like|more|details?)\b/i.test(raw.trim()) && !/^(what s|whats) (my|our)\b/i.test(raw.trim());
+      if (askLike || words(raw).split(" ").length > 9 || (rk && rk.sc >= 2.5) || (rr && rr.mt >= 3 && rr.sc >= 0.6)) { dropAwaiting(); return false; }
+      if (/^(skip|no|nope|nothing|not sure|none|pass)$/i.test(raw.trim())) { discState().skips++; S.awaiting = null; return say(T("declined")); }
+      return discAnswer(dpp[1], dpp[2], null, raw);
+    }
     if (/^(skip|no|nope|nothing|not sure|none|pass)$/i.test(raw.trim())) { dropAwaiting(); return say(T("declined")); }
     var ranked = scoreAll(M), sc = ranked[0] ? ranked[0].sc : 0;
     if (kind === "biz") {
