@@ -30,7 +30,7 @@ var MRKX_KB = (function () {
       a: ["I'm MRKX Assistant, an automated assistant for MRKX Labs, not a person. I can explain our services and answer common questions, and if I can't help, I'll pass your question to our team."],
       chips: [{ t: "Talk to the team", go: "human" }, { t: "What do you offer?", go: "services" }] },
 
-    { id: "about", kind: "question", kw: ["about you", "about mrkx", "who is mrkx", "what is mrkx", "tell me about your company", "who are mrkx labs", "your company", "your background", "your experience", "who is behind", "your studio", "your team", "your approach"],
+    { id: "about", kind: "question", kw: ["real company", "are you real", "legit", "legitimate", "can i trust you", "how long have you been", "who runs", "founder", "who owns mrkx", "about you", "about mrkx", "who is mrkx", "what is mrkx", "tell me about your company", "who are mrkx labs", "your company", "your background", "your experience", "who is behind", "your studio", "your team", "your approach"],
       a: ["MRKX Labs is a digital systems studio based in Höfn, Iceland. We combine strategy, sales thinking, marketing structure, design, web development, SEO and analytics, so a website isn't just a nice surface but a path from attention to trust to enquiry. Our principles are clarity, credibility and action. [About us](/about)"],
       more: "We define the offer, audience, positioning and message flow before we build anything visual. That's why we treat every website, landing page or brand system as part of a bigger growth system rather than a standalone design.",
       chips: [{ t: "What do you offer?", go: "services" }, { t: "How do you work?", go: "process" }, { t: "Examples of your work", go: "portfolio" }] },
@@ -69,18 +69,70 @@ var MRKX_KB = (function () {
       more: "We start with the product decision: who the app is for, the one core action the first version must prove, and whether an app is the right format at all. Then we plan the structure behind the screens: accounts, data, APIs, permissions, error and loading states, security and analytics. We also treat performance, privacy and permissions as part of the design, choose native or cross-platform based on what the product needs, and prepare for App Store and Google Play review. After launch, updates and maintenance are planned in from the beginning. [Mobile app service](/services/mobile-app-design-development)",
       chips: [{ t: "More detail", go: "sec:app" }, { t: "Do I need an app?", go: "app_need" }, { t: "Book a consultation", go: "consultation" }] },
 
-    { id: "pricing", kind: "question", kw: ["price", "prices", "pricing", "cost", "costs", "how much", "quote", "budget", "rate", "rates", "fee", "fees", "vat", "charge", "package", "packages", "estimate", "starting from", "afford"],
+    { id: "payment_terms", kind: "question", kw: ["payment plan", "payment plans", "installment", "installments", "instalment", "instalments", "pay in parts", "pay monthly", "deposit", "upfront", "how do i pay", "payment terms", "payment method", "payment methods", "pay later", "invoice"],
+      a: ["Payment terms are agreed per project, so I can't state them here. In a short consultation we shape the scope and the price, and the team confirms exactly how payment works. Would you like me to pass your question on?"],
+      pending: "handoff", chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "Book a consultation", go: "consultation" }, { t: "Not now", go: "decline" }] },
+
+    { id: "ownership_hosting", kind: "question", kw: ["who owns", "do i own", "own the code", "own the website", "ownership", "source code", "handover", "hand over", "my domain", "domain", "hosting", "hosted", "server", "domain name"],
+      a: ["Details like ownership, hosting and domain depend on the platform and the project and are agreed in writing, so I don't want to guess. The team can answer this exactly. Would you like me to pass your question on?"],
+      pending: "handoff", chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "Not now", go: "decline" }] },
+
+    { id: "revisions", kind: "question", kw: ["don't like the design", "dont like the design", "do not like the design", "revisions", "revision", "changes after", "change my mind", "not happy", "money back", "refund", "unhappy with", "if i dislike"],
+      a: ["We start with clarity: the offer, audience and structure are agreed before the design begins, so the direction is aligned early. How revisions and changes are handled is agreed per project, so I can't state exact terms here. Would you like me to pass your question to the team?"],
+      pending: "handoff", chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "How do you work?", go: "process" }, { t: "Not now", go: "decline" }] },
+
+    { id: "need_from_you", kind: "question", kw: ["what do you need from me", "what do i need to provide", "what do i need to prepare", "what should i prepare", "what information do you need", "what do i need to bring", "what do you need to start", "what do i need to have", "do i need to have anything ready"],
+      a: ["At the start we need to understand your offer, your audience and your goals. If you already have a website, a logo, texts or images, that helps, but you don't need everything ready. The consultation is where we work out exactly what's needed."],
+      chips: [{ t: "Book a consultation", go: "consultation" }, { t: "Free analysis", go: "free_analysis" }, { t: "How do you work?", go: "process" }] },
+
+    { id: "not_on_google", kind: "faq", kw: ["showing on google", "show on google", "show up on google", "not showing up", "website is not showing", "site is not showing", "not showing on google", "not on google", "why am i not on google", "cant find my website", "cannot find my website", "doesnt show up", "doesn't show up", "not appearing", "not ranking", "no one finds me", "nobody finds me", "not found on google", "invisible on google", "google doesnt show", "my website doesnt show", "cant be found"],
+      a: ["There can be several causes: pages that aren't indexed, a noindex setting, weak page structure, unclear service pages, missing local signals or technical problems. It's best to look at the actual site. The free website and search analysis is a good first step: we review your pages, the technology and the SEO issues, and send you a PDF by email within 48 hours. Would you like me to set it up?"],
+      pending: "analysis", chips: [{ t: "Yes, set it up", go: "analysis_start" }, { t: "What's in it?", go: "analysis_detail" }, { t: "SEO details", go: "sec:seo" }, { t: "Not now", go: "decline" }] },
+
+    { id: "ads_service", kind: "faq", kw: ["google ads", "facebook ads", "ad campaign", "ad campaigns", "run ads", "run my ads", "advertising", "ppc", "meta ads", "instagram ads", "do you do ads", "manage ads"],
+      a: ["Running ad campaigns isn't one of our six services. What we do is build landing pages made for ad traffic, with the message, the form and the conversion tracking planned together, so the campaign sends people somewhere that works. [Landing page service](/services/landing-page)"],
+      chips: [{ t: "Landing pages", go: "svc_landing" }, { t: "Book a consultation", go: "consultation" }] },
+
+    { id: "social_service", kind: "faq", kw: ["do you do social media", "social media management", "manage my social media", "run my social media", "manage social", "social media marketing", "post on social", "social media posts", "social media service", "social media content"],
+      a: ["Managing social media accounts isn't one of our six services. Our brand system work does cover how your identity appears on social media: templates, visual rules and tone of voice. [Brand system service](/services/brand-system)"],
+      chips: [{ t: "Brand system", go: "svc_brand" }, { t: "What do you offer?", go: "services" }] },
+
+    { id: "ecommerce", kind: "faq", kw: ["ecommerce", "e-commerce", "webshop", "web shop", "online shop", "online store", "sell online", "sell products online", "we sell products", "i sell products", "woocommerce", "checkout", "shopping cart", "sell things online"],
+      a: ["An online shop can be part of a website project. What matters most is clear structure, speed and a trustworthy path to purchase, and payment providers can be integrated depending on the scope. The details and the price depend on your products, languages and integrations, so a short consultation is the best next step."],
+      chips: [{ t: "Website details", go: "sec:website" }, { t: "Book a consultation", go: "consultation" }] },
+
+    { id: "chatbot_ai", kind: "faq", kw: ["chatbot", "chat bot", "build a chatbot", "ai chatbot", "virtual assistant", "ai assistant", "bot for my website", "bot for my site", "bot for my business"],
+      a: ["Chatbots aren't one of our six listed services, but AI-assisted workflows and automation are: classifying leads, summarising requests, drafting replies, always with clear limits and human approval where it matters. If you have a chatbot in mind, tell the team what it should do. [Automation service](/services/automation-systems)"],
+      pending: "handoff", chips: [{ t: "Talk to the team", go: "handoff_start" }, { t: "Automation details", go: "sec:automation" }, { t: "Not now", go: "decline" }] },
+
+    { id: "nda", kind: "question", kw: ["nda", "non disclosure", "non-disclosure", "confidential", "confidentiality", "keep it secret"],
+      a: ["Terms like that are agreed per project, so I can't promise them here. Please raise it with the team, and I'm happy to pass your question on."],
+      pending: "handoff", chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "Not now", go: "decline" }] },
+
+    { id: "company_size", kind: "question", kw: ["startups", "start ups", "start-ups", "big companies", "large companies", "small businesses", "enterprise", "corporate", "what kind of companies", "who do you work with", "what clients", "types of clients", "small company", "big business"],
+      a: ["We work with businesses that want a sharper digital presence, stronger positioning and a clearer path from online attention to enquiries. Size matters less than having a clear goal. For a new business, the first priority is a clear offer and a page that explains it quickly. [Portfolio](/portfolio)"],
+      chips: [{ t: "What do you offer?", go: "services" }, { t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }] },
+
+    { id: "mobile_ok", kind: "faq", kw: ["work on mobile", "mobile friendly", "mobile-friendly", "responsive", "on phones", "on my phone", "on tablets", "on all devices", "look good on mobile", "work on phones"],
+      a: ["Yes. Websites are built responsive and checked on mobile, tablet and desktop as separate usage contexts, across Safari, Chrome and Firefox on iOS, Android and desktop. [Website service](/services/websites)"],
+      chips: [{ t: "Website details", go: "sec:website" }, { t: "Pricing", go: "pricing" }] },
+
+    { id: "need_customers", kind: "question", kw: ["need customers", "more customers", "get customers", "find customers", "get clients", "more clients", "need clients", "get more leads", "need more business", "grow my business", "more sales", "attract customers", "attract clients", "need more enquiries"],
+      a: ["The usual building blocks are a website that explains your offer clearly, search visibility (including local search if you serve a local area) and an easy way to make an enquiry. What fits depends on where you are now. Do you already have a website?"],
+      chips: [{ t: "Yes, I have one", go: "existing_site" }, { t: "Not yet", go: "svc_website" }, { t: "SEO", go: "svc_seo" }] },
+
+    { id: "pricing", kind: "question", kw: ["what's the damage", "whats the damage", "the damage for", "damage", "ballpark", "set me back", "what do you charge", "how much would", "cheapest", "cheapest option", "minimum budget", "price range", "ballpark figure", "rough price", "rough cost", "what does it cost", "price", "prices", "pricing", "cost", "costs", "how much", "quote", "budget", "rate", "rates", "fee", "fees", "vat", "charge", "package", "packages", "estimate", "starting from", "afford"],
       a: [] /* built in bot.js using topic */ },
 
-    { id: "objection", kind: "question", kw: ["expensive", "too much", "too expensive", "cheaper", "cheap", "discount", "can't afford", "cannot afford", "out of my budget", "pricey", "lower price", "negotiate"],
+    { id: "objection", kind: "question", kw: ["discounts", "offer discounts", "special offer", "promotion", "any deals", "cheaper option", "expensive", "too much", "too expensive", "cheaper", "cheap", "discount", "can't afford", "cannot afford", "out of my budget", "pricey", "lower price", "negotiate"],
       a: ["I understand, it's a real investment. We don't compete on being the cheapest. We focus on a clear offer, a site that builds trust and a path that turns visits into enquiries, so the money works for you. The most useful next step is a short consultation, where we look at your goals and shape the scope and price around them rather than around a fixed package."],
       chips: [{ t: "Book a consultation", go: "consultation" }, { t: "Free analysis", go: "free_analysis" }] },
 
-    { id: "timeline", kind: "question", kw: ["how long", "how fast", "how quickly", "timeline", "turnaround", "deadline", "delivery time", "when will", "how many weeks", "how many days", "time frame", "timeframe", "lead time", "asap"],
+    { id: "timeline", kind: "question", kw: ["how long does an app take", "how long does a website take", "how long does a site take", "how long does it take", "how long does a project take", "take to build", "take to make", "how soon", "when would it", "when will it be ready", "ready by", "by next month", "when can you start", "start date", "how quickly can you", "how many months", "how much time", "time does it take", "how long would", "how long is it going", "how long to build", "be ready", "how long", "how fast", "how quickly", "timeline", "turnaround", "deadline", "delivery time", "when will", "how many weeks", "how many days", "time frame", "timeframe", "lead time", "asap"],
       a: ["The timeline depends on the scope, so I can't promise dates here. The one timeline I can give is for the free analysis: you get it as a PDF by email within 48 hours. For a project, we agree the schedule after a short consultation."],
       chips: [{ t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }] },
 
-    { id: "process", kind: "question", kw: ["process", "how do you work", "how does it work", "how it works", "workflow", "your method", "methodology", "steps", "approach", "how do we start", "what happens first", "development method"],
+    { id: "process", kind: "question", kw: ["how does the process work", "how does your process work", "how does the process", "what is the process", "what's the process", "how does it all work", "process", "how do you work", "how does it work", "how it works", "workflow", "your method", "methodology", "steps", "approach", "how do we start", "what happens first", "development method"],
       a: ["We start with clarity before design or development: your offer, target audience, message structure, user journey and conversion path. Then we build the structure, the design and the technical foundations, and after launch we review and keep improving based on data. [About our approach](/about)"],
       more: "In practice that means strategy sets the direction, design builds trust, development builds the experience, SEO improves visibility and ongoing optimisation keeps improving results.",
       chips: [{ t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }] },
@@ -105,7 +157,7 @@ var MRKX_KB = (function () {
       chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "Not now", go: "decline" }],
       pending: "handoff" },
 
-    { id: "contact", kind: "question", kw: ["contact", "phone", "phone number", "telephone", "email address", "e-mail", "address", "where are you", "number", "reach you", "social media", "instagram", "linkedin", "facebook"],
+    { id: "contact", kind: "question", kw: ["your email", "what is your email", "email you", "call you", "can i call", "phone you", "office", "opening hours", "office hours", "visit you", "drop by", "whatsapp", "text you", "contact", "phone", "phone number", "telephone", "email address", "e-mail", "address", "where are you", "number", "reach you", "social media", "instagram", "linkedin", "facebook"],
       a: ["You can reach us at hello@mrkxlabs.com or +354 837 8339. Our address is 781 Höfn í Hornafirði, Iceland, and there's a contact form on the [contact page](/contact). We're also on Facebook, Instagram (mrkx.labs) and LinkedIn."],
       chips: [{ t: "Send to the team", go: "handoff_start" }, { t: "Free analysis", go: "free_analysis" }] },
 
@@ -113,7 +165,7 @@ var MRKX_KB = (function () {
       a: ["We're based in Höfn í Hornafirði and work with businesses across Iceland. We also work remotely, so location isn't a limit for projects."],
       chips: [{ t: "What do you offer?", go: "services" }, { t: "Contact", go: "contact" }] },
 
-    { id: "portfolio", kind: "question", kw: ["portfolio", "examples", "example of your work", "previous work", "past work", "case study", "case studies", "references", "clients", "work you have done", "showcase", "road1tow"],
+    { id: "portfolio", kind: "question", kw: ["who have you worked with", "who are your clients", "your clients", "worked with before", "other projects", "any projects", "portfolio", "examples", "example of your work", "previous work", "past work", "case study", "case studies", "references", "clients", "work you have done", "showcase", "road1tow"],
       a: ["Our publicly shown project is Road1tow, with a case study and the live site. You can see it on our [portfolio page](/portfolio). We're a young studio, and we'd rather show a few things we stand behind than a long list."],
       chips: [{ t: "How do you work?", go: "process" }, { t: "Free analysis", go: "free_analysis" }] },
 
@@ -153,7 +205,7 @@ var MRKX_KB = (function () {
       a: ["Not automatically. Website builders can support SEO, but the result depends on correct configuration, crawlable content, proper metadata and internal linking."],
       chips: [{ t: "Free analysis", go: "free_analysis" }] },
 
-    { id: "website_edit", kind: "faq", kw: ["edit the website myself", "edit it myself", "update the website myself", "edit my site", "change content myself", "update content", "can i edit", "cms access", "manage content"],
+    { id: "website_edit", kind: "faq", kw: ["change things myself", "update it myself", "make changes myself", "change it myself", "manage it myself", "edit things myself", "change the text myself", "update the text", "do the updates myself", "edit the website myself", "edit it myself", "update the website myself", "edit my site", "change content myself", "update content", "can i edit", "cms access", "manage content"],
       a: ["Yes, for appropriate content such as text, images, blog posts, portfolio items and FAQs. Layout, tracking, SEO configuration and integrations are handled more carefully, to protect the stability of the site."],
       chips: [{ t: "After launch", go: "after_launch" }, { t: "Website service", go: "svc_website" }] },
 
@@ -209,7 +261,7 @@ var MRKX_KB = (function () {
       a: ["We handle it at a practical level: safer forms, spam reduction, controlled admin access, careful use of third-party tools and clear technical ownership, to reduce avoidable risk."],
       chips: [{ t: "Website service", go: "svc_website" }] },
 
-    { id: "howstart", kind: "question", kw: ["get started", "start a project", "start my project", "begin", "how do i start", "next step", "where do i start", "ready to start", "let's start", "start your project", "work with you", "hire you"],
+    { id: "howstart", kind: "question", kw: ["first step", "what is the first step", "how do i begin", "how to begin", "how can i get started", "what is next", "whats next", "where to begin", "get started", "start a project", "start my project", "begin", "how do i start", "next step", "where do i start", "ready to start", "let's start", "start your project", "work with you", "hire you"],
       a: ["The easiest first step is the free website and search analysis, if you already have a site. If you're starting from scratch, a short consultation is better. Which fits you?"],
       chips: [{ t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }] },
 
@@ -225,7 +277,7 @@ var MRKX_KB = (function () {
       a: ["This chat works in your browser, and nothing is sent to us unless you ask me to pass your message to the team. If you do, we email the conversation to our team. You'll find our Privacy Policy, Cookie Policy and Terms at the bottom of every page."],
       chips: [{ t: "Talk to the team", go: "human" }] },
 
-    { id: "legal_tax", kind: "rule", kw: ["legal advice", "lawyer", "attorney", "tax advice", "accountant", "gdpr compliant", "gdpr compliance", "is it legal", "sue", "liability", "contract law", "compliance"],
+    { id: "legal_tax", kind: "rule", kw: ["gdpr", "do you comply with gdpr", "is it gdpr", "legal advice", "lawyer", "attorney", "tax advice", "accountant", "gdpr compliant", "gdpr compliance", "is it legal", "sue", "liability", "contract law", "compliance"],
       a: ["I can't give legal or tax advice, and we don't offer it. For questions like that, please talk to a qualified professional. I can tell you what we build and how, if that helps."],
       chips: [{ t: "What do you offer?", go: "services" }] },
 
@@ -249,7 +301,7 @@ var MRKX_KB = (function () {
     { key: "tourism", words: ["tour", "tours", "tourism", "travel", "excursion", "glacier", "activity", "activities", "rental", "camping"], line: "For tourism, clear offers, strong local search and an easy booking path usually matter most." },
     { key: "shop", words: ["shop", "store", "ecommerce", "e-commerce", "webshop", "online store", "retail", "products"], line: "For shops, structure, performance and a trustworthy path to purchase usually make the biggest difference." },
     { key: "trades", words: ["plumber", "electrician", "construction", "builder", "contractor", "repair", "mechanic", "cleaning", "towing", "transport", "trades", "carpenter"], line: "For service businesses, local search visibility and a clear enquiry path usually matter most." },
-    { key: "startup", words: ["startup", "start-up", "new business", "starting", "launch", "idea", "founder", "new company"], line: "For a new business, the first priority is a clear offer and a page that explains it fast, before adding anything else." },
+    { key: "startup", words: ["startup", "start-up", "starting a company", "starting a business", "start a business", "start a company", "just started", "new company", "new business", "starting", "launch", "idea", "founder", "new company"], line: "For a new business, the first priority is a clear offer and a page that explains it fast, before adding anything else." },
     { key: "pro", words: ["consultant", "consulting", "agency", "lawyer", "accountant", "coach", "freelancer", "designer", "photographer", "studio", "clinic", "salon", "gym"], line: "For professional services, trust signals and a clear explanation of what you do are what turns visitors into enquiries." }
   ];
 
@@ -893,7 +945,7 @@ var MRKX_DISC = {
       var sc = 0, mt = 0;
       q.forEach(function (t) { if (d.th[t] || d.tm[t] || d.tl[t]) mt++; if (d.th[t]) sc += idf(t) * 3; else if (d.tm[t]) sc += idf(t) * 1.6; else if (d.tl[t]) sc += idf(t); });
       if (!sc) return;
-      var bias = (d.topic === msgTopic || d.topic === S.topic) ? 1.35 : 1;
+      var bias = (d.topic === msgTopic || (!msgTopic && d.topic === S.topic)) ? 1.35 : ((msgTopic && d.topic !== msgTopic) ? 0.6 : 1);
       sc = sc * bias / total;
       if (!best || sc > best.sc) { second = best ? best.sc : 0; best = { d: d, sc: sc, mt: mt }; } else if (sc > second) second = sc;
     });
@@ -1315,7 +1367,7 @@ var MRKX_DISC = {
     }
 
     // 4b. business type mentioned in passing ("I run a small cafe")
-    if (!S.slots.biz && /\b(i run|i own|we run|we own|my (small |little |new )?(business|company|shop|cafe|café|restaurant|store|studio|hotel)|i have a (small |little )?(business|company|shop|cafe|café|restaurant|store|studio|hotel)|for my)\b/i.test(raw)) {
+    if (!S.slots.biz && /\b(i run|i own|we run|we own|i'm a|i am a|we're a|we are a|i sell|we sell|i'm starting|i am starting|we're starting|my (small |little |new )?(business|company|shop|cafe|café|restaurant|store|studio|hotel)|i have a (small |little )?(business|company|shop|cafe|café|restaurant|store|studio|hotel)|for my)\b/i.test(raw)) {
       var bk = bizKey(raw);
       if (bk) {
         S.slots.biz = raw.slice(0, 120); S.slots.bizKey = bk; S.asked.biz = true;
