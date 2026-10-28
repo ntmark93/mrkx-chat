@@ -1,4 +1,94 @@
 (function(){
+/* Language picker: shown once on the home page for first-time direct visitors.
+   - Only on "/" and "/is" (home), never on deep pages.
+   - Not shown to visitors who arrive from a search engine (they already landed on the right language)
+     and not to known crawlers, so it can never act as an intrusive interstitial.
+   - Dismissible (button, backdrop, Esc); the choice is remembered in localStorage. */
+(function () {
+  var cfg = window.MRKX_CHAT_CONFIG || {};
+  var KEY = "mrkx_lang_choice";
+  var path = cfg.lpPath || location.pathname;
+  var ref = cfg.lpRef != null ? cfg.lpRef : (document.referrer || "");
+  var isHome = /^\/(is)?\/?$/.test(path);
+  var onIS = /^\/is(\/|$)/.test(path);
+  if (!isHome || cfg.noLangPicker) return;
+  if (/bot|crawl|spider|lighthouse|pagespeed/i.test(navigator.userAgent || "")) return;
+  if (/(^|\.)(google|bing|duckduckgo|yahoo|yandex|ecosia|baidu)\./i.test(ref.replace(/^https?:\/\//, "").split("/")[0])) return;
+  try { if (localStorage.getItem(KEY)) return; } catch (e) {}
+  var pref = /^is\b/i.test(navigator.language || "") ? "is" : "en";
+
+  function altHref(lang) {
+    var want = lang === "is" ? /^is/i : /^en/i, links = document.querySelectorAll('link[rel="alternate"][hreflang]');
+    for (var i = 0; i < links.length; i++) if (want.test(links[i].getAttribute("hreflang"))) return links[i].getAttribute("href");
+    return lang === "is" ? "/is" : "/";
+  }
+  function remember(l) { try { localStorage.setItem(KEY, l); } catch (e) {} }
+
+  function show() {
+    var host = document.createElement("div");
+    host.setAttribute("data-mrkx-langpick", "");
+    host.style.cssText = "position:fixed;inset:0;z-index:2147483646";
+    var root = host.attachShadow ? host.attachShadow({ mode: "open" }) : host;
+    root.innerHTML =
+      '<style>' +
+      '*{box-sizing:border-box}' +
+      '.bd{position:fixed;inset:0;background:rgba(5,8,18,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));font-family:Helvetica,Arial,sans-serif;opacity:0;transition:opacity .25s}' +
+      '.bd.in{opacity:1}' +
+      '.card{position:relative;width:100%;max-width:380px;background:linear-gradient(160deg,#0c1329,#1a2347);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:28px 24px 24px;color:#eef1fb;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}' +
+      'h2{margin:0 0 4px;font-size:20px;font-weight:600;letter-spacing:.2px}' +
+      'p{margin:0 0 20px;font-size:14px;color:#aab4d4}' +
+      '.row{display:flex;gap:12px}' +
+      'a.b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:64px;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:#eef1fb;text-decoration:none;font-size:17px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s}' +
+      'a.b small{font-size:11px;font-weight:400;color:#9db0ff;letter-spacing:.6px}' +
+      'a.b:hover,a.b:focus-visible{background:rgba(157,176,255,.16);border-color:#9db0ff;outline:none}' +
+      'a.b.pref{border-color:#9db0ff;background:rgba(157,176,255,.12)}' +
+      '.x{position:absolute;top:8px;right:8px;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:#aab4d4;font-size:22px;line-height:1;cursor:pointer}' +
+      '.x:hover,.x:focus-visible{background:rgba(255,255,255,.1);color:#fff;outline:none}' +
+      '@media (max-width:360px){.row{flex-direction:column}}' +
+      '@media (prefers-reduced-motion:reduce){.bd{transition:none}}' +
+      '</style>' +
+      '<div class="bd" role="dialog" aria-modal="true" aria-labelledby="t">' +
+      '<div class="card"><button class="x" type="button" aria-label="Close / Loka">&times;</button>' +
+      '<h2 id="t">Choose your language</h2><p>Veldu tungum&aacute;l</p>' +
+      '<div class="row">' +
+      '<a class="b' + (pref === "en" ? " pref" : "") + '" data-l="en" href="' + altHref("en") + '" lang="en">English<small>EN</small></a>' +
+      '<a class="b' + (pref === "is" ? " pref" : "") + '" data-l="is" href="' + altHref("is") + '" lang="is">&Iacute;slenska<small>IS</small></a>' +
+      '</div></div></div>';
+    var prevOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    document.body.appendChild(host);
+    var bd = root.querySelector(".bd");
+    requestAnimationFrame(function () { bd.classList.add("in"); });
+    var first = root.querySelector("a.b.pref") || root.querySelector("a.b");
+    try { first.focus(); } catch (e) {}
+    function close(choice) {
+      if (choice) remember(choice); else remember(onIS ? "is" : "en");
+      document.documentElement.style.overflow = prevOverflow;
+      document.removeEventListener("keydown", onKey, true);
+      if (host.parentNode) host.parentNode.removeChild(host);
+    }
+    function onKey(e) {
+      if (e.key === "Escape") { close(); return; }
+      if (e.key === "Tab") {
+        var els = [].slice.call(root.querySelectorAll("a.b,.x")), cur = root.activeElement, i = els.indexOf(cur);
+        e.preventDefault();
+        els[(i + (e.shiftKey ? els.length - 1 : 1)) % els.length].focus();
+      }
+    }
+    document.addEventListener("keydown", onKey, true);
+    root.querySelector(".x").addEventListener("click", function () { close(); });
+    bd.addEventListener("click", function (e) { if (e.target === bd) close(); });
+    [].forEach.call(root.querySelectorAll("a.b"), function (a) {
+      a.addEventListener("click", function (e) {
+        var l = a.getAttribute("data-l"); remember(l);
+        if ((l === "is") === onIS) { e.preventDefault(); close(l); }   // already on this language: just continue
+      });
+    });
+  }
+  function go() { setTimeout(show, cfg.lpDelay != null ? cfg.lpDelay : 300); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", go); else go();
+})();
+
 /* MRKX Assistant knowledge base (English answers, studio voice "we").
    Facts only from mrkxlabs.com. Prices: starting prices only (Oct 2026 list: website 450k, search foundation 220k, app 1.2M ISK, plus VAT). */
 var MRKX_KB = (function () {
