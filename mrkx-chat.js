@@ -803,7 +803,8 @@ var MRKX_DISC = {
     phone: "+354 837 8339",
     storageKey: "mrkx_chat_v1",
     maxMessages: 80,
-    maxLen: 500
+    maxLen: 500,
+    noConsentGate: false     // tests: skip waiting for the cookie banner
   };
   var user = window.MRKX_CHAT_CONFIG || {};
   for (var k in user) if (Object.prototype.hasOwnProperty.call(user, k)) CFG[k] = user[k];
@@ -1331,6 +1332,39 @@ var MRKX_DISC = {
       try { ok = alignToCookie(); } catch (e) {}
       if (!ok && ++tries < 30) setTimeout(poll, 1000);
     })();
+    /* Show the chat only once the cookie banner is out of the way (after any consent decision). */
+    var ready = false, ucSeen = 0, born = Date.now();
+    function setReady(v) {
+      if (v === ready) return;
+      ready = v;
+      host.style.display = v ? "" : "none";
+      if (v) { try { alignToCookie(); } catch (e) {} if (window.__mrkxFit) window.__mrkxFit(); }
+    }
+    function bannerOpen() {
+      var el = null;
+      try { var uh = document.getElementById("usercentrics-cmp-ui"); el = uh && uh.shadowRoot && uh.shadowRoot.getElementById("uc-main-dialog"); } catch (e) {}
+      if (!el) return false;
+      var r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+      /* Closed state is the 44x44 privacy button inside the same element, so only a large box counts as the open banner. */
+      return r.height > 100 && r.width > 100 && cs.visibility !== "hidden" && cs.display !== "none";
+    }
+    function ucCheck() {
+      var u = window.UC_UI;
+      if (!u || !u.isInitialized || !u.isInitialized()) {
+        if (Date.now() - born > 10000) setReady(true);   // consent tool never loaded (blocked?): do not hide the chat forever
+        return;
+      }
+      if (!ucSeen) ucSeen = Date.now();
+      if (Date.now() - ucSeen < 700) return;              // give the first layer time to appear before judging
+      setReady(!bannerOpen());
+    }
+    if (!CFG.noConsentGate) host.style.display = "none"; else ready = true;
+    window.addEventListener("UC_UI_VIEW_CHANGED", function (e) {
+      var v = e && e.detail && e.detail.view;
+      if (v === "PRIVACY_BUTTON") setReady(true);
+      else if (v === "FIRST_LAYER" || v === "SECOND_LAYER") setReady(false);
+    });
+    if (!CFG.noConsentGate) { setInterval(ucCheck, 500); ucCheck(); }
     window.addEventListener("resize", function () { try { alignToCookie(); } catch (e) {} });
     setInterval(function () { try { alignToCookie(); } catch (e) {} }, 1500);
     [1500, 3500, 7000, 12000].forEach(function (ms) { setTimeout(function () { try { alignToCookie(); } catch (e) {} }, ms); });
