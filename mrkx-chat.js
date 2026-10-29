@@ -803,8 +803,7 @@ var MRKX_DISC = {
     phone: "+354 837 8339",
     storageKey: "mrkx_chat_v1",
     maxMessages: 80,
-    maxLen: 500,
-    noConsentGate: false     // tests: skip waiting for the cookie banner
+    maxLen: 500
   };
   var user = window.MRKX_CHAT_CONFIG || {};
   for (var k in user) if (Object.prototype.hasOwnProperty.call(user, k)) CFG[k] = user[k];
@@ -1192,11 +1191,11 @@ var MRKX_DISC = {
   var CSS = [
     ":host{all:initial}",
     "*{box-sizing:border-box;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}",
-    ".launcher{position:fixed;right:var(--lr,20px);bottom:calc(var(--lb,20px) + var(--lift,0px));width:var(--ls,58px);height:var(--ls,58px);border-radius:50%;border:1px solid rgba(96,165,250,.55);background:linear-gradient(180deg,rgba(96,165,250,.55),rgba(37,99,235,.35));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 30px rgba(0,0,0,.4),0 0 0 4px rgba(96,165,250,.12);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);z-index:2147483647;transition:transform .15s ease,background .15s ease}",
+    ".launcher{position:fixed;right:var(--lr,20px);bottom:var(--lb,20px);width:var(--ls,58px);height:var(--ls,58px);border-radius:50%;border:1px solid rgba(96,165,250,.55);background:linear-gradient(180deg,rgba(96,165,250,.55),rgba(37,99,235,.35));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 30px rgba(0,0,0,.4),0 0 0 4px rgba(96,165,250,.12);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);z-index:2147483647;transition:transform .15s ease,background .15s ease}",
     ".launcher:hover{background:linear-gradient(180deg,rgba(96,165,250,.7),rgba(37,99,235,.5));transform:translateY(-1px)}",
     ".launcher:focus-visible,.chip:focus-visible,.send:focus-visible,.x:focus-visible,textarea:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}",
     ".launcher svg{width:45%;height:45%}",
-    ".panel{position:fixed;right:var(--lr,20px);bottom:calc(var(--lb,20px) + var(--lift,0px) + 70px);width:360px;max-width:calc(100vw - 24px);height:min(560px,calc(100vh - 140px));display:none;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.08) 45%,rgba(255,255,255,.05) 100%),rgba(10,15,31,.55);color:#e5e7eb;border:1px solid rgba(255,255,255,.22);border-top-color:rgba(96,165,250,.6);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 18px 56px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);overflow:hidden;z-index:2147483647}",
+    ".panel{position:fixed;right:var(--lr,20px);bottom:calc(var(--lb,20px) + 70px);width:380px;max-width:calc(100vw - 24px);height:min(600px,calc(100vh - 120px));display:none;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.08) 45%,rgba(255,255,255,.05) 100%),rgba(10,15,31,.55);color:#e5e7eb;border:1px solid rgba(255,255,255,.22);border-top-color:rgba(96,165,250,.6);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 18px 56px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);overflow:hidden;z-index:2147483647}",
     ".panel.open{display:flex}",
     ".head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.14)}",
     ".dot{width:9px;height:9px;border-radius:50%;background:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,.28)}",
@@ -1258,8 +1257,6 @@ var MRKX_DISC = {
     ".panel.short .head{padding-top:max(6px,env(safe-area-inset-top,0px));padding-bottom:4px}.panel.short .x,.panel.short .nw{width:36px;height:36px}.panel.short .dot{width:30px;height:30px}.panel.short .dot:after{width:18px;height:11px}.panel.short .dot:before{width:9px;height:9px}.panel.short .ht span{display:none}.panel.short .ht b{font-size:14px}.panel.short .x{margin-right:6px}.panel.short .dot{margin-right:8px}",
     ".panel.short form{margin:2px 10px 6px}.panel.short .log{padding-top:6px}.panel.tiny .head{display:none}",
     "}",
-    /* Phones in portrait: a bottom sheet (page stays visible above it) instead of a full-screen takeover; full height only while the keyboard is up. */
-    "@media " + PHONE_Q + "{.panel.sheet{left:8px;right:8px;top:auto;width:auto;bottom:calc(max(8px,env(safe-area-inset-bottom,0px)) + var(--lift,0px));height:min(620px,76vh);height:min(620px,76dvh);border-radius:20px;border:1px solid rgba(255,255,255,.22);border-top-color:rgba(96,165,250,.6);padding-left:0;padding-right:0}}",
     "@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}"
   ].join("\n");
 
@@ -1334,64 +1331,6 @@ var MRKX_DISC = {
       try { ok = alignToCookie(); } catch (e) {}
       if (!ok && ++tries < 30) setTimeout(poll, 1000);
     })();
-    /* A browser toolbar that floats over the bottom of the page (iOS Safari) hides the lower edge of the layout viewport.
-       Measure how far a fixed bottom:0 probe sits below the visible area and lift the launcher/panel by that much. */
-    var probe = document.createElement("div");
-    probe.style.cssText = "position:fixed;left:0;bottom:0;width:1px;height:0;visibility:hidden;pointer-events:none";
-    root.appendChild(probe);
-    function measureLift() {
-      var vv2 = window.visualViewport, lift = 0;
-      if (vv2) lift = Math.round(probe.getBoundingClientRect().bottom - (vv2.offsetTop + vv2.height));
-      lift = Math.max(0, Math.min(lift, 120));
-      if (host.style.getPropertyValue("--lift") !== lift + "px") host.style.setProperty("--lift", lift + "px");
-    }
-    if (window.visualViewport) { window.visualViewport.addEventListener("resize", measureLift); window.visualViewport.addEventListener("scroll", measureLift); }
-    window.addEventListener("resize", measureLift);
-    setTimeout(measureLift, 300);
-
-    /* Show the chat only once the cookie banner is out of the way (after any consent decision). */
-    var ready = false, ucSeen = 0, born = Date.now();
-    function setReady(v) {
-      if (v === ready) return;
-      ready = v;
-      host.style.display = v ? "" : "none";
-      if (v) { try { alignToCookie(); measureLift(); } catch (e) {} if (window.__mrkxFit) window.__mrkxFit(); }
-    }
-    function bannerOpen() {
-      var el = null;
-      try { var uh = document.getElementById("usercentrics-cmp-ui"); el = uh && uh.shadowRoot && uh.shadowRoot.getElementById("uc-main-dialog"); } catch (e) {}
-      if (!el) return false;
-      var r = el.getBoundingClientRect(), cs = getComputedStyle(el);
-      return r.height > 40 && cs.visibility !== "hidden" && cs.display !== "none";
-    }
-    /* Slightly more compact consent banner on phones (same buttons, same equal weight; nothing hidden except the logo). */
-    function compactBanner() {
-      try {
-        var uh = document.getElementById("usercentrics-cmp-ui"), sr = uh && uh.shadowRoot;
-        if (!sr || sr.getElementById("mrkx-uc-compact")) return;
-        var st = document.createElement("style"); st.id = "mrkx-uc-compact";
-        st.textContent = "@media (max-width:520px){#main-view{padding:10px 12px!important;gap:6px!important}#top-container{display:none!important}nav.links{flex-wrap:wrap!important;gap:2px 14px!important}nav.links a{font-size:13px!important;line-height:1.3!important}#deny,#accept{padding:10px 12px!important}#uc-cmp-description{font-size:13px!important}}";
-        sr.appendChild(st);
-      } catch (e) {}
-    }
-    function ucCheck() {
-      compactBanner();
-      var u = window.UC_UI;
-      if (!u || !u.isInitialized || !u.isInitialized()) {
-        if (Date.now() - born > 10000) setReady(true);   // consent tool never loaded (blocked?): do not hide the chat forever
-        return;
-      }
-      if (!ucSeen) ucSeen = Date.now();
-      if (Date.now() - ucSeen < 700) return;              // give the first layer time to appear before judging
-      setReady(!bannerOpen());
-    }
-    if (!CFG.noConsentGate) host.style.display = "none"; else ready = true;
-    window.addEventListener("UC_UI_VIEW_CHANGED", function (e) {
-      var v = e && e.detail && e.detail.view;
-      if (v === "PRIVACY_BUTTON") setReady(true);
-      else if (v === "FIRST_LAYER" || v === "SECOND_LAYER") setReady(false);
-    });
-    if (!CFG.noConsentGate) { setInterval(ucCheck, 500); ucCheck(); }
     window.addEventListener("resize", function () { try { alignToCookie(); } catch (e) {} });
     setInterval(function () { try { alignToCookie(); } catch (e) {} }, 1500);
     [1500, 3500, 7000, 12000].forEach(function (ms) { setTimeout(function () { try { alignToCookie(); } catch (e) {} }, ms); });
@@ -1401,17 +1340,11 @@ var MRKX_DISC = {
     var vv = window.visualViewport, mq = window.matchMedia ? window.matchMedia(PHONE_Q) : null;
     function fit() {
       if (!vv || !mq) return;
-      elLauncher.style.visibility = (mq.matches && S.open) ? "hidden" : "";   // phones: the panel has its own back button
       if (mq.matches && S.open) {
         var kb = vv.height < window.innerHeight * 0.8;
-        var sheet = !kb && vv.height >= 560;       // portrait phone without keyboard
-        elPanel.classList.toggle("sheet", sheet);
-        if (sheet) { elPanel.style.top = elPanel.style.bottom = elPanel.style.height = ""; }
-        else {
-          elPanel.style.top = vv.offsetTop + "px";
-          elPanel.style.bottom = "auto";
-          elPanel.style.height = vv.height + "px";
-        }
+        elPanel.style.top = vv.offsetTop + "px";
+        elPanel.style.bottom = "auto";
+        elPanel.style.height = vv.height + "px";
         elPanel.classList.toggle("kb", kb);
         elPanel.classList.toggle("short", vv.height < 380);
         elPanel.classList.toggle("tiny", vv.height < 260);
@@ -1426,7 +1359,7 @@ var MRKX_DISC = {
         scrollEnd();
       } else {
         elPanel.style.top = elPanel.style.bottom = elPanel.style.height = "";
-        elPanel.classList.remove("kb"); elPanel.classList.remove("short"); elPanel.classList.remove("tiny"); elPanel.classList.remove("sheet");
+        elPanel.classList.remove("kb"); elPanel.classList.remove("short"); elPanel.classList.remove("tiny");
       }
     }
     window.__mrkxFit = fit;
