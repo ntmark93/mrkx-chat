@@ -1355,16 +1355,21 @@ var MRKX_DISC = {
         return;
       }
       if (!ucSeen) ucSeen = Date.now();
-      if (Date.now() - ucSeen < 700) return;              // give the first layer time to appear before judging
+      if (Date.now() - ucSeen < 250) return;              // give the first layer a moment to appear before judging
       setReady(!bannerOpen());
     }
-    if (!CFG.noConsentGate) host.style.display = "none"; else ready = true;
+    /* Returning visitor: Usercentrics keeps the earlier decision in localStorage ("ucData"), so show the chat at once
+       instead of waiting ~2 s for the consent tool to load. If it re-asks later, the view event below hides the chat again. */
+    function hasStoredDecision() {
+      try { var d = JSON.parse(localStorage.getItem("ucData") || "null"); return !!(d && d.consent && d.consent.services); } catch (e) { return false; }
+    }
+    if (CFG.noConsentGate || hasStoredDecision()) ready = true; else host.style.display = "none";
     window.addEventListener("UC_UI_VIEW_CHANGED", function (e) {
       var v = e && e.detail && e.detail.view;
       if (v === "PRIVACY_BUTTON") setReady(true);
       else if (v === "FIRST_LAYER" || v === "SECOND_LAYER") setReady(false);
     });
-    if (!CFG.noConsentGate) { setInterval(ucCheck, 500); ucCheck(); }
+    if (!CFG.noConsentGate) { setInterval(ucCheck, 200); ucCheck(); }
     window.addEventListener("resize", function () { try { alignToCookie(); } catch (e) {} });
     setInterval(function () { try { alignToCookie(); } catch (e) {} }, 1500);
     [1500, 3500, 7000, 12000].forEach(function (ms) { setTimeout(function () { try { alignToCookie(); } catch (e) {} }, ms); });
