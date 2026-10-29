@@ -410,6 +410,194 @@ var MRKX_KB = (function () {
            fallbackFirst: fallbackFirst, fallbackSecond: fallbackSecond, bizMap: bizMap };
 })();
 
+/* MRKX Assistant knowledge base, part 2: wider vocabulary, extra topics, guided "what do I need?" flow,
+   Icelandic keyword answers and friendlier fallbacks. Same rules as kb.js: facts only from mrkxlabs.com,
+   no promises about rankings, deadlines or discounts. Loaded after kb.js, merged in bot.js. */
+var MRKX_KB2 = (function () {
+  var P_WEB = "450,000 ISK", P_SEO = "220,000 ISK", P_APP = "1,200,000 ISK";
+  var CONSULT = { t: "Book a consultation", go: "consultation" };
+  var ANALYSIS = { t: "Free analysis", go: "free_analysis" };
+  var TEAM = { t: "Talk to the team", go: "human" };
+
+  /* extra phrasings for intents that already exist in kb.js (how real people word it) */
+  var kwAdd = {
+    greet: ["anyone there", "anyone around", "is anyone there", "are you there", "hello there", "hi there", "hey there", "yo", "sup", "whats up", "howdy", "hiya", "good day", "hej", "hae", "sael", "saell", "gm"],
+    thanks: ["thank you so much", "many thanks", "thanks a lot", "ok thanks", "okay thanks", "great thanks", "thanks for the help", "ty", "much appreciated", "tack", "takk"],
+    bye: ["have a good day", "talk later", "talk soon", "gotta go", "see ya", "cya", "good night", "goodnight", "ok bye", "bless"],
+    about_bot: ["are you a robot", "is this a bot", "is this a real person", "am i talking to a person", "am i talking to a bot", "is this ai", "are you chatgpt", "are you an ai", "bot or human", "are you automated", "is anyone real", "are you a real person"],
+    svc_website: ["need something online", "get my business online", "put my business online", "get online", "go online", "online presence", "web presence", "digital presence", "want a website", "need a website", "make a website", "create a website", "build me a website", "make me a website", "a site for my", "website for my", "my own website", "new website"],
+    svc_seo: ["rank higher", "first page of google", "top of google", "first on google", "get found", "be found online", "found online", "google results", "search results", "more visitors", "more traffic", "get traffic", "outrank", "show up higher", "higher on google", "what is seo", "what even is seo", "seo what", "find me online", "beat my competitor on google"],
+    svc_app: ["app for my business", "iphone app", "need an app", "want an app", "develop an app", "app idea", "my app idea", "make an app", "apple app", "play store"],
+    svc_brand: ["logo design", "design a logo", "new logo", "rebrand", "rebranding", "brand colours", "brand colors", "brand guidelines", "visual style", "look and feel", "logos"],
+    svc_automation: ["automatic emails", "auto reply", "save time on admin", "admin work", "repetitive tasks", "manual work", "spreadsheets", "connect my tools", "reminders", "automatic reminders"],
+    pricing: ["how much for", "how much is", "how much does", "whats the price", "what is the price", "price list", "cost of", "how expensive", "what would it cost", "what will it cost", "would cost me", "starting price", "what are your prices", "what are your rates"],
+    objection: ["discount for", "better price", "best price", "can you do better", "lower the price", "special price", "cheaper option", "reduce the price", "too costly"],
+    monthly_plans: ["is there a monthly fee", "any monthly fees", "monthly costs", "monthly cost", "recurring fee", "recurring cost", "recurring costs", "ongoing cost", "ongoing costs", "hidden costs", "hidden fees", "extra costs", "yearly fee", "annual fee", "what do i pay every month"],
+    timeline: ["how long till", "how long until", "how long before", "how soon can", "till its live", "until its live", "when would it be live", "go live in", "how long will it take", "how long will this take", "how long is the process", "how many weeks"],
+    consultation: ["set up a call", "arrange a call", "can we have a call", "video call", "book a time", "schedule a meeting", "set up a meeting", "free consultation", "quick call", "a call with you"],
+    portfolio: ["something you made", "something you built", "live example", "see your work", "work you did", "websites you made", "sites you made", "what have you built", "built before", "made before", "look at your work", "reference sites", "proof", "track record", "show me your work", "any examples"],
+    ecommerce: ["sell stuff", "sell stuff online", "small shop", "online business", "sell my products", "sell my stuff", "sell goods", "web store", "internet shop", "sell handmade", "shop on my website", "take orders online", "accept orders", "accept payments", "payments online", "online payments", "sell tickets", "sell services online"],
+    company_size: ["one person", "one-person", "one man", "solo", "sole trader", "freelance", "self employed", "self-employed", "just me", "tiny business", "very small business", "too small", "small budget"],
+    social_service: ["facebook page", "my facebook", "take care of my facebook", "manage my facebook", "instagram page", "my instagram", "tiktok", "social accounts", "run my page", "post for me", "social media accounts", "community management"],
+    ownership_hosting: ["who owns the site", "who owns the site after", "who owns it", "who owns the website", "belongs to me", "is it mine", "do i keep the website", "do i get the files", "access to my site", "do i own it"],
+    platform: ["which system", "what system", "what tool", "what software", "built on", "template or custom"],
+    need_from_you: ["what do i need to start", "what do i need from you", "what do i need to give you", "what do i have to give you", "what do i need to send", "what do i have to prepare", "what do i need to do first"],
+    payment_terms: ["how can i pay", "how do i pay you", "how to pay", "ways to pay", "accept card", "pay by card", "bank transfer", "pay with card", "pay half", "half now", "half later", "half upfront", "pay in two", "two payments", "split the payment", "split payment", "pay in installments", "pay part", "part payment", "pay in advance", "advance payment", "down payment", "pay after", "pay when", "when do i pay", "when do i have to pay", "pay at the end"],
+    location: ["only work in iceland", "work outside iceland", "work abroad", "outside of iceland", "other countries", "international", "worldwide", "overseas", "clients abroad", "work with foreign", "outside iceland", "do you work with companies outside", "do i need to be in iceland", "not in iceland", "based abroad", "from another country"],
+    about: ["how many people work", "how many employees", "how big is your team", "team size", "how many are you", "who works there", "who works for you", "who are you people", "who is on your team", "how big are you"],
+    contact: ["how can i reach you", "how do i contact you", "where can i contact you", "how do i reach you", "get hold of you"]
+  };
+
+  /* chip labels for "did you mean ...?" (only ids listed here can be offered) */
+  var labels = {
+    svc_website: "A website", svc_seo: "Getting found on Google", svc_landing: "A landing page", svc_brand: "Brand or logo",
+    svc_automation: "Automation", svc_app: "A mobile app", pricing: "Pricing", timeline: "How long it takes",
+    free_analysis: "A free analysis", consultation: "A consultation", process: "How we work", ecommerce: "Selling online",
+    payment_terms: "Paying", portfolio: "Examples of our work", after_launch: "After launch", contact: "Contact details",
+    why_us: "Why MRKX", multilingual: "Several languages", booking_system: "Online booking", fix_existing: "Improving my current site",
+    changes_later: "Changes later", no_content: "No texts or photos yet", quote_request: "A quote", web_vs_seo: "Website or SEO",
+    local_seo: "Local search", monthly_plans: "Monthly costs", website_edit: "Editing it myself", ownership_hosting: "Ownership and hosting"
+  };
+
+  var intents = [
+    { id: "recommend", kind: "question", kw: ["recommend", "what do i need", "what should i get", "what would you recommend", "what is best for me", "which service", "which one should i", "which is right", "help me choose", "not sure which", "what would suit", "what do you suggest", "advise me", "what is right for me", "what do you advise", "where should i start", "what should i do first"],
+      a: ["Happy to help you work it out. What matters most to you right now?", "Let's narrow it down. What are you mainly trying to achieve?"],
+      chips: [{ t: "Get found on Google", go: "rec_found" }, { t: "Show my business online", go: "rec_show" }, { t: "Get enquiries from a campaign", go: "rec_campaign" }, { t: "Sell online", go: "rec_shop" }, { t: "Save admin time", go: "rec_auto" }, { t: "Something else", go: "human" }] },
+
+    { id: "rec_found", kind: "question", kw: [],
+      a: ["Then the starting point is how your current site and search presence look. Search Foundation work (from " + P_SEO + " plus VAT) fixes the structure, content and technical base that search engines need, and we don't promise rankings. Do you already have a website?"],
+      chips: [{ t: "Yes, I have one", go: "rec_has_site" }, { t: "No website yet", go: "rec_no_site" }, { t: "Pricing first", go: "pricing" }] },
+    { id: "rec_show", kind: "question", kw: [],
+      a: ["A Business Website (from " + P_WEB + " plus VAT) is the usual answer: it explains what you do, builds trust and makes contact easy. Do you already have a website?"],
+      chips: [{ t: "Yes, I have one", go: "rec_has_site" }, { t: "No website yet", go: "rec_no_site" }, { t: "Pricing first", go: "pricing" }] },
+    { id: "rec_campaign", kind: "question", kw: [],
+      a: ["A landing page fits best: one audience, one offer, one next step, with the form and tracking planned together. It's priced per project. Do you already have a campaign or offer defined?"],
+      chips: [{ t: "Yes, it's defined", go: "rec_defined" }, { t: "Not yet", go: "rec_no_site" }, { t: "Landing pages in detail", go: "svc_landing" }] },
+    { id: "rec_shop", kind: "question", kw: [],
+      a: ["Selling online is a bigger decision than a normal website, so it's best to talk it through: products, payments and delivery all shape the build. Do you already have a website?"],
+      chips: [{ t: "Yes, I have one", go: "rec_has_site" }, { t: "No website yet", go: "rec_no_site" }, { t: "Selling online in detail", go: "ecommerce" }] },
+    { id: "rec_auto", kind: "question", kw: [],
+      a: ["Automation works best for repetitive, rule-based work: lead handling, follow-up emails, bookings, reporting. It starts from your workflow, not from a tool, and is priced per project. Do you know which task eats most of your time?"],
+      chips: [{ t: "Yes, I know", go: "rec_defined" }, { t: "Not sure", go: "automation_what" }, { t: "Automation in detail", go: "svc_automation" }] },
+    { id: "rec_has_site", kind: "question", kw: [],
+      a: ["Good. Then the free analysis is the right first step: we look at your pages, technology and SEO issues and email general recommendations within 48 hours. Shall I set it up?"],
+      pending: "analysis", chips: [{ t: "Yes, set it up", go: "analysis_start" }, { t: "What's in it?", go: "analysis_detail" }, { t: "Not now", go: "decline" }] },
+    { id: "rec_no_site", kind: "question", kw: [],
+      a: ["Then a short consultation fits best. We clarify your offer, audience and goals first and shape the scope and price around them. Would you like me to pass your details to the team?"],
+      pending: "consult", chips: [{ t: "Yes, please", go: "handoff_start_consult" }, { t: "Pricing first", go: "pricing" }, { t: "Not now", go: "decline" }] },
+    { id: "rec_defined", kind: "question", kw: [],
+      a: ["Good, that makes the first conversation much quicker. A short consultation is where we turn it into a scope and a price. Would you like me to pass your details to the team?"],
+      pending: "consult", chips: [{ t: "Yes, please", go: "handoff_start_consult" }, { t: "Pricing first", go: "pricing" }, { t: "Not now", go: "decline" }] },
+
+    { id: "not_technical", kind: "question", kw: ["not technical", "non technical", "not tech", "not very technical", "not a tech person", "dont know anything about websites", "no idea about websites", "dont understand websites", "new to this", "complete beginner", "beginner", "first time", "first website", "never had a website", "never done this", "dont know where to start", "dont know what i need", "not sure what i need", "dont know what to ask", "no experience", "dont know much about", "i dont know what i want", "dont know what i want", "not sure what i want", "no idea what i want", "i have an idea", "not sure where to begin"],
+      a: ["That's completely fine, you don't need to know any technical terms. Tell me what your business does and what you'd like people to do, and I'll translate that into what you'd actually need.", "No problem at all. Most people we talk to start exactly there. Explain it in your own words, or answer two quick questions and I'll point you in the right direction."],
+      chips: [{ t: "Help me choose", go: "recommend" }, { t: "How do you work?", go: "process" }, CONSULT] },
+
+    { id: "confused", kind: "question", kw: ["i dont understand", "dont understand", "confusing", "what do you mean", "not clear", "unclear", "huh", "explain simpler", "in simple terms", "plain english", "too technical", "jargon", "im lost", "lost me", "simpler please", "say that again", "explain that again", "what does that mean"],
+      a: ["Sorry, let me put it simply: we build websites and the things around them (search visibility, brand, automation, apps) so that visitors become enquiries. Which part would you like me to explain in plain words?"],
+      chips: [{ t: "A website", go: "svc_website" }, { t: "Google search", go: "svc_seo" }, { t: "Pricing", go: "pricing" }, { t: "Help me choose", go: "recommend" }] },
+
+    { id: "frustrated", kind: "rule", kw: ["this is useless", "useless", "not helpful", "you are not helping", "you dont understand", "stupid bot", "dumb bot", "waste of time", "rubbish", "not what i asked", "wrong answer", "you are wrong", "bad bot", "worthless", "not helping", "that doesnt answer"],
+      a: ["Sorry about that. I'm an automated assistant and I don't always get it right. I'd rather get you to a person than keep guessing. Shall I pass your question to our team?"],
+      pending: "handoff", chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "Let me rephrase", go: "rephrase" }] },
+
+    { id: "rephrase", kind: "question", kw: [],
+      a: ["Of course. Tell me in your own words what you need, even a rough description is fine."],
+      chips: [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }] },
+
+    { id: "ack", noCount: true, kind: "question", kw: ["ok", "okay", "cool", "got it", "i see", "alright", "nice", "great", "awesome", "perfect", "sounds good", "understood", "makes sense", "interesting", "good to know", "noted", "wow", "thats good", "that helps"],
+      a: ["Good. Is there anything else you'd like to know?", "Great. Anything else I can help with?", "Glad that helps. What else would you like to know?"],
+      chips: [{ t: "Pricing", go: "pricing" }, { t: "How do you work?", go: "process" }, ANALYSIS, TEAM] },
+
+    { id: "laugh", noCount: true, kind: "question", kw: ["lol", "haha", "hahaha", "lmao", "funny", "hehe"],
+      a: ["Glad you're enjoying it. What can I help you with today?", "Ha, fair enough. Anything about websites, search or our services I can help with?"],
+      chips: [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }] },
+
+    { id: "howareyou", noCount: true, kind: "question", kw: ["how are you", "how are you doing", "hows it going", "how is it going", "how do you do", "how are things"],
+      a: ["Doing well, thanks for asking. What can I help you with?"],
+      chips: [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }] },
+
+    { id: "quote_request", kind: "question", kw: ["send me a quote", "get a quote", "need a quote", "free quote", "quote for", "quotation", "send me a proposal", "written offer", "offer for my project", "custom quote", "price offer", "give me a quote", "can i get a quote", "i want a quote", "proposal"],
+      a: ["We don't send a fixed quote without knowing the scope, because the price depends on pages, languages, integrations and content. Starting prices: Business Website from " + P_WEB + ", Search Foundation from " + P_SEO + ", mobile apps from " + P_APP + ", all plus VAT. A short consultation is where we shape an exact price around your project. Shall I pass your request to the team?"],
+      pending: "consult", chips: [{ t: "Yes, please", go: "handoff_start_consult" }, { t: "Pricing details", go: "pricing" }, { t: "Not now", go: "decline" }] },
+
+    { id: "startup_price", kind: "faq", kw: ["do you offer discounts for startups", "offer discounts for startups", "any discounts for startups", "do you have discounts for startups", "discounts for startups", "discount for startups", "startup discount", "startup price", "startup package", "price for startups", "student discount", "nonprofit", "non profit", "charity", "association", "early stage", "just starting out", "limited budget", "tight budget", "small budget", "low budget"],
+      a: ["I can't promise discounts, and our prices are starting prices. What I can say is that a new or small business rarely needs everything at once: we usually start with a focused first version, a clear offer on a page that explains it fast, and build from there. A short consultation shows what fits your budget. Shall I pass your request on?"],
+      pending: "consult", chips: [{ t: "Yes, please", go: "handoff_start_consult" }, { t: "Pricing", go: "pricing" }, { t: "Not now", go: "decline" }] },
+
+    { id: "worth_it", kind: "question", kw: ["is it worth it", "worth the money", "worth the cost", "worth it", "do i really need a website", "do i need a website", "why do i need a website", "is a website necessary", "benefit of a website", "why a website", "is it necessary", "do i need seo", "is seo worth it"],
+      a: ["A website pays off when it does a job: people check a business online before they get in touch, so it should explain what you do, build trust and make contact easy. We can't promise results, but the free analysis or a short consultation lets you judge what it would realistically do for your case before you commit to anything."],
+      chips: [ANALYSIS, CONSULT, { t: "Pricing", go: "pricing" }] },
+
+    { id: "changes_later", kind: "faq", kw: ["change something later", "change later", "changes later", "update later", "make changes later", "edit later", "add pages later", "add something later", "grow later", "expand later", "add more later", "make changes after", "update after", "change it later", "modify later", "change things later", "add features later", "extend it later"],
+      a: ["Yes. Websites we build are planned for growth: reusable templates and a content structure that is easy to edit without breaking the design, so adding pages or changing text later doesn't mean starting over. Who makes the changes, you or us, and on what terms is agreed per project."],
+      chips: [{ t: "Can I edit it myself?", go: "website_edit" }, { t: "Monthly costs", go: "monthly_plans" }, CONSULT] },
+
+    { id: "languages_spoken", kind: "question", kw: ["speak english", "speak icelandic", "only icelandic", "english or icelandic", "do you speak", "which language do you speak", "what language do you", "can we talk in english", "can i write in english", "can i write in icelandic", "in icelandic please", "icelandic speaking", "talk in icelandic", "do you speak icelandic", "do you speak english"],
+      a: ["Our website is available in English and Icelandic, and you're welcome to write to the team in either language. This chat currently answers mostly in English, with basic Icelandic for common questions."],
+      chips: [{ t: "Talk to the team", go: "human" }, { t: "Websites in two languages", go: "multilingual" }] },
+
+    { id: "no_content", kind: "question", kw: ["no content", "dont have content", "no photos", "dont have photos", "no pictures", "no images", "dont have images", "no text", "dont have any text", "nothing ready", "have nothing", "starting from nothing", "from scratch", "no logo", "dont have a logo", "no branding yet", "need help with text and photos", "who provides photos", "stock photos", "dont have any content", "dont have any photos", "no material"],
+      a: ["You don't need to have everything ready. We clarify the offer, audience and structure first, and the consultation is where we work out what's needed, including texts and images. Who writes and sources what is agreed per project."],
+      chips: [{ t: "Who writes the text?", go: "copywriting" }, { t: "What do you need from me?", go: "need_from_you" }, CONSULT] },
+
+    { id: "urgent", kind: "question", kw: ["by next week", "next week", "this week", "urgent", "urgently", "in a hurry", "very soon", "as soon as possible", "rush", "quickly", "fast turnaround", "tight deadline", "launch date", "event coming", "before the season", "by friday", "by the end of the month", "in a few days", "tomorrow", "this month", "need it fast", "need it quick"],
+      a: ["Timelines depend on scope and content, so I can't promise a date here and I'd rather not overpromise. If you have a hard deadline, tell the team the date and what it's for, and they can tell you honestly what's realistic."],
+      pending: "handoff", chips: [{ t: "Tell the team my deadline", go: "handoff_start" }, { t: "Typical timelines", go: "timeline" }, { t: "Not now", go: "decline" }] },
+
+    { id: "web_vs_seo", kind: "question", kw: ["difference between the business website", "difference between business website", "difference between website and seo", "difference between the website and seo", "website vs seo", "seo vs website", "business website and the search foundation", "what is search foundation", "what is the search foundation", "search foundation vs", "website or seo", "do i need seo or a website", "website and seo difference", "difference between the services", "difference between your services", "which is better website or seo"],
+      a: ["A Business Website (from " + P_WEB + " plus VAT) is the site itself: structure, design, development and the technical SEO foundations. Search Foundation (from " + P_SEO + " plus VAT) is search-focused work on structure, content, technical base and local search so an existing site can be found. No site yet: start with the website. A site that isn't found: start with the free analysis."],
+      chips: [{ t: "Website details", go: "svc_website" }, { t: "SEO details", go: "svc_seo" }, ANALYSIS, { t: "Help me choose", go: "recommend" }] },
+
+    { id: "fix_existing", kind: "question", kw: ["fix my wordpress", "wordpress site already", "have a wordpress", "can you fix", "fix my site", "fix it", "take over my site", "take over my website", "existing wordpress", "migrate my site", "move my website", "move my site", "switch from wordpress", "rebuild my site", "redo my website", "redo my site", "revamp", "refresh my website", "new look for my website", "update my old website", "old website", "outdated website", "my website looks old", "improve my site"],
+      a: ["Yes, we work with existing sites. Whether to fix, improve or rebuild depends on what the site looks like today, which is exactly what the free analysis shows: your pages, the technology and the SEO issues, with general recommendations by email within 48 hours. Shall I set it up?"],
+      pending: "analysis", chips: [{ t: "Yes, set it up", go: "analysis_start" }, { t: "What's in it?", go: "analysis_detail" }, { t: "Which platform?", go: "platform" }, { t: "Not now", go: "decline" }] },
+
+    { id: "booking_system", kind: "question", kw: ["booking system", "online booking", "book appointments", "appointment booking", "appointments online", "reservation system", "table booking", "let customers book", "customers book online", "calendar booking", "booking calendar", "booking engine", "book a time", "scheduling system", "online reservations", "take bookings", "bookings online", "bookings", "appointments", "need bookings", "customers to book"],
+      a: ["Booking is a common part of our work. We connect websites to booking and calendar tools and can automate confirmations and follow-ups. Which setup fits depends on your business, so the details are scoped per project."],
+      chips: [{ t: "Website service", go: "svc_website" }, { t: "Automation", go: "svc_automation" }, CONSULT] }
+  ];
+
+  /* the "Did you mean?" step needs plain words that carry no meaning on their own */
+  var stop = "a an the and or but if so to of in on at for with from by about as is are was were be been am do does did have has had i me my we our you your it its this that these those there here what which who whom how when where why can could would should will just not no yes please also very too really some any more most much many than then them they their he she him her his hers us im ive id ill dont doesnt didnt cant wont isnt arent get got want need like know think tell ask see use make".split(" ");
+
+  /* plain-text shorthand and slang, applied to the normalised text (word for word) */
+  var syn = { u: "you", ur: "your", r: "are", pls: "please", plz: "please", thx: "thanks", wanna: "want to", gonna: "going to", gotta: "got to", biz: "business", ppl: "people", gimme: "give me", lemme: "let me", abt: "about", bcos: "because", cuz: "because", coz: "because", msg: "message", tmrw: "tomorrow", tmr: "tomorrow", wat: "what", hw: "how", idk: "i dont know", rn: "right now", seoo: "seo", seeo: "seo", sso: "seo" };
+
+  /* Icelandic: keyword rules for the most common questions (to be proofread by a native speaker) */
+  var isRules = [
+    { re: /(kostar|ver[ðd]\b|ver[ðd]i|ver[ðd]lag|ver[ðd]skr|ódýr|dýr|odyr|kostna)/i, id: "price",
+      a: "Verð fer eftir umfangi verkefnisins. Vefsíður hjá okkur byrja frá 450.000 kr., leitarvélabestun (Search Foundation) frá 220.000 kr. og smáforrit frá 1.200.000 kr., allt auk VSK. Besta næsta skref er stutt ráðgjöf þar sem við mótum verðið að þínu verkefni." },
+    { re: /(hversu lengi|langan t[ií]ma|hve lengi|tekur|afhend|frestur|hvenær ver[ðd]ur|hvenaer)/i, id: "time",
+      a: "Tímalínan fer eftir umfangi og efni, svo ég get ekki lofað dagsetningu hér. Ef þú segir teyminu hvenær þú þarft á þessu að halda geta þau sagt þér hvað er raunhæft." },
+    { re: /(talar|tala[ðd]|[ií]slensku|islensku|ensku|tungum[áa]l)/i, id: "lang",
+      a: "Vefsíðan okkar er bæði á ensku og íslensku og þú mátt skrifa til teymisins á hvoru málinu sem er. Þetta spjall svarar enn aðallega á ensku." },
+    { re: /(leitarv[ée]l|google|seo|finnast|finna mig|leitar)/i, id: "seo",
+      a: "Við vinnum með leitarvélabestun sem hluta af uppbyggingu vefsins: tæknilegur grunnur, uppbygging síðna, efni og staðbundin leit. Við lofum ekki ákveðnum sætum í leitarniðurstöðum, því leitarvélarnar ráða því." },
+    { re: /(vefs[ií][ðd]|heimas[ií][ðd]|vefur|vefsida|heimasida|vef\b)/i, id: "web",
+      a: "Við hönnum og smíðum vefsíður sem eiga að skila fyrirspurnum: uppbygging, hönnun, forritun og grunnatriði leitarvélabestunar. Segðu mér stuttlega frá fyrirtækinu þínu, eða sendu spurninguna til teymisins." },
+    { re: /(smáforrit|smaforrit|\bapp\b|\bforrit)/i, id: "app",
+      a: "Við hönnum og þróum smáforrit, en athugum fyrst hvort smáforrit sé rétta lausnin. Verkefni byrja frá 1.200.000 kr. auk VSK og endanlegt verð fer eftir umfangi." },
+    { re: /(l[óo]g[óo]|vörumerki|vorumerki|[ií]mynd fyrirt)/i, id: "brand",
+      a: "Vörumerkjakerfi er meira en lógó: það skilgreinir hvernig ímynd fyrirtækisins virkar í útliti, textum og á vefnum. Verð fer eftir verkefni." },
+    { re: /(netfang|s[ií]mi|s[ií]man[úu]mer|hafa samband|hringja|heimilisfang)/i, id: "contact",
+      a: "Þú getur skrifað okkur á hello@mrkxlabs.com. Ef þú vilt get ég líka sent spurninguna þína áfram til teymisins." },
+    { re: /(takk|þakka|thakka)/i, id: "thanks",
+      a: "Verði þér að góðu! Er eitthvað fleira sem ég get hjálpað með?" },
+    { re: /^\s*(hæ|hallo|halló|sæl|sæll|sael|saell|góðan dag|goðan dag|gott kvöld|hey)(?=$|[\s!.,?])/i, id: "hello",
+      a: "Halló! Hvað get ég aðstoðað þig með?" }
+  ];
+
+  var fallbackFirst = [
+    "I'm not sure I understood that. Could you say it a little differently? You can also pick a topic below.",
+    "I didn't quite catch that. Tell me in a few words what you're after, for example a website, getting found on Google, or a price.",
+    "That one got past me. Try describing what your business does and what you want from it, and I'll take it from there.",
+    "Sorry, I can't place that yet. A few words about what you need is enough, or choose one of the topics below."
+  ];
+
+  return { kwAdd: kwAdd, labels: labels, intents: intents, stop: stop, syn: syn, isRules: isRules, fallbackFirst: fallbackFirst };
+})();
+
 /* MRKX Assistant: detailed service knowledge, one section per topic of each service page.
    Facts only from mrkxlabs.com/services/*. No rankings, results or timelines are promised anywhere in here. */
 var MRKX_SECTIONS = {
@@ -795,6 +983,14 @@ var MRKX_DISC = {
   window.__mrkxChatLoaded = true;
 
   var KB = MRKX_KB;
+  var TEAMCHIP = { t: "Talk to the team", go: "human" };
+  var KB2 = (typeof MRKX_KB2 !== "undefined") ? MRKX_KB2 : null;
+  if (KB2) {
+    // wider phrasings for existing intents, then the extra intents and friendlier fallbacks
+    KB.intents.forEach(function (it) { if (KB2.kwAdd[it.id]) it.kw = it.kw.concat(KB2.kwAdd[it.id]); });
+    KB.intents = KB.intents.concat(KB2.intents);
+    KB.fallbackFirst = KB2.fallbackFirst;
+  }
   var CFG = {
     endpoint: null,          // Apps Script web app URL; null = demo mode (nothing is sent)
     demoResult: "ok",        // demo mode: "ok" | "cap" | "duplicate" | "network"
@@ -909,8 +1105,32 @@ var MRKX_DISC = {
     if (w.length > 3 && w.charAt(w.length - 1) === "e") w = w.slice(0, -1);
     return w;
   }
+  var SYN = KB2 ? KB2.syn : {};
+  var VOC = null, VOCI = {};
+  // true when a and b differ by one edit (insert, delete, replace, or swap of two neighbours)
+  function oneEdit(a, b) {
+    var la = a.length, lb = b.length, i = 0;
+    if (Math.abs(la - lb) > 1) return false;
+    while (i < la && i < lb && a.charAt(i) === b.charAt(i)) i++;
+    if (la === lb) {
+      if (a.slice(i + 1) === b.slice(i + 1)) return true;
+      return a.charAt(i) === b.charAt(i + 1) && a.charAt(i + 1) === b.charAt(i) && a.slice(i + 2) === b.slice(i + 2);
+    }
+    return la > lb ? a.slice(i + 1) === b.slice(i) : b.slice(i + 1) === a.slice(i);
+  }
+  // repair a likely typo (not a known word, one edit from exactly one known word)
+  function fix(t) {
+    if (!VOC || t.length < 5 || VOC[t] || /\d/.test(t)) return t;
+    var list = VOCI[t.charAt(0)] || [], hit = null;
+    for (var i = 0; i < list.length; i++) {
+      if (Math.abs(list[i].length - t.length) <= 1 && oneEdit(t, list[i])) { if (hit) return t; hit = list[i]; }
+    }
+    return hit || t;
+  }
   function toks(s) {
-    return norm(s).replace(/[^a-z0-9#]+/g, " ").trim().split(" ").filter(Boolean).map(stem);
+    var t = norm(s).replace(/['\u2019`]/g, "").replace(/[^a-z0-9#]+/g, " ").trim().split(" ").filter(Boolean), out = [];
+    t.forEach(function (w) { if (SYN[w]) out.push.apply(out, SYN[w].split(" ")); else out.push(w); });
+    return out.map(stem).map(fix);
   }
   function hasSeq(M, P) {
     if (!P.length) return false;
@@ -922,7 +1142,8 @@ var MRKX_DISC = {
     return false;
   }
   var KIND_RANK = { rule: 4, faq: 3, question: 2, topic: 1 };
-  var SHORT_ONLY = { greet: 1, thanks: 1, bye: 1 };
+  var SHORT_ONLY = { greet: 1, thanks: 1, bye: 1, ack: 1, laugh: 1, howareyou: 1 };
+  var SHORT_MAX = { ack: 3, laugh: 3, howareyou: 5 };
 
   // pre-tokenise patterns once
   KB.intents.forEach(function (it) {
@@ -932,7 +1153,7 @@ var MRKX_DISC = {
   function scoreAll(M) {
     var out = [];
     KB.intents.forEach(function (it) {
-      if (SHORT_ONLY[it.id] && M.length > 5) return;
+      if (SHORT_ONLY[it.id] && M.length > (SHORT_MAX[it.id] || 5)) return;
       var sc = 0;
       it._p.forEach(function (p) { if (hasSeq(M, p.t)) sc += p.w; });
       if (sc > 0) out.push({ it: it, sc: sc });
@@ -1089,6 +1310,38 @@ var MRKX_DISC = {
     Object.keys(d.th).concat(Object.keys(d.tm), Object.keys(d.tl)).filter(function (t, i, a) { return a.indexOf(t) === i; }).forEach(function (t) { DF[t] = (DF[t] || 0) + 1; });
   });
   function idf(t) { return Math.log(1 + DOCS.length / (DF[t] || 0.5)); }
+
+  /* ---------- vocabulary for typo repair + "did you mean?" index ---------- */
+  var TOKIX = {};
+  (function () {
+    var v = {};
+    function addT(t) { if (t && t.length >= 4 && !/\d/.test(t)) v[t] = 1; }
+    function addPat(it, ix) {
+      it._p.forEach(function (p) {
+        p.t.forEach(function (t) {
+          addT(t);
+          if (ix && t.length > 2 && !STOP[t]) { (TOKIX[t] = TOKIX[t] || []); if (TOKIX[t].indexOf(it.id) < 0) TOKIX[t].push(it.id); }
+        });
+      });
+    }
+    KB.intents.forEach(function (it) { addPat(it, KB2 && KB2.labels[it.id] && it.kw.length); });
+    Object.keys(SEC).forEach(function (k) { SEC[k].items.forEach(function (x) { addPat(x, false); }); });
+    DOCS.forEach(function (d) { [d.th, d.tm, d.tl].forEach(function (o) { Object.keys(o).forEach(addT); }); });
+    KB.bizMap.forEach(function (b) { b.words.forEach(function (w) { toks(w).forEach(addT); }); });
+    ("website websit business company customer customers restaurant hotel guesthouse salon shop store online google search price pricing project design develop developer product products service services marketing contact email phone help question questions information").split(" ").forEach(function (w) { toks(w).forEach(addT); });
+    VOC = v;
+    Object.keys(v).forEach(function (w) { (VOCI[w.charAt(0)] = VOCI[w.charAt(0)] || []).push(w); });
+  })();
+  // closest labelled topics for a message the strict matcher could not place
+  function nearIntents(M) {
+    var cand = {}, seen = {};
+    M.forEach(function (t) {
+      if (seen[t] || !TOKIX[t]) return; seen[t] = 1;
+      var w = 1 / Math.sqrt(TOKIX[t].length);
+      TOKIX[t].forEach(function (id) { cand[id] = (cand[id] || 0) + w; });
+    });
+    return Object.keys(cand).map(function (id) { return { id: id, sc: cand[id] }; }).sort(function (a, b) { return b.sc - a.sc; });
+  }
   function retrieve(raw, msgTopic) {
     var q = content(raw).filter(function (t, i, a) { return a.indexOf(t) === i; });
     if (!q.length) return null;
@@ -1153,6 +1406,12 @@ var MRKX_DISC = {
   }
   var IS_STRONG = ["takk", "hallo", "halló", "teymisins", "senda", "svara", "spurningu", "ensku", "íslensku", "vinsamlegast", "netfang", "hvernig", "vefsíða", "vefsíðu", "heimasíða", "fyrirtæki", "verð", "góðan", "daginn", "sæl", "sæll", "viltu", "vantar", "þjónusta", "þarf"];
   var IS_WEAK = [" og ", " ég ", " að ", " ekki ", " það ", " hvað ", " er ", " við ", " mig ", " vil ", " get ", " hefur ", " fyrir "];
+  // keyword rules for the commonest Icelandic questions (first match wins)
+  function icelandicAnswer(raw) {
+    var rules = KB2 ? KB2.isRules : [], s = raw.toLowerCase();
+    for (var i = 0; i < rules.length; i++) if (rules[i].re.test(s)) { S.last = "is_" + rules[i].id; return rules[i].a; }
+    return null;
+  }
   function isIcelandic(raw) {
     var s = " " + raw.toLowerCase() + " ";
     if (/[þðæ]/.test(s)) return true;
@@ -1539,6 +1798,8 @@ var MRKX_DISC = {
     if (!fromChip && isIcelandic(raw)) {
       S.lang = "is"; labels();
       if (/teymi|senda|starfsmann|manneskj/i.test(raw)) return route("human");
+      var isr = icelandicAnswer(raw);
+      if (isr) return say(isr, [{ t: "Senda til teymisins", go: "human" }, { t: "Ókeypis greining", go: "analysis_start" }, { t: "Svara á ensku", go: "services" }]);
       return say(T("isNote"), [{ t: "Svara á ensku", go: "services" }, { t: "Senda til teymisins", go: "human" }]);
     }
 
@@ -1586,29 +1847,53 @@ var MRKX_DISC = {
       } else { return route("decline"); }
     }
 
+    if (!S.pending && !S.awaiting && !S.flow) {
+      var bare = words(raw);
+      if (/^(yes|yeah|yep|yup|sure|ja)$/.test(bare)) return say("Great. What would you like to start with?", [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Help me choose", go: "recommend" }, { t: "Free analysis", go: "free_analysis" }]);
+      if (/^(no|nope|nah|nei)$/.test(bare)) return say("No problem. Is there anything else I can help with?", [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, TEAMCHIP]);
+    }
+
     // 8. intent matching
     var ranked = scoreAll(M);
     var best = ranked[0];
     var msgTopic0 = topicOf(M);
     var sec = bestSection(M, msgTopic0);
     var cue = DETAIL_CUE.test(raw), priceQ = /\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/i.test(raw) || /\banalysis\b/i.test(raw);
+    // "I need a landing page" is a request for the service, not a detail question about it
+    var wantCue = /\b(i need|i want|we need|we want|looking for|interested in|i d like|id like|would like|im looking|i am looking|can you build|can you make|can you create|do you build|do you make)\b/i.test(norm(raw).replace(/['\u2019]/g, " "));
     var rt0 = (!priceQ) ? retrieve(raw, msgTopic0) : null;
+    if (wantCue && best && best.it.kind === "topic" && !cue) rt0 = null;
     if (rt0 && rt0.d.kind === "faq" && rt0.sc >= RT_FAQ && rt0.mt >= 2 && !cue && (!best || best.it.kind === "faq" || (best.it.kind === "topic" && content(raw).length >= 3))) { S.fails = 0; return docAnswer(rt0.d, nameLine); }
-    if (sec && (cue || !best || best.it.kind === "topic" || sec.sc >= best.sc - 0.5) && !(priceQ && !(best && best.sc < sec.sc))) return secAnswer(sec.key, sec.idx, nameLine);
+    var skipDetail = wantCue && best && best.it.kind === "topic" && !cue;
+    if (sec && !skipDetail && (cue || !best || best.it.kind === "topic" || sec.sc >= best.sc - 0.5) && !(priceQ && !(best && best.sc < sec.sc))) return secAnswer(sec.key, sec.idx, nameLine);
     if (cue && !priceQ && (msgTopic0 || S.topic) && SEC[msgTopic0 || S.topic] && (!best || best.it.kind === "topic" || best.sc < 3)) return secOverview(msgTopic0 || S.topic, nameLine);
     var rt = (!priceQ || cue) ? retrieve(raw, msgTopic0) : null;
+    if (wantCue && best && best.it.kind === "topic" && !cue) rt = null;
     if (rt && rt.sc >= RT_MIN && rt.mt >= 2 && (!best || best.sc < 2.5 || (best.it.kind === "topic" && content(raw).length >= 3)) && words(raw).split(" ").length >= 2) { S.fails = 0; return docAnswer(rt.d, nameLine); }
     if (best && best.sc >= 1.5) {
       S.fails = 0;
       if (best.it.kind === "topic") S.topic = best.it.topic;
       var msgTopic = topicOf(M);
-      return route(best.it.id, { msgTopic: msgTopic, prefix: nameLine, secChip: sec && best.it.kind === "faq" ? { t: "More detail", go: "sec:" + sec.key + ":" + sec.idx } : null });
+      // a second, different topic in the same message ("sell online and take bookings"): offer it as a chip
+      var alt = null;
+      for (var ai = 1; ai < ranked.length && !alt; ai++) {
+        var ar = ranked[ai];
+        if (ar.sc >= 1.5 && ar.it.id !== best.it.id && KB2 && KB2.labels[ar.it.id] && ar.it.kind !== "rule") alt = { t: KB2.labels[ar.it.id], go: ar.it.id };
+      }
+      return route(best.it.id, { msgTopic: msgTopic, prefix: nameLine, alt: alt, secChip: sec && best.it.kind === "faq" ? { t: "More detail", go: "sec:" + sec.key + ":" + sec.idx } : null });
     }
 
     // 9. url / email given out of the blue → likely wants analysis or handoff
     if (normUrl(raw) && !em) { S.slots.url = normUrl(raw); return say(nameLine + "Thanks. Would you like us to run the free website and search analysis for " + domainOf(S.slots.url) + "?", [{ t: "Yes, set it up", go: "analysis_start" }, { t: "Not now", go: "decline" }]); }
 
-    // 10. fallback
+    // 10. fallback: offer the closest topics before giving up
+    var near = nearIntents(M).filter(function (x) { return KB2 && KB2.labels[x.id]; }).slice(0, 3);
+    if (near.length && near[0].sc >= 0.55 && S.fails < 1 && words(raw).split(" ").length >= 2) {
+      S.fails++;
+      var nch = near.map(function (x) { return { t: KB2.labels[x.id], go: x.id }; });
+      nch.push({ t: "Something else", go: "rephrase" });
+      return say(nameLine + pick(["I want to be sure I get this right. Is it closer to one of these?", "I'm not certain what you mean. Which of these comes closest?"], "near"), nch);
+    }
     S.fails++;
     if (S.fails >= 2) { S.pending = "handoff"; return say(nameLine + KB.fallbackSecond, [{ t: "Yes, please", go: "handoff_start" }, { t: "Not now", go: "decline" }]); }
     return say(nameLine + pick(KB.fallbackFirst, "fb"), [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "Talk to the team", go: "human" }]);
@@ -1656,6 +1941,7 @@ var MRKX_DISC = {
     var it = byId(id);
     if (!it) return say(T("moreNone"));
     var cc = it.chips; if (opt.secChip) cc = [opt.secChip].concat(cc || []);
+    if (opt.alt && !(cc || []).some(function (c) { return c.go === opt.alt.go; })) cc = (cc || []).concat([opt.alt]);
     return finish((opt.prefix || "") + pick(it.a, it.id), cc, it);
   }
 
@@ -1879,6 +2165,8 @@ var MRKX_DISC = {
       open: function () { toggle(true); },
       close: function () { toggle(false); },
       ask: function (t) { return Promise.resolve(userSays(t, false)).then(function () { return Q; }); },
+      chip: function (label, go) { return Promise.resolve(userSays(label, true, { t: label, go: go })).then(function () { return Q; }); },
+      toks: function (t) { return toks(t); },
       done: function () { return Q; },
       state: function () { return JSON.parse(JSON.stringify(S)); },
       reset: function () { restart(); }
