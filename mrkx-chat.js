@@ -1679,7 +1679,9 @@ var MRKX_DISC = {
     ".launcher:focus-visible,.chip:focus-visible,.send:focus-visible,.x:focus-visible,textarea:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}",
     ".launcher svg{width:45%;height:45%}",
     ".panel{position:fixed;right:var(--lr,20px);bottom:calc(var(--lb,20px) + 70px);width:380px;max-width:calc(100vw - 24px);height:min(600px,calc(100vh - 120px));display:none;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.08) 45%,rgba(255,255,255,.05) 100%),rgba(10,15,31,.55);color:#e5e7eb;border:1px solid rgba(255,255,255,.22);border-top-color:rgba(96,165,250,.6);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 18px 56px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);overflow:hidden;z-index:2147483647}",
-    ".panel.open{display:flex}",
+    ".panel.open,.panel.closing{display:flex}",
+    ".panel.open{animation:pin .26s cubic-bezier(.2,.7,.2,1) both}.panel.closing{animation:pout .2s ease both;pointer-events:none}",
+    "@keyframes pin{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}@keyframes pout{from{opacity:1;transform:none}to{opacity:0;transform:translateY(18px) scale(.97)}}",
     ".head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.14)}",
     ".dot{width:9px;height:9px;border-radius:50%;background:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,.28)}",
     ".ht{flex:1;min-width:0}.ht b{display:block;font-size:13px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:#fff}.ht span{display:block;font-size:12px;color:#9ca3af;margin-top:2px}",
@@ -1902,9 +1904,16 @@ var MRKX_DISC = {
     root.querySelector(".note").textContent = T("note");
     elLauncher.setAttribute("aria-label", T("open"));
   }
+  var closeT;
   function toggle(open) {
+    var was = S.open;
     S.open = !!open;
-    elPanel.classList.toggle("open", S.open);
+    if (S.open) { clearTimeout(closeT); elPanel.classList.remove("closing"); elPanel.classList.add("open"); }
+    else if (was && elPanel.classList.contains("open")) {
+      // animate out, then hide
+      elPanel.classList.remove("open"); elPanel.classList.add("closing");
+      clearTimeout(closeT); closeT = setTimeout(function () { elPanel.classList.remove("closing"); }, 210);
+    }
     elLauncher.setAttribute("aria-expanded", S.open ? "true" : "false");
     if (window.__mrkxFit) window.__mrkxFit();
     if (S.open) {

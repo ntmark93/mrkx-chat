@@ -1,4 +1,4 @@
-/* MRKX Labs - custom mobile menu (full-screen overlay).
+/* MRKX Labs - custom mobile menu (full-screen glass overlay).
  * Replaces the built-in dropdown: the existing hamburger button stays, its click is
  * taken over here; the built-in menu container is hidden. EN + IS (path prefix /is). */
 (function () {
@@ -8,12 +8,18 @@
 
   var TOGGLE = "#MENU_AS_CONTAINER_TOGGLE";
   var ORIGIN = location.origin;
+  var MAIL = "hello@mrkxlabs.com";
+  var SOCIAL = [
+    ["Instagram", "https://www.instagram.com/mrkx.labs"],
+    ["LinkedIn", "https://www.linkedin.com/company/mrkxlabs"],
+    ["Facebook", "https://www.facebook.com/mrkxlabs"]
+  ];
 
   var COPY = {
     en: {
       prefix: "",
-      open: "Open navigation menu", close: "Close navigation menu", nav: "Site",
-      langLabel: "Language",
+      open: "Open navigation menu", close: "Close navigation menu", nav: "Site", kicker: "Navigation",
+      langLabel: "Language", langs: ["English", "Íslenska"], ext: "Opens in a new tab", foot: "MRKX Labs · Iceland",
       items: [
         { t: "Home", p: "/" },
         { t: "Services", p: "/services", sub: [
@@ -25,15 +31,19 @@
           { t: "Brand System", d: "Identity & guidelines", p: "/services/brand-system" },
           { t: "SEO", d: "SEO strategy", p: "/services/seo" }
         ] },
-        { t: "Portfolio", p: "/portfolio" },
+        { t: "Portfolio", p: "/portfolio", m: "/portfolio", sub: [
+          { t: "All projects", d: "Overview", p: "/portfolio" },
+          { t: "Road1Tow", d: "Case study", p: "/portfolio-case-study-road1tow" },
+          { t: "Road1Tow live site", d: "Opens in a new tab", x: "https://www.road1tow.is" }
+        ] },
         { t: "About", p: "/about" },
         { t: "Contact", p: "/contact" }
       ]
     },
     is: {
       prefix: "/is",
-      open: "Opna valmynd", close: "Loka valmynd", nav: "Vefur",
-      langLabel: "Tungumál",
+      open: "Opna valmynd", close: "Loka valmynd", nav: "Vefur", kicker: "Valmynd",
+      langLabel: "Tungumál", langs: ["English", "Íslenska"], ext: "Opnast í nýjum glugga", foot: "MRKX Labs · Ísland",
       items: [
         { t: "Heim", p: "/" },
         { t: "Þjónusta", p: "/services", sub: [
@@ -41,11 +51,15 @@
           { t: "Lendingarsíður", d: "Síður sem skila árangri", p: "/services/landing-page" },
           { t: "Vefsíður", d: "Vefsíðugerð", p: "/services/websites" },
           { t: "Sjálfvirkni", d: "Sjálfvirk kerfi", p: "/services/automation-systems" },
-          { t: "Smáforrit", d: "Hönnun og þróun", p: "/services/mobile-app-design-development" },
+          { t: "Smáforrit", d: "Hönnun og þóun", p: "/services/mobile-app-design-development" },
           { t: "Vörumerki", d: "Vörumerkjakerfi", p: "/services/brand-system" },
           { t: "SEO", d: "Leitarvélabestun", p: "/services/seo" }
         ] },
-        { t: "Verkefni", p: "/portfolio" },
+        { t: "Verkefni", p: "/portfolio", m: "/portfolio", sub: [
+          { t: "Öll verkefni", d: "Yfirlit", p: "/portfolio" },
+          { t: "Road1Tow", d: "Dæmisaga", p: "/portfolio-case-study-road1tow" },
+          { t: "Road1Tow vefsíða", d: "Opnast í nýjum glugga", x: "https://www.road1tow.is" }
+        ] },
         { t: "Um", p: "/about" },
         { t: "Samband", p: "/contact" }
       ]
@@ -57,53 +71,92 @@
     "html.mrkx-nm-open,html.mrkx-nm-open body{overflow:hidden!important}",
     /* keep the header (and the toggle inside it) above the overlay */
     "html.mrkx-nm-open #SITE_HEADER{z-index:100001!important}",
+    /* chat launcher and consent UI step aside while the menu is open */
+    "[data-mrkx-chat],#usercentrics-cmp-ui,#usercentrics-root{transition:opacity .2s ease,visibility 0s linear 0s}",
+    "html.mrkx-nm-open [data-mrkx-chat],html.mrkx-nm-open #usercentrics-cmp-ui,html.mrkx-nm-open #usercentrics-root{",
+    "opacity:0!important;visibility:hidden!important;pointer-events:none!important}",
+    /* overlay: slightly translucent glass */
     "#mrkx-nm{position:fixed;inset:0;z-index:100000;visibility:hidden;opacity:0;pointer-events:none;",
-    "transition:opacity .25s ease,visibility 0s linear .25s;overflow-y:auto;overscroll-behavior:contain;",
-    "-webkit-overflow-scrolling:touch;color:#fff;font-family:inherit;",
-    "background:radial-gradient(120% 60% at 100% 0%,rgba(59,130,246,.22) 0%,rgba(59,130,246,0) 60%),",
-    "linear-gradient(160deg,#0b0f19 0%,#111a2e 55%,#1e293b 100%)}",
-    "#mrkx-nm.on{visibility:visible;opacity:1;pointer-events:auto;transition:opacity .25s ease,visibility 0s}",
-    "#mrkx-nm .in{box-sizing:border-box;min-height:100%;padding:92px 26px 120px;display:flex;flex-direction:column}",
+    "transition:opacity .3s ease,visibility 0s linear .3s;overflow-y:auto;overscroll-behavior:contain;",
+    "-webkit-overflow-scrolling:touch;color:#fff;font-family:inherit;-webkit-font-smoothing:antialiased;",
+    "-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility;",
+    "background:radial-gradient(90% 38% at 100% 0%,rgba(59,130,246,.26) 0%,rgba(59,130,246,0) 70%),",
+    "radial-gradient(80% 34% at 0% 100%,rgba(99,102,241,.16) 0%,rgba(99,102,241,0) 70%),",
+    "linear-gradient(165deg,rgba(8,12,22,.86) 0%,rgba(14,22,40,.84) 55%,rgba(24,34,56,.86) 100%);",
+    "-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}",
+    "#mrkx-nm.on{visibility:visible;opacity:1;pointer-events:auto;transition:opacity .3s ease,visibility 0s}",
+    "#mrkx-nm .in{box-sizing:border-box;min-height:100%;padding:96px 28px calc(36px + env(safe-area-inset-bottom,0px));",
+    "padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px));",
+    "display:flex;flex-direction:column}",
     "#mrkx-nm ul{list-style:none;margin:0;padding:0}",
-    "#mrkx-nm .top>li{border-bottom:1px solid rgba(255,255,255,.09);opacity:0;transform:translateY(12px);",
-    "transition:opacity .35s ease,transform .35s ease}",
-    "#mrkx-nm.on .top>li{opacity:1;transform:none}",
-    "#mrkx-nm.on .top>li:nth-child(1){transition-delay:.05s}#mrkx-nm.on .top>li:nth-child(2){transition-delay:.10s}",
-    "#mrkx-nm.on .top>li:nth-child(3){transition-delay:.15s}#mrkx-nm.on .top>li:nth-child(4){transition-delay:.20s}",
-    "#mrkx-nm.on .top>li:nth-child(5){transition-delay:.25s}",
-    "#mrkx-nm .row{display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;",
-    "padding:16px 0;background:none;border:0;margin:0;color:#fff;text-decoration:none;font:inherit;font-size:28px;",
-    "line-height:1.15;letter-spacing:-.01em;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}",
-    "#mrkx-nm .row .n{font-size:11px;letter-spacing:.14em;color:rgba(148,163,184,.8);margin-right:14px;",
-    "font-variant-numeric:tabular-nums;align-self:flex-start;padding-top:9px}",
-    "#mrkx-nm .row .l{flex:1;min-width:0}",
-    "#mrkx-nm .row:active{color:#7aa7ff}",
-    "#mrkx-nm .cur>.row .l,#mrkx-nm .cur>.row{color:#7aa7ff}",
-    "#mrkx-nm .chev{width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;",
-    "transform:rotate(45deg);margin:0 6px 4px 12px;transition:transform .25s ease;opacity:.8;flex:none}",
-    "#mrkx-nm .open>.row .chev{transform:rotate(-135deg);margin-bottom:-4px}",
-    "#mrkx-nm .sub{max-height:0;overflow:hidden;transition:max-height .35s ease}",
-    "#mrkx-nm .sub ul{padding:0 0 14px 25px;border-left:1px solid rgba(59,130,246,.45);margin-left:5px}",
-    "#mrkx-nm .sub a{display:block;padding:9px 0 9px 14px;color:#fff;text-decoration:none;-webkit-tap-highlight-color:transparent}",
-    "#mrkx-nm .sub a b{display:block;font-weight:500;font-size:18px;line-height:1.2}",
-    "#mrkx-nm .sub a i{display:block;font-style:normal;font-size:12px;color:rgba(148,163,184,.95);margin-top:2px;letter-spacing:.02em}",
-    "#mrkx-nm .sub a.cur b{color:#7aa7ff}",
-    "#mrkx-nm .sub a:active b{color:#7aa7ff}",
-    "#mrkx-nm .lang{margin-top:30px;opacity:0;transition:opacity .4s ease .35s}#mrkx-nm.on .lang{opacity:1}",
-    "#mrkx-nm .lang small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;",
-    "color:rgba(148,163,184,.85);margin-bottom:10px}",
-    "#mrkx-nm .lang div{display:inline-flex;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:3px;",
-    "background:rgba(255,255,255,.04)}",
-    "#mrkx-nm .lang a{min-width:54px;box-sizing:border-box;text-align:center;padding:9px 16px;border-radius:999px;",
-    "color:rgba(255,255,255,.75);text-decoration:none;font-size:14px;letter-spacing:.08em;-webkit-tap-highlight-color:transparent}",
-    "#mrkx-nm .lang a[aria-current=true]{background:#2563eb;color:#fff}",
+    /* reveal helper */
+    "#mrkx-nm .rv{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}",
+    "#mrkx-nm.on .rv{opacity:1;transform:none}",
+    "#mrkx-nm.on .rv:nth-child(1){transition-delay:.06s}#mrkx-nm.on .rv:nth-child(2){transition-delay:.11s}",
+    "#mrkx-nm.on .rv:nth-child(3){transition-delay:.16s}#mrkx-nm.on .rv:nth-child(4){transition-delay:.21s}",
+    "#mrkx-nm.on .rv:nth-child(5){transition-delay:.26s}",
+    "#mrkx-nm .kick{display:flex;align-items:center;gap:12px;margin:0 0 14px;font-size:10.5px;letter-spacing:.28em;",
+    "text-transform:uppercase;color:rgba(148,163,184,.9)}",
+    "#mrkx-nm .kick:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(96,165,250,.55),rgba(96,165,250,0))}",
+    "#mrkx-nm .top>li{position:relative}",
+    "#mrkx-nm .top>li:after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;",
+    "background:linear-gradient(90deg,rgba(255,255,255,.18),rgba(255,255,255,.02))}",
+    "#mrkx-nm .row{display:flex;align-items:center;width:100%;box-sizing:border-box;padding:17px 0;background:none;",
+    "border:0;margin:0;color:#fff;text-decoration:none;font:inherit;font-size:29px;line-height:1.1;",
+    "letter-spacing:-.015em;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;",
+    "-webkit-appearance:none;appearance:none;border-radius:0}",
+    "#mrkx-nm .row .n{font-size:10.5px;letter-spacing:.18em;color:rgba(148,163,184,.75);width:30px;flex:none;",
+    "font-variant-numeric:tabular-nums;padding-top:3px}",
+    "#mrkx-nm .row .l{flex:1;min-width:0;transition:color .2s ease,transform .25s ease}",
+    "#mrkx-nm .row:active .l{color:#8fb4ff;transform:translateX(4px)}",
+    "#mrkx-nm .cur>.row .l{color:#8fb4ff}",
+    "#mrkx-nm .cur>.row .n{color:#8fb4ff}",
+    "#mrkx-nm .cur>.row .l:after{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:12px;",
+    "vertical-align:middle;background:#60a5fa;box-shadow:0 0 12px 2px rgba(96,165,250,.7)}",
+    "#mrkx-nm .chev{width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;",
+    "transform:rotate(45deg);margin:0 8px 4px 12px;transition:transform .3s ease,opacity .2s;opacity:.55;flex:none}",
+    "#mrkx-nm .open>.row .chev{transform:rotate(-135deg);margin-bottom:-3px;opacity:.9}",
+    "#mrkx-nm .sub{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.2,.7,.2,1)}",
+    "#mrkx-nm .sub ul{padding:2px 0 18px 30px;position:relative}",
+    "#mrkx-nm .sub ul:before{content:'';position:absolute;left:4px;top:6px;bottom:22px;width:1px;",
+    "background:linear-gradient(180deg,rgba(96,165,250,.7),rgba(96,165,250,.05))}",
+    "#mrkx-nm .sub a{display:flex;align-items:center;justify-content:space-between;padding:10px 0;color:#fff;",
+    "text-decoration:none;-webkit-tap-highlight-color:transparent}",
+    "#mrkx-nm .sub a span{min-width:0}",
+    "#mrkx-nm .sub a b{display:block;font-weight:400;font-size:18px;line-height:1.2;letter-spacing:-.005em;transition:color .2s}",
+    "#mrkx-nm .sub a i{display:block;font-style:normal;font-size:11.5px;color:rgba(148,163,184,.95);margin-top:3px;letter-spacing:.04em}",
+    "#mrkx-nm .sub a:after{content:'\\2192';color:rgba(148,163,184,.55);font-size:15px;margin-left:12px;flex:none;transition:transform .2s,color .2s}",
+    "#mrkx-nm .sub a.x:after{content:'\\2197'}",
+    "#mrkx-nm .sub a.cur b{color:#8fb4ff}",
+    "#mrkx-nm .sub a:active b{color:#8fb4ff}#mrkx-nm .sub a:active:after{transform:translateX(3px);color:#8fb4ff}",
+    /* language selector: fully custom, no native controls */
+    "#mrkx-nm .lang{margin-top:34px}",
+    "#mrkx-nm .lg{position:relative;display:grid;grid-template-columns:1fr 1fr;width:188px;box-sizing:border-box;padding:3px;",
+    "border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);",
+    "box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}",
+    "#mrkx-nm .lg:before{content:'';position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);border-radius:999px;",
+    "background:linear-gradient(180deg,#3b82f6 0%,#2158d6 100%);box-shadow:0 4px 18px rgba(37,99,235,.55),inset 0 1px 0 rgba(255,255,255,.35);",
+    "transition:transform .3s cubic-bezier(.2,.7,.2,1)}",
+    "#mrkx-nm .lg[data-l=is]:before{transform:translateX(100%)}",
+    "#mrkx-nm .lg a{position:relative;display:block;box-sizing:border-box;text-align:center;padding:8px 0 7px;border-radius:999px;",
+    "color:rgba(255,255,255,.62);text-decoration:none;-webkit-tap-highlight-color:transparent;line-height:1}",
+    "#mrkx-nm .lg a b{display:block;font-weight:600;font-size:14px;letter-spacing:.14em;text-indent:.14em}",
+    "#mrkx-nm .lg a i{display:block;font-style:normal;font-size:9.5px;letter-spacing:.06em;margin-top:4px;opacity:.8}",
+    "#mrkx-nm .lg a[aria-current=true]{color:#fff}",
+    /* footer */
+    "#mrkx-nm .foot{margin-top:auto;padding-top:38px}",
+    "#mrkx-nm .foot a{color:rgba(226,232,240,.92);text-decoration:none;-webkit-tap-highlight-color:transparent}",
+    "#mrkx-nm .mail{display:inline-block;font-size:15px;letter-spacing:.01em;padding:6px 0;border-bottom:1px solid rgba(96,165,250,.5)}",
+    "#mrkx-nm .soc{display:flex;gap:20px;margin:18px 0 0;font-size:11px;letter-spacing:.16em;text-transform:uppercase}",
+    "#mrkx-nm .soc a{color:rgba(148,163,184,.95)}",
+    "#mrkx-nm .tag{margin:22px 0 0;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(100,116,139,.95)}",
     /* hamburger -> X on the existing toggle */
     TOGGLE + "{position:relative}",
     "html.mrkx-nm-on " + TOGGLE + " .vlJDcR{transition:opacity .15s ease}",
     "html.mrkx-nm-on.mrkx-nm-open " + TOGGLE + " .vlJDcR{opacity:0}",
     "html.mrkx-nm-on " + TOGGLE + "::before,html.mrkx-nm-on " + TOGGLE + "::after{content:'';position:absolute;",
     "left:50%;top:50%;width:20px;height:2px;margin:-1px 0 0 -10px;background:#0b0f19;border-radius:2px;opacity:0;",
-    "transition:transform .25s ease,opacity .15s ease;pointer-events:none}",
+    "transition:transform .3s ease,opacity .15s ease;pointer-events:none}",
     "html.mrkx-nm-open " + TOGGLE + "::before{opacity:1;transform:rotate(45deg)}",
     "html.mrkx-nm-open " + TOGGLE + "::after{opacity:1;transform:rotate(-45deg)}",
     "@media (prefers-reduced-motion:reduce){#mrkx-nm,#mrkx-nm *{transition:none!important}}"
@@ -114,9 +167,9 @@
   function norm(p) { return (p || "/").replace(/\/+$/, "") || "/"; }
   function href(c, p) { return ORIGIN + (c.prefix + (p === "/" ? "" : p) || "/"); }
 
-  var root, panel, toggle, lastFocus, built = "", isOpen = false;
+  var root, toggle, lastFocus, isOpen = false;
 
-  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.textContent = html; return e; }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
   function build() {
     var L = lang(), c = COPY[L], cur = norm(stripLang(location.pathname));
@@ -130,22 +183,27 @@
     root.textContent = "";
     var inn = el("div", "in"), nav = el("nav"), ul = el("ul", "top");
     nav.setAttribute("aria-label", c.nav);
+    var kick = el("p", "kick rv", c.kicker);
+    nav.appendChild(kick);
     c.items.forEach(function (it, i) {
-      var li = el("li"), n = el("span", "n", ("0" + (i + 1)).slice(-2)), lab = el("span", "l", it.t);
-      var isCur = it.p === "/" ? cur === "/" : (cur === it.p || cur.indexOf(it.p + "/") === 0);
-      if (isCur) li.className = "cur";
+      var li = el("li", "rv"), n = el("span", "n", ("0" + (i + 1)).slice(-2)), lab = el("span", "l", it.t);
+      var m = it.m || it.p;
+      var isCur = it.p === "/" ? cur === "/" : (cur === it.p || cur.indexOf(m) === 0 && (it.m || cur.charAt(m.length) === "/"));
+      if (isCur) li.className += " cur";
       if (it.sub) {
         var b = el("button", "row"); b.type = "button"; b.setAttribute("aria-expanded", "false");
         b.appendChild(n); b.appendChild(lab); b.appendChild(el("span", "chev"));
         var sub = el("div", "sub"), sul = el("ul");
         it.sub.forEach(function (s) {
-          var sl = el("li"), a = el("a"), bb = el("b", null, s.t), ii = el("i", null, s.d);
-          a.href = href(c, s.p); a.appendChild(bb); a.appendChild(ii);
-          if (norm(s.p) === cur) a.className = "cur";
+          var sl = el("li"), a = el("a"), tx = el("span");
+          tx.appendChild(el("b", null, s.t)); tx.appendChild(el("i", null, s.d));
+          a.appendChild(tx);
+          if (s.x) { a.href = s.x; a.target = "_blank"; a.rel = "noopener"; a.className = "x"; }
+          else { a.href = href(c, s.p); if (norm(s.p) === cur) a.className = "cur"; }
           sl.appendChild(a); sul.appendChild(sl);
         });
         sub.appendChild(sul); li.appendChild(b); li.appendChild(sub);
-        if (isCur) setSub(li, true);
+        if (isCur) li.setAttribute("data-auto", "1");
       } else {
         var a2 = el("a", "row"); a2.href = href(c, it.p); a2.appendChild(n); a2.appendChild(lab);
         li.appendChild(a2);
@@ -153,17 +211,25 @@
       ul.appendChild(li);
     });
     nav.appendChild(ul); inn.appendChild(nav);
-    var lg = el("div", "lang"), sm = el("small", null, c.langLabel), box = el("div");
+
+    var lg = el("div", "lang rv"), box = el("div", "lg");
+    box.setAttribute("role", "group"); box.setAttribute("aria-label", c.langLabel); box.setAttribute("data-l", L);
     var rest = stripLang(location.pathname) + location.search + location.hash;
-    [["EN", "en", "/"], ["IS", "is", "/is"]].forEach(function (x) {
-      var a = el("a", null, x[0]); a.lang = x[1];
+    [["EN", "en", c.langs[0]], ["IS", "is", c.langs[1]]].forEach(function (x) {
+      var a = el("a"); a.lang = x[1]; a.hreflang = x[1];
+      a.appendChild(el("b", null, x[0])); a.appendChild(el("i", null, x[2]));
       a.href = ORIGIN + (x[1] === "is" ? "/is" + (rest === "/" ? "" : rest) : rest);
-      if (L === x[1]) a.setAttribute("aria-current", "true"); else a.setAttribute("aria-current", "false");
+      a.setAttribute("aria-current", L === x[1] ? "true" : "false");
       box.appendChild(a);
     });
-    lg.appendChild(sm); lg.appendChild(box); inn.appendChild(lg);
+    lg.appendChild(box); inn.appendChild(lg);
+
+    var ft = el("div", "foot rv"), mail = el("a", "mail", MAIL), soc = el("div", "soc");
+    mail.href = "mailto:" + MAIL;
+    SOCIAL.forEach(function (s) { var a = el("a", null, s[0]); a.href = s[1]; a.target = "_blank"; a.rel = "noopener"; soc.appendChild(a); });
+    ft.appendChild(mail); ft.appendChild(soc); ft.appendChild(el("p", "tag", c.foot));
+    inn.appendChild(ft);
     root.appendChild(inn);
-    built = location.pathname;
   }
 
   function setSub(li, open) {
@@ -176,10 +242,15 @@
 
   function onPanelClick(e) {
     var b = e.target.closest && e.target.closest("button.row");
-    if (b) { var li = b.parentNode; setSub(li, !li.classList.contains("open")); return; }
+    if (b) {
+      var li = b.parentNode, willOpen = !li.classList.contains("open");
+      // one section open at a time
+      [].forEach.call(root.querySelectorAll(".top>li.open"), function (o) { if (o !== li) setSub(o, false); });
+      setSub(li, willOpen); return;
+    }
     var a = e.target.closest && e.target.closest("a[href]");
     if (a) {
-      // same page: just close; otherwise let the browser navigate
+      if (a.target === "_blank" || /^mailto:/.test(a.href)) return;
       var u = new URL(a.href);
       if (u.pathname === location.pathname && u.search === location.search) { e.preventDefault(); close(); }
       else setTimeout(close, 60);
@@ -201,11 +272,10 @@
     lastFocus = document.activeElement;
     isOpen = true;
     document.documentElement.classList.add("mrkx-nm-open");
-    // let the panel render before fading in (stagger transition)
     root.getBoundingClientRect();
     root.classList.add("on");
     root.scrollTop = 0;
-    [].forEach.call(root.querySelectorAll(".top>li.open"), function (li) { setSub(li, true); });
+    [].forEach.call(root.querySelectorAll(".top>li[data-auto]"), function (li) { setSub(li, true); });
     refreshToggle();
   }
 
