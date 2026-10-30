@@ -481,6 +481,14 @@ var MRKX_KB2 = (function () {
     "process#4": ["what do you do first", "what happens first", "where do you start", "idea to launch", "from idea to launch", "steps from", "walk me through", "walk me through the process", "stages", "phases"],
     "languages_spoken#4": ["can you speak", "can you write in", "do you write in", "do you understand", "speak hungarian", "speak german", "speak polish", "speak spanish", "speak french", "speak danish", "speak lithuanian", "speak thai", "speak russian", "magyarul", "hungarian", "polish", "german", "lithuanian"],
     "company_size#4": ["only big projects", "do you only do big", "do you only do", "hobby project", "hobby", "personal project", "personal website", "side project", "side business", "just a hobby"],
+    "services#4": ["is that all you do", "is that everything you do", "is that all you offer", "anything else you do", "what else can you do"],
+    "ecommerce#4": ["online ordering", "order online", "online orders", "takeaway ordering", "order food online", "delivery ordering", "click and collect", "pre order", "preorder", "pre-order"],
+    "pages_count#4": ["one page site", "one page website", "single page site", "one pager", "only one page", "just one page", "small site", "simple site", "basic site", "simple website", "basic website", "small website", "one page"],
+    "howstart#4": ["whats the next step", "what is the next step", "what next", "whats next", "next step please", "what do i do now", "what should i do now", "ok what now", "so what now", "what now", "how do we proceed", "how do we move forward"],
+    "existing_site#5": ["its slow", "is slow", "very slow", "loads slowly", "slow to load", "takes forever to load", "slow website", "slow site", "people say its slow", "so slow", "too slow"],
+    "fix_existing#5": ["rebuild it", "rebuild", "redo it", "start over", "rebuild from scratch", "redesign it", "redesign my"],
+    "process#5": ["first thing you would do", "what would you do first", "what would be the first thing", "first thing you do", "where would you start", "what is the first thing"],
+    "copywriting#5": ["write the text for my website", "write the text", "write text for", "write the content", "write my content", "write copy", "do you write the", "text for my website", "content for my website", "can you write", "write the texts", "write my texts"],
     "contact#2": ["open on saturday", "open on weekends", "open today", "are you open", "when are you open", "working hours", "business hours", "what time do you open", "open on sunday", "when can i call", "best time to call"],
     contact: ["how can i reach you", "how do i contact you", "where can i contact you", "how do i reach you", "get hold of you"]
   };
@@ -741,6 +749,10 @@ var MRKX_KB2 = (function () {
       a: ["Fair question. We're a young studio as an agency, but not new to the craft: we were already working in the field before MRKX Labs became an agency. And you don't have to take our word for it: our public project is ROAD1 TOW, and the free analysis shows how we think about your own site before you commit to anything.",
           "Good to ask. As an agency we're young, but the work isn't new to us: we were active in the field before MRKX Labs became an agency. You can judge the quality yourself: look at ROAD1 TOW, or let us analyse your current site for free."],
       chips: [{ t: "Examples of your work", go: "portfolio" }, ANALYSIS, { t: "How do you work?", go: "process" }] },
+
+    { id: "which_first", kind: "question", kw: ["which one first", "which first", "which one should i start with", "which is first", "what comes first", "start with which", "what first", "which one do i need", "which one is better", "which is better", "which do you recommend", "which one do you recommend", "both or one", "do i need both", "do i need all of them", "do i need all", "which one should i choose", "which should i choose", "what should i start with"],
+      a: ["It depends on where you are. If you don't have a site yet, the website comes first, because everything else (search, campaigns, tracking) needs somewhere good to send people. If you already have a site that nobody finds, start with the free analysis. If you're unsure, the 'Help me choose' questions take under a minute."],
+      chips: [{ t: "Help me choose", go: "recommend" }, ANALYSIS, CONSULT] },
 
     { id: "booking_system", kind: "question", kw: ["booking system", "online booking", "book appointments", "appointment booking", "appointments online", "reservation system", "table booking", "let customers book", "customers book online", "calendar booking", "booking calendar", "booking engine", "book a time", "scheduling system", "online reservations", "take bookings", "bookings online", "book a table", "reserve a table", "table reservation", "reservations", "reservation", "book a room", "book a tour", "bookings", "appointments", "need bookings", "customers to book"],
       a: ["Booking is a common part of our work. We connect websites to booking and calendar tools and can automate confirmations and follow-ups. Which setup fits depends on your business, so the details are scoped per project."],
@@ -1279,7 +1291,11 @@ var MRKX_DISC = {
     if (vars) for (var v in vars) s = s.split("{" + v + "}").join(vars[v]);
     return s.split("{mail}").join(CFG.email);
   }
-  function save() { try { sessionStorage.setItem(CFG.storageKey, JSON.stringify(S)); } catch (e) {} }
+  function save() {
+    // remember the previous topics, so "what about the other one?" can be answered
+    if (S.topic !== S._lt) { if (S._lt) S.th = [S._lt].concat((S.th || []).filter(function (x) { return x !== S._lt && x !== S.topic; })).slice(0, 3); S._lt = S.topic; }
+    try { sessionStorage.setItem(CFG.storageKey, JSON.stringify(S)); } catch (e) {}
+  }
   function load() {
     try { var raw = sessionStorage.getItem(CFG.storageKey); if (raw) { var o = JSON.parse(raw); if (o && o.hist) { S = o; S.sending = false; } } } catch (e) {}
   }
@@ -1342,7 +1358,7 @@ var MRKX_DISC = {
   var KIND_RANK = { rule: 4, faq: 3, question: 2, topic: 1 };
   var SHORT_ONLY = { greet: 1, thanks: 1, bye: 1, ack: 1, laugh: 1, howareyou: 1, hesitate: 1, doubt: 1 };
   var GENERIC = { greet: 1, thanks: 1, bye: 1, ack: 1, laugh: 1, howareyou: 1, can_you_help: 1, hesitate: 1, interest: 1, doubt: 1, found_via: 1, repeat: 1 };
-  var SHORT_MAX = { ack: 3, laugh: 3, howareyou: 5, hesitate: 2, doubt: 4 };
+  var SHORT_MAX = { bye: 4, ack: 3, laugh: 3, howareyou: 5, hesitate: 2, doubt: 4 };
 
   // pre-tokenise patterns once
   KB.intents.forEach(function (it) {
@@ -2095,6 +2111,8 @@ var MRKX_DISC = {
     }
     // right after the analysis was offered, "what is in it / how long" means the analysis
     if ((S.last === "free_analysis" || S.last === "analysis_detail") && /^(what|how|is|does|will)\b.*\b(in it|include|included|get|cover|check|work|long|take|free)\b/.test(cleaned) && cleaned.split(" ").length <= 9) return route("analysis_detail");
+    var wd = words(raw);
+    if (/\b(the other one|the other|other one|another one)\b/.test(wd) && S.th && S.th[0] && byId("svc_" + S.th[0])) { var ot = S.th[0]; S.topic = ot; S.fails = 0; return route("svc_" + ot, { prefix: nameLine }); }
     var bud = parseBudget(cleaned);
     if (bud) return budgetAnswer(bud, topicOf(M) || S.topic, nameLine);
     var ranked = scoreAll(M, cleaned);
@@ -2104,14 +2122,16 @@ var MRKX_DISC = {
     var cue = DETAIL_CUE.test(raw), priceQ = /\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/i.test(raw) || /\banalysis\b/i.test(raw);
     // "I need a landing page" is a request for the service, not a detail question about it
     var wantCue = /\b(i need|i want|we need|we want|looking for|interested in|i d like|id like|would like|im looking|i am looking|can you build|can you make|can you create|do you build|do you make)\b/i.test(norm(raw).replace(/['\u2019]/g, " "));
+    // "actually what about seo": a topic switch gets that topic's introduction, not a detail paragraph
+    if (SWITCH_RE.test(words(raw)) && best && best.it.kind === "topic" && content(raw).length <= 5 && !cue) { S.fails = 0; S.topic = best.it.topic; return route(best.it.id, { msgTopic: best.it.topic, prefix: nameLine }); }
     var rt0 = (!priceQ) ? retrieve(raw, msgTopic0) : null;
-    if (wantCue && best && best.it.kind === "topic" && !cue) rt0 = null;
+    if ((wantCue || content(raw).length <= 3) && best && best.it.kind === "topic" && !cue) rt0 = null;
     if (rt0 && rt0.d.kind === "faq" && rt0.sc >= RT_FAQ && rt0.mt >= 2 && !cue && (!best || (best.it.kind === "faq" && best.sc < 2) || (best.it.kind === "topic" && content(raw).length >= 3))) { S.fails = 0; return docAnswer(rt0.d, nameLine); }
-    var skipDetail = wantCue && best && best.it.kind === "topic" && !cue;
+    var skipDetail = best && best.it.kind === "topic" && !cue && ((wantCue) || content(raw).length <= 3);
     if (sec && !skipDetail && (cue || !best || best.it.kind === "topic" || sec.sc >= best.sc - 0.5) && !(priceQ && !(best && best.sc < sec.sc))) return secAnswer(sec.key, sec.idx, nameLine);
     if (cue && !priceQ && (msgTopic0 || S.topic) && SEC[msgTopic0 || S.topic] && (!best || best.it.kind === "topic" || best.sc < 3)) return secOverview(msgTopic0 || S.topic, nameLine);
     var rt = (!priceQ || cue) ? retrieve(raw, msgTopic0) : null;
-    if (wantCue && best && best.it.kind === "topic" && !cue) rt = null;
+    if ((wantCue || content(raw).length <= 3) && best && best.it.kind === "topic" && !cue) rt = null;
     if (rt && rt.sc >= RT_MIN && rt.mt >= 2 && (!best || best.sc < 2 || (best.it.kind === "topic" && content(raw).length >= 3)) && words(raw).split(" ").length >= 2) { S.fails = 0; return docAnswer(rt.d, nameLine); }
     if (best && best.sc >= 1.5) {
       S.fails = 0;
@@ -2155,6 +2175,8 @@ var MRKX_DISC = {
     t = norm(t).replace(/['\u2019]/g, "");
     return t.replace(NEG_RE, " ").replace(/\s+/g, " ").trim();
   }
+  // openers that mark a change of subject or a follow-up ("and how much", "actually what about seo")
+  var SWITCH_RE = /^(or|actually|wait|hold on|hang on|ok(?:ay)?\s+(?:but|and|so|now)|and|but|so|what about|how about|now|back to|let s talk about|lets talk about|let us talk about|can we talk about|i meant|i mean|instead|rather|sorry|oh and|also|one more thing|another question|different question|new question|change of topic|something else)\b/;
   function words(raw) { return norm(raw).replace(/[^a-z0-9#]+/g, " ").trim(); }
   function yesNo(raw) {
     var s = words(raw);
@@ -2289,7 +2311,7 @@ var MRKX_DISC = {
     var p = say(text, chips);
     if (it && it.kind === "topic" && DISC[it.topic] && !S.pending && !S.flow && !S.awaiting) { var dq0 = (discState().tick++, nextDisc(it.topic)); if (dq0) { save(); return Promise.resolve(p).then(function () { return askDisc(it.topic, dq0); }); } }
     // qualification / offer (one per turn, never when a question is already open)
-    var skipQual = it && (it.noCount || it.kind === "rule" || /^(pricing|objection|free_analysis|consultation|human|about_bot|greet|analysis_detail)$/.test(it.id));
+    var skipQual = it && (it.noCount || it.kind === "rule" || /^(pricing|objection|free_analysis|consultation|human|about_bot|greet|analysis_detail|just_looking|thanks|bye|ack|interest|frustrated|not_interested|which_first|recommend)$/.test(it.id));
     if (counts && !S.pending && !S.flow && !skipQual && !/\?\s*$/.test(text)) {
       var next = nextQualifier();
       if (next) p = next();
@@ -2336,17 +2358,19 @@ var MRKX_DISC = {
       var dpp = kind.split(":");
       var rk = scoreAll(M)[0], rr = retrieve(raw, dpp[1]);
       var askLike = /^(tell|what|whats|how|why|when|where|which|who|can|could|do|does|did|is|are|will|would|should|explain|give|show|i want|i need|i would like|more|details?)\b/i.test(raw.trim()) && !/^(what s|whats) (my|our)\b/i.test(raw.trim());
-      if (askLike || words(raw).split(" ").length > 9 || (rk && rk.sc >= 2.5) || (rr && rr.mt >= 3 && rr.sc >= 0.6)) { dropAwaiting(); return false; }
+      if (askLike || SWITCH_RE.test(words(raw)) || words(raw).split(" ").length > 9 || (rk && rk.sc >= (words(raw).split(" ").length <= 3 ? 2.5 : 1.5)) || (words(raw).split(" ").length > 3 && rr && rr.mt >= 2 && rr.sc >= 0.5)) { dropAwaiting(); return false; }
       if (/^(skip|no|nope|nothing|not sure|none|pass)$/i.test(raw.trim())) { discState().skips++; S.awaiting = null; return say(T("declined")); }
       return discAnswer(dpp[1], dpp[2], null, raw);
     }
     if (/^(skip|no|nope|nothing|not sure|none|pass)$/i.test(raw.trim())) { dropAwaiting(); return say(T("declined")); }
     var ranked = scoreAll(M), sc = ranked[0] ? ranked[0].sc : 0;
+    var shortAns = words(raw).split(" ").length <= 3;
+    if (SWITCH_RE.test(words(raw)) && sc >= 1.5) { dropAwaiting(); return false; }
     if (kind === "biz") {
       if (bizKey(raw) || (words(raw).split(" ").length <= 4 && sc < 1.5)) return storeAnswer(kind, raw);
       dropAwaiting(); return false;
     }
-    if (sc >= 1.5) { dropAwaiting(); return false; }
+    if (sc >= (shortAns ? 2.5 : 1.5)) { dropAwaiting(); return false; }
     return storeAnswer(kind, raw);
   }
 
@@ -2380,6 +2404,8 @@ var MRKX_DISC = {
     var f = S.flow; if (!f) return false;
     var d = f.data, step = f.step, txt = raw.trim();
     if (/^(cancel|stop|never ?mind|forget it|hætta við)$/i.test(txt)) return cancelFlow();
+    // a question in the middle of a form is answered first, then the form question is repeated
+    if (step !== "consent" && REASK[step] && txt !== "__skip__" && looksLikeQuestion(txt) && !findEmail(txt)) { var qa = maybeAnswerThenRe(raw, null); if (qa) return qa; }
     if (step === "url") {
       if (/(don'?t have|no website|no site|none|nothing|do not have)/i.test(txt)) return route("flow:nosite");
       var u = normUrl(txt);
@@ -2412,14 +2438,22 @@ var MRKX_DISC = {
     return false;
   }
   // invalid input: if it is clearly a question, answer it, then re-ask the step
+  var REASK = { url: "askUrl", email: "askEmail", name: "askName", company: "askCompany", note: "askNote" };
+  function looksLikeQuestion(txt) { return /\?\s*$/.test(txt) || (/^(what|how|why|when|where|who|which|can|could|do|does|did|is|are|will|would|should)\b/i.test(txt) && txt.split(/\s+/).length >= 3); }
   function maybeAnswerThenRe(raw, badKey) {
-    var M = toks(raw), ranked = scoreAll(M);
-    if (ranked[0] && ranked[0].sc >= 2.5 && !/@|\./.test(raw)) {
-      var it = ranked[0].it, step = S.flow.step;
-      var p = say(pick(it.a.length ? it.a : [priceText(S.topic)], it.id));
-      return p.then(function () { return say(T("reAsk") + " " + T(step === "url" ? "askUrl" : "askEmail")); });
+    var cm = cleanMatch(raw), M = toks(cm), ranked = scoreAll(M, cm), step = S.flow.step, text = null;
+    if (ranked[0] && ranked[0].sc >= 1.5 && !/@/.test(raw)) {
+      var it = ranked[0].it;
+      text = it.id === "pricing" ? priceText(S.topic) : pick(it.a.length ? it.a : [priceText(S.topic)], it.id);
+    } else if (looksLikeQuestion(raw.trim())) {
+      var rt = retrieve(raw, S.topic);
+      if (rt && rt.sc >= RT_MIN && rt.mt >= 2) text = rt.d.text;
     }
-    return say(T(badKey));
+    if (text && REASK[step]) {
+      var p = say(text);
+      return p.then(function () { return say(T("reAsk") + " " + T(REASK[step])); });
+    }
+    return badKey ? say(T(badKey)) : false;
   }
 
   function transcript() {
