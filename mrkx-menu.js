@@ -45,7 +45,7 @@
           { t: "Lendingarsíður", d: "Síður sem skila árangri", p: "/services/landing-page" },
           { t: "Vefsíður", d: "Vefsíðugerð", p: "/services/websites" },
           { t: "Sjálfvirkni", d: "Sjálfvirk kerfi", p: "/services/automation-systems" },
-          { t: "Smáforrit", d: "Hönnun og þóun", p: "/services/mobile-app-design-development" },
+          { t: "Smáforrit", d: "Hönnun og þróun", p: "/services/mobile-app-design-development" },
           { t: "Vörumerki", d: "Vörumerkjakerfi", p: "/services/brand-system" },
           { t: "SEO", d: "Leitarvélabestun", p: "/services/seo" }
         ] },
