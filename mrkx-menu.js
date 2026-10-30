@@ -102,7 +102,7 @@
     "html.mrkx-nm-on " + TOGGLE + " .vlJDcR{transition:opacity .15s ease}",
     "html.mrkx-nm-on.mrkx-nm-open " + TOGGLE + " .vlJDcR{opacity:0}",
     "html.mrkx-nm-on " + TOGGLE + "::before,html.mrkx-nm-on " + TOGGLE + "::after{content:'';position:absolute;",
-    "left:50%;top:50%;width:20px;height:2px;margin:-1px 0 0 -10px;background:#fff;border-radius:2px;opacity:0;",
+    "left:50%;top:50%;width:20px;height:2px;margin:-1px 0 0 -10px;background:#0b0f19;border-radius:2px;opacity:0;",
     "transition:transform .25s ease,opacity .15s ease;pointer-events:none}",
     "html.mrkx-nm-open " + TOGGLE + "::before{opacity:1;transform:rotate(45deg)}",
     "html.mrkx-nm-open " + TOGGLE + "::after{opacity:1;transform:rotate(-45deg)}",
