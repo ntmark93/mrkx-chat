@@ -132,7 +132,7 @@ var MRKX_KB = (function () {
       chips: [{ t: "Talk to the team", go: "human" }, { t: "What do you offer?", go: "services" }] },
 
     { id: "about", kind: "question", kw: ["real company", "are you real", "legit", "legitimate", "can i trust you", "how long have you been", "who runs", "founder", "who owns mrkx", "about you", "about mrkx", "who is mrkx", "what is mrkx", "tell me about your company", "who are mrkx labs", "your company", "your background", "your experience", "who is behind", "your studio", "your team", "your approach"],
-      a: ["MRKX Labs is a digital systems studio based in Höfn, Iceland. We combine strategy, sales thinking, marketing structure, design, web development, SEO and analytics, so a website isn't just a nice surface but a path from attention to trust to enquiry. Our principles are clarity, credibility and action. [About us](/about)"],
+      a: ["MRKX Labs is a digital systems studio based in Höfn, Iceland. We combine strategy, sales thinking, marketing structure, design, web development, SEO and analytics, so a website isn't just a nice surface but a path from attention to trust to enquiry. Our principles are clarity, credibility and action. We were working in the field before MRKX Labs became an agency, so the craft isn't new to us. [About us](/about)"],
       more: "We define the offer, audience, positioning and message flow before we build anything visual. That's why we treat every website, landing page or brand system as part of a bigger growth system rather than a standalone design.",
       chips: [{ t: "What do you offer?", go: "services" }, { t: "How do you work?", go: "process" }, { t: "Examples of your work", go: "portfolio" }] },
 
@@ -267,7 +267,7 @@ var MRKX_KB = (function () {
       chips: [{ t: "What do you offer?", go: "services" }, { t: "Contact", go: "contact" }] },
 
     { id: "portfolio", kind: "question", kw: ["towing company", "tow company", "road1 tow", "road 1 tow", "roadside company", "towing website", "who have you worked with", "who are your clients", "your clients", "worked with before", "other projects", "any projects", "portfolio", "examples", "example of your work", "previous work", "past work", "case study", "case studies", "references", "clients", "work you have done", "showcase", "road1tow"],
-      a: ["Our publicly shown project is ROAD1 TOW, a towing and roadside assistance website for South Iceland: clear structure, a direct click-to-call path, local SEO foundations, a dark and yellow design and a matching business card. We're a young studio, and we'd rather show a few things we stand behind than a long list. [Portfolio](/portfolio)"],
+      a: ["Our publicly shown project is ROAD1 TOW, a towing and roadside assistance website for South Iceland: clear structure, a direct click-to-call path, local SEO foundations, a dark and yellow design and a matching business card. We're a young studio as an agency, but not new to the craft: we were working in the field before MRKX Labs became an agency, and we'd rather show a few things we stand behind than a long list. [Portfolio](/portfolio)"],
       chips: [{ t: "Road1 Tow case study", go: "sec:portfolio" }, { t: "How do you work?", go: "process" }, { t: "Free analysis", go: "free_analysis" }] },
 
     { id: "platform", kind: "question", kw: ["wix", "wordpress", "shopify", "squarespace", "webflow", "which platform", "what platform", "what technology", "tech stack", "cms", "what do you build with", "custom code"],
@@ -275,7 +275,7 @@ var MRKX_KB = (function () {
       chips: [{ t: "Free analysis", go: "free_analysis" }, { t: "Website service", go: "svc_website" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "why_us", kind: "rule", kw: ["why you", "why should i choose", "why choose you", "better than", "compare", "competitor", "competitors", "other agencies", "other studios", "different from", "what makes you different", "versus", "vs"],
-      a: ["We can't speak for other agencies, but here's how we work. We start from your offer and audience, treat the website as a business system rather than a brochure, and focus on clarity, credibility and action. If that sounds like what you need, a short consultation will show quickly whether we're a good fit."],
+      a: ["We can't speak for other agencies, but here's how we work. We start from your offer and audience, treat the website as a business system rather than a brochure, and focus on clarity, credibility and action. We were working in the field before MRKX Labs became an agency, so the craft isn't new to us. If that sounds like what you need, a short consultation will show quickly whether we're a good fit."],
       chips: [{ t: "How do you work?", go: "process" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "seo_guarantee", kind: "faq", kw: ["guarantee", "guaranteed", "first page", "rank first", "number one", "top of google", "#1", "first place", "top 3", "page one", "promise", "ensure ranking"],
@@ -487,6 +487,7 @@ var MRKX_KB2 = (function () {
 
   /* chip labels for "did you mean ...?" (only ids listed here can be offered) */
   var labels = {
+    young_studio: "Your experience",
     diy_alternative: "Cheaper alternatives", involvement: "How involved I'd be", advice_honest: "Honest advice", company_details: "Company details", free_catch: "Is the analysis really free", response_time: "Reply times",
     reporting: "Reports", hosting_domain: "Hosting and domain",
     design_input: "Design and colours", pages_count: "How many pages", blog: "A blog", will_rank: "Showing up on Google", support_fix: "Support after launch", contract_terms: "Contracts", results_expect: "What results to expect",
@@ -599,7 +600,7 @@ var MRKX_KB2 = (function () {
       pending: "handoff", chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "What do you offer?", go: "services" }, { t: "Not now", go: "decline" }] },
 
     { id: "reviews", kind: "question", kw: ["reviews", "review from clients", "testimonials", "feedback from clients", "what do clients say", "ratings", "do you have reviews", "customer reviews", "client reviews", "recommendations", "recommended by", "google reviews", "trustpilot"],
-      a: ["I can't point you to client reviews here. What we can show is our public project, ROAD1 TOW, and explain how we work. The free analysis also lets you judge the quality of our thinking on your own site before you commit to anything."],
+      a: ["I can't point you to client reviews here. What we can show is our public project, ROAD1 TOW, and explain how we work. The free analysis also lets you judge the quality of our thinking on your own site before you commit to anything. We were working in the field before MRKX Labs became an agency, so the craft isn't new to us."],
       chips: [{ t: "Examples of your work", go: "portfolio" }, ANALYSIS, { t: "Why MRKX?", go: "why_us" }] },
 
     { id: "not_interested", kind: "rule", kw: ["not interested", "no thanks", "no thank you", "not for me", "not looking", "i changed my mind", "changed my mind", "never mind", "nevermind", "forget it", "leave me alone", "dont contact me", "do not contact me", "stop messaging", "remove me"],
@@ -646,7 +647,7 @@ var MRKX_KB2 = (function () {
       chips: [{ t: "SEO details", go: "svc_seo" }, { t: "How long does SEO take?", go: "seo_time" }, ANALYSIS] },
 
     { id: "results_expect", kind: "faq", kw: ["how much traffic can i expect", "how many customers will i get", "how many visitors will i get", "expected results", "what results", "results have you got", "results for others", "case study results", "how many leads", "what roi", "return on investment", "roi", "guarantee results", "promise results", "what can i expect", "how many enquiries"],
-      a: ["I can't promise numbers. Results depend on your market, your offer, your competition and what search engines do. What we control is the quality of the foundation: a clear offer, a structure that builds trust, a technical base that works and measurement, so you can see what happens."],
+      a: ["I can't promise numbers. Results depend on your market, your offer, your competition and what search engines do. What we control is the quality of the foundation: a clear offer, a structure that builds trust, a technical base that works and measurement, so you can see what happens. We were working in the field before MRKX Labs became an agency, so we know what is realistic."],
       chips: [{ t: "Examples of your work", go: "portfolio" }, ANALYSIS, { t: "SEO guarantees", go: "seo_guarantee" }] },
 
     { id: "link_building", kind: "faq", kw: ["link building", "backlinks", "back links", "buy links", "backlink", "get links"],
@@ -735,6 +736,11 @@ var MRKX_KB2 = (function () {
     { id: "beat_competitor", kind: "faq", kw: ["competitor is always first", "competitor is always ahead", "my competitor is always", "how do i beat them", "beat them", "outrank them", "my competitor", "my competitors", "competitor ranks", "competitor is first", "beat my competitor", "better than my competitor", "outrank my competitor", "competitors are ahead", "competitor has a better", "competitor is ahead", "ahead of me on google", "above me on google", "outranks me", "beat the competition", "beat them on google"],
       a: ["The way to start is with facts, not guesses: what the competitor does better (structure, content, speed, local signals) and what you do better. We build the foundation that closes the gap. We can't promise to overtake anyone, because search engines decide, but the free analysis of your site shows where you stand today."],
       chips: [ANALYSIS, { t: "SEO details", go: "svc_seo" }, { t: "SEO guarantees", go: "seo_guarantee" }] },
+
+    { id: "young_studio", kind: "rule", kw: ["young studio", "young company", "young agency", "new studio", "new agency", "new company", "newly founded", "startup studio", "small studio", "small agency", "just started", "just starting out", "how new are you", "are you new", "you are new", "youre new", "how old are you", "how old is the company", "how long have you been in business", "how long have you been around", "when were you founded", "when did you start", "since when", "your experience", "how experienced", "are you experienced", "experienced", "years of experience", "how many years", "do you know what you are doing", "are you qualified", "are you professionals", "are you any good", "are you good at", "is it risky", "too small", "too young", "not established", "never heard of you", "unproven", "have you done this before", "done this before", "how many projects", "how many clients", "how many websites"],
+      a: ["Fair question. We're a young studio as an agency, but not new to the craft: we were already working in the field before MRKX Labs became an agency. And you don't have to take our word for it: our public project is ROAD1 TOW, and the free analysis shows how we think about your own site before you commit to anything.",
+          "Good to ask. As an agency we're young, but the work isn't new to us: we were active in the field before MRKX Labs became an agency. You can judge the quality yourself: look at ROAD1 TOW, or let us analyse your current site for free."],
+      chips: [{ t: "Examples of your work", go: "portfolio" }, ANALYSIS, { t: "How do you work?", go: "process" }] },
 
     { id: "booking_system", kind: "question", kw: ["booking system", "online booking", "book appointments", "appointment booking", "appointments online", "reservation system", "table booking", "let customers book", "customers book online", "calendar booking", "booking calendar", "booking engine", "book a time", "scheduling system", "online reservations", "take bookings", "bookings online", "book a table", "reserve a table", "table reservation", "reservations", "reservation", "book a room", "book a tour", "bookings", "appointments", "need bookings", "customers to book"],
       a: ["Booking is a common part of our work. We connect websites to booking and calendar tools and can automate confirmations and follow-ups. Which setup fits depends on your business, so the details are scoped per project."],
