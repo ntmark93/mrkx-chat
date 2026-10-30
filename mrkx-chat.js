@@ -799,6 +799,452 @@ var MRKX_KB2 = (function () {
   return { kwAdd: kwAdd, labels: labels, intents: intents, stop: stop, syn: syn, isRules: isRules, fallbackFirst: fallbackFirst };
 })();
 
+/* MRKX Assistant: Icelandic knowledge base. Written directly in Icelandic (not translated word for word),
+   studio voice "við". Same facts as the English KB (prices: starting prices only, Oct 2026, excl. VAT).
+   NEEDS NATIVE PROOFREADING before it is treated as final.
+
+   Matching (see bot.js, "Icelandic engine"): text and keywords are folded to plain ASCII
+   (á->a, ð->d, þ->th, æ->ae, ö->o ...), so typing without special characters works too.
+   A keyword is one or more stems; a stem matches the start of a word ("vefsid" matches vefsíða, vefsíðu,
+   vefsíðuna, vefsíðum ...). "stem$" = whole word only, "*stem" = anywhere inside a word (compounds). */
+var MRKX_KB_IS = (function () {
+  var P_WEB = "450.000 kr.";
+  var P_SEO = "220.000 kr.";
+  var P_APP = "1.200.000 kr.";
+
+  var C_SERVICES = { t: "Hvað bjóðið þið upp á?", go: "is:services" };
+  var C_PRICE = { t: "Verð", go: "is:pricing" };
+  var C_ANALYSIS = { t: "Ókeypis greining", go: "is:free_analysis" };
+  var C_CONSULT = { t: "Bóka ráðgjöf", go: "is:consultation" };
+  var C_TEAM = { t: "Tala við teymið", go: "human" };
+  var C_YES = { t: "Já, endilega", go: "handoff_start" };
+  var C_NO = { t: "Ekki núna", go: "decline" };
+  var HANDOFF_CHIPS = [C_YES, C_NO];
+
+  var intents = [
+    { id: "greet", generic: true, noCount: true, kind: "question",
+      kw: ["hae$", "halo", "sael", "godan dag", "gott kvold", "godan daginn", "gedan", "hallo$", "heyrdu", "saell"],
+      a: ["Halló! Gaman að fá þig hingað. Hvað ertu að vinna að?",
+          "Hæ! Segðu mér í stuttu máli hvað þú þarft, þá bendi ég þér í rétta átt."],
+      chips: [C_SERVICES, C_PRICE, C_ANALYSIS] },
+
+    { id: "how_are_you", generic: true, noCount: true, kind: "question",
+      kw: ["hvernig hefur thu thad", "hvad segir thu", "hvad er ad fretta", "hvernig gengur", "allt gott"],
+      a: ["Takk fyrir að spyrja, allt gott hér. Hvað get ég gert fyrir þig?"],
+      chips: [C_SERVICES, C_PRICE] },
+
+    { id: "thanks", generic: true, noCount: true, kind: "question",
+      kw: ["takk", "thakka", "thakkir", "kaerar thakkir", "frabaert", "snilld"],
+      a: ["Verði þér að góðu. Er eitthvað fleira sem ég get hjálpað með?", "Ekkert að þakka. Spurðu endilega ef það er eitthvað fleira."],
+      chips: [C_ANALYSIS, C_TEAM] },
+
+    { id: "bye", generic: true, noCount: true, kind: "question",
+      kw: ["bless", "blessadur", "blessud", "vertu sael", "vertu saell", "sjaumst", "heyrumst", "thad er allt og sumt", "ekkert annad"],
+      a: ["Takk fyrir komuna. Ef þú vilt halda áfram síðar nærðu í okkur á hello@mrkxlabs.com."] },
+
+    { id: "about_bot", kind: "question",
+      kw: ["ertu madur", "ertu manneskja", "ertu velmenni", "ertu bot", "ertu robot", "ertu raunveruleg", "ertu alvoru", "hver ert thu", "hvad ert thu", "ertu gervigreind", "ertu rafraen", "vid hvern er eg ad tala", "er thetta madur", "er einhver thar"],
+      a: ["Ég er MRKX aðstoðarmaður, sjálfvirkur aðstoðarmaður MRKX Labs og ekki manneskja. Ég get útskýrt þjónustuna og svarað algengum spurningum, og ef ég get ekki hjálpað sendi ég spurninguna þína áfram til teymisins."],
+      chips: [C_TEAM, C_SERVICES] },
+
+    { id: "about", kind: "question",
+      kw: ["hverjir eru thid", "hverjir erud thid", "um fyrirtaekid", "um mrkx", "hvad er mrkx", "hver er mrkx", "um ykkur", "segdu mer fra ykkur", "segid mer fra ykkur", "hverjir standa", "stofnandi", "treyst", "treysta ykkur", "treysta thikkur", "ny stofa", "nyleg", "nyfaedd", "eruda ny", "eruda ung", "ung$", "reynsla", "reynslu", "reynd$", "hversu reynd", "traustverd", "alvoru fyrirtaeki", "serdu alvoru", "sagan ykkar", "reynsla ykkar", "reynslu ykkar", "hversu lengi hafid", "stofnadi", "hver stofnadi", "hver a fyrirtaekid", "hver er eigandi", "eigandi fyrirtaekisins", "hver rekur", "hver er a bak vid", "bak vid fyrirtaekid", "hvad hafid thid lengi", "ung stofa"],
+      a: ["MRKX Labs er stafræn kerfastofa á Höfn í Hornafirði. Við sameinum stefnumótun, söluhugsun, markaðsuppbyggingu, hönnun, vefsmíði, SEO og greiningar, svo vefsíða sé ekki bara fallegt yfirborð heldur leið frá athygli til trausts og fyrirspurnar. Grunnreglurnar okkar eru skýrleiki, trúverðugleiki og aðgerð. Við vorum að vinna á þessu sviði áður en MRKX Labs varð að stofu, svo fagið er okkur ekki nýtt. [Um okkur](/about)"],
+      more: "Áður en við byggjum nokkuð sjónrænt skilgreinum við tilboðið, markhópinn, staðsetningu og framvindu skilaboða. Þess vegna lítum við á hverja vefsíðu, lendingarsíðu eða vörumerkjakerfi sem hluta af stærra vaxtarkerfi en ekki sem stakt útlit.",
+      chips: [C_SERVICES, { t: "Hvernig vinnið þið?", go: "is:process" }, { t: "Dæmi um verk", go: "is:portfolio" }] },
+
+    { id: "services", kind: "question",
+      kw: ["hvad bjodid thid", "hvad bidid thid", "hvad bjodid", "hvada thjonustu", "thjonusta ykkar", "thjonustu ykkar", "thjonustan", "thjonustur", "hvad getid thid", "hvad gerid thid", "hvad gerir thu", "hvad er i bodi", "hvad bjodist", "hvad gerid", "hvad getur thu", "hjalpid thid", "hvad eruda ad gera"],
+      a: ["Við bjóðum upp á sex hluti: lendingarsíður, vefsíður fyrir fyrirtæki, leitarvélabestun (SEO), vörumerkjakerfi, sjálfvirkni og smáforrit. Hvert og eitt stendur eitt og sér, en þau skila mestu þegar þau vinna saman sem eitt kerfi. Hvað af þessu er næst því sem þú þarft? [Öll þjónusta](/services)"],
+      chips: [{ t: "Vefsíða", go: "is:svc_website" }, { t: "SEO", go: "is:svc_seo" }, { t: "Lendingarsíða", go: "is:svc_landing" }, { t: "Vörumerki", go: "is:svc_brand" }, { t: "Sjálfvirkni", go: "is:svc_automation" }, { t: "Smáforrit", go: "is:svc_app" }] },
+
+    { id: "svc_website", kind: "topic", topic: "website",
+      kw: ["gert vef$", "getid thid gert vef", "buid til vef", "bua til vef", "smida vef", "vefsid", "*vefsid", "heimasid", "*heimasid", "vefsmid", "vefhonnun", "vefthonun", "vefur$", "vefinn$", "vefinn minn", "nyja vefinn", "nyjan vef", "endurhanna vef", "endurgera vef", "nytt vef", "website", "web design"],
+      a: ["Vefsíðuvinnan hjá okkur nær yfir uppbyggingu, hönnun, forritun og tæknilegan grunn fyrir leitarvélar: skipulag síðna, vef sem virkar vel í öllum tækjum, hraða, aðgengi, greiningartól og tengingar við önnur kerfi. Vefsíður fyrir fyrirtæki byrja frá " + P_WEB + " án vsk. [Vefsíðuþjónusta](/services/websites)"],
+      more: "Við skipuleggjum uppbyggingu vefsins áður en útlitið er hannað: stigveldi síðna, leiðakerfi, slóðir, síður fyrir hverja þjónustu og innri tengingar. Smíðin sjálf nær yfir vef sem er prófaður í mismunandi tækjum og vöfrum, efnisskipulag sem auðvelt er að breyta án þess að hönnunin skemmist, tæknilegan grunn fyrir leitarvélar (lýsigögn, fyrirsagnir, vefkort, skipulögð gögn), hraða og stöðugt útlit, grunnatriði í aðgengi, örugga meðhöndlun eyðublaða, uppsetningu á GA4 og Search Console og tengingar við til dæmis CRM, tölvupóst, bókanir eða greiðslur. Eftir opnun athugum við eyðublöð, skráningu í leitarvélar, mælingar og tengla. [Vefsíðuþjónusta](/services/websites)",
+      chips: [{ t: "Nánar", go: "is:more" }, C_PRICE, C_ANALYSIS, { t: "Hvernig vinnið þið?", go: "is:process" }] },
+
+    { id: "svc_seo", kind: "topic", topic: "seo",
+      kw: ["seo", "leitarvelabestun", "*leitarvel", "leitarvael", "bestun", "bestunar", "a google", "i google", "google leit", "google nidurstodur", "google rod", "gugl leit", "googla", "finnast", "finna mig", "finni mig", "finni okkur", "finna okkur", "finnur mig", "finnur okkur", "folk finni", "finnanleg", "finnanlegur", "synileika", "synileiki", "leitarnidurstod", "leitarord", "search foundation", "lifraen leit", "organic"],
+      a: ["Í leitarvélabestun vinnum við með uppbyggingu síðna, efni, tæknilegan grunn, lýsigögn, innri tengingar og staðbundna leit. Search Foundation byrjar frá " + P_SEO + " án vsk. [SEO-þjónusta](/services/seo)"],
+      more: "Við lítum á SEO sem hluta af uppbyggingu vefsins en ekki sem gátlista. Fyrst kemur tæknilegi grunnurinn (skráning í leitarvélum, vefkort, tilvísanir, skipulögð gögn, hraði), síðan leitarásetningur og uppbygging síðna, svo hver mikilvæg þjónusta hafi sína síðu með skýrt hlutverk. Við bætum við skýrleika í efni, lýsigögnum, staðbundinni leit fyrir íslensk fyrirtæki (vefur, Google Business Profile og samræmdar upplýsingar) og mælingum í gegnum Search Console og greiningartól. Við lofum ekki ákveðnum sætum, því leitarvélarnar ráða því. [SEO-þjónusta](/services/seo)",
+      chips: [{ t: "Nánar", go: "is:more" }, C_PRICE, { t: "Hvað tekur SEO langan tíma?", go: "is:seo_time" }, C_ANALYSIS] },
+
+    { id: "svc_landing", kind: "topic", topic: "landing",
+      kw: ["lendingarsid", "*lendingarsid", "landing", "herferdarsid", "herferdarsida", "soluherferd", "sidu fyrir herferd", "sidu fyrir auglysingu", "tilbodssid"],
+      a: ["Lendingarsíða er einbeitt síða fyrir eina herferð, einn markhóp eða eitt tilboð og er smíðuð til að breyta áhuga í fyrirspurnir. Texti, uppbygging og mælingar eru skipulögð saman en ekki bætt við eftir á. Verð er sett fyrir hvert verkefni, svo best er að ræða málið í stuttri ráðgjöf. [Lendingarsíður](/services/landing-page)"],
+      more: "Við byrjum á ákvörðuninni sem gesturinn þarf að taka en ekki á sniðmáti. Fyrst skýrum við markhópinn og herferðina, tilboðið, skilaboðin og sönnunargögnin, síðan hönnun, eyðublað og mælingar. Dæmigert verkefni getur náð yfir stefnu, texta sem skilar fyrirspurnum, grindur og sérhannað útlit, smíði fyrir öll tæki, eyðublöð og tölvupóst, tengingar við CRM eða bókanir, greiningar og prófanir fyrir opnun. Við lofum engri fullkominni fyrirsögn eða uppsetningu, heldur leitum fyrst að raunverulegu flöskuhálsinum. [Lendingarsíður](/services/landing-page)",
+      chips: [{ t: "Nánar", go: "is:more" }, { t: "Lendingarsíða eða vefur?", go: "is:landing_vs_site" }, C_CONSULT] },
+
+    { id: "svc_brand", kind: "topic", topic: "brand",
+      kw: ["vorumerki", "*vorumerki", "logo", "lógo", "ímynd", "imynd", "utlit fyrirtaekis", "brand$", "nafnspjold", "nafnspjald", "nafnspjoldin", "merki fyrirtaekis", "litapalletta", "litapaletta", "leturgerd", "bokstafagerd"],
+      a: ["Vörumerkjakerfi er meira en lógó. Það lýsir því hvernig ímynd fyrirtækisins birtist í útliti, texta, á vefnum og í framtíðarefni, svo allt virki samræmt og áreiðanlegt. Verð er sett fyrir hvert verkefni. [Vörumerkjakerfi](/services/brand-system)"],
+      more: "Vörumerkjakerfi getur náð yfir staðsetningu, reglur um notkun á lógói, liti og leturgerðir, hlutföll og uppsetningu, stefnu um myndir og tákn, tón í texta og reglur fyrir vefinn, lendingarsíður og samfélagsmiðla. Við sjáum líka um tæknilega hlutann: aðgengilegar litasamsetningar, letur sem aðlagast skjástærð, tilbúin skjöl til afhendingar, uppbyggingu fyrir Figma og leiðbeiningar um notkun, svo kerfið virki líka eftir afhendingu. Umfangið fer eftir fyrirtækinu þínu. [Vörumerkjakerfi](/services/brand-system)",
+      chips: [{ t: "Nánar", go: "is:more" }, { t: "Vörumerkjakerfi eða lógó?", go: "is:brand_vs_logo" }, C_CONSULT] },
+
+    { id: "svc_automation", kind: "topic", topic: "automation",
+      kw: ["sjalfvirkni", "*sjalfvirk", "sjalfvirkt", "sjalfvirka", "sjalfvirknivaeda", "crm", "zapier", "n8n", "ferli", "verkferli", "spara tima", "minnka handavinnu", "handavinna", "skyrslur"],
+      a: ["Við smíðum sjálfvirkni fyrir endurtekin verkefni sem fylgja föstum reglum, til dæmis meðhöndlun fyrirspurna, uppfærslur í CRM, eftirfylgnipóst, skýrslur, tilkynningar og bókanir. Þar sem þarf mannlegt mat er kerfið stuðningur en kemur ekki í stað fólks. Verð er sett fyrir hvert verkefni. [Sjálfvirkni](/services/automation-systems)"],
+      more: "Við byrjum á verkferlinu en ekki á verkfærinu: hvar upplýsingarnar koma inn, hvert þær þurfa að fara og hver samþykkir hvað. Algeng svið eru meðhöndlun fyrirspurna og uppfærslur í CRM, eyðublöð á vefnum, móttaka nýrra viðskiptavina, eftirfylgnipóstur, innri verkefni og tilkynningar, bókanir, skýrslur og skjalameðhöndlun. Áreiðanlegt kerfi hefur líka staðfestingar, meðhöndlun tvítekninga, endurtekningar, villuviðvaranir, annála og skýra ábyrgð, svo bilun fari aldrei fram hjá neinum. Gervigreind er aðeins notuð þar sem túlkun skilar virði og maður samþykkir áhættusöm skref. [Sjálfvirkni](/services/automation-systems)",
+      chips: [{ t: "Nánar", go: "is:more" }, { t: "Hvað er hægt að sjálfvirknivæða?", go: "is:automation_what" }, C_CONSULT] },
+
+    { id: "svc_app", kind: "topic", topic: "app",
+      kw: ["smaforrit", "*smaforrit", "app$", "appid$", "appi$", "forrit$", "snjallforrit", "snjallsimaforrit", "ios", "android", "app store", "google play", "farsimaforrit", "simaapp", "app fyrir"],
+      a: ["Við hönnum og þróum smáforrit, en athugum fyrst hvort smáforrit sé yfirhöfuð rétta lausnin. Það á við þegar notendur þurfa reglulegan aðgang, aðganga, notkun án nettengingar eða tilkynningar. Smáforrit byrja frá " + P_APP + " án vsk. og endanlegt verð fer eftir umfangi. [Smáforrit](/services/mobile-app-design-development)"],
+      more: "Við byrjum á vörunni sjálfri: fyrir hvern appið er, hvaða eina grunnaðgerð fyrsta útgáfan þarf að sanna og hvort app sé rétta sniðið. Síðan skipuleggjum við kerfið á bak við skjáina: aðganga, gögn, vefþjónustur, heimildir, villu- og hleðsluástand, öryggi og mælingar. Við lítum á hraða, persónuvernd og heimildir sem hluta af hönnuninni, veljum á milli innbyggðs og þverpallaforrits eftir þörfum vörunnar og undirbúum yfirferð hjá App Store og Google Play. Uppfærslur og viðhald eftir opnun eru skipulögð frá byrjun. [Smáforrit](/services/mobile-app-design-development)",
+      chips: [{ t: "Nánar", go: "is:more" }, { t: "Þarf ég app?", go: "is:app_need" }, C_CONSULT] },
+
+    { id: "pricing", kind: "question", w: 1.25,
+      kw: ["hvad kostar", "hvad kosta", "hvad thad kostar", "hvad thetta kostar", "hvad myndi thad kosta", "thad kostar", "thetta kostar", "kostar ad", "kostar thetta", "kostar thad", "kostar", "kosta$", "kostnad", "kostnadur", "kostnadinn", "kostnadarmat", "verd$", "verdid$", "verdinu$", "verdin$", "verdum$", "verdskra", "verdlag", "verdlagning", "verdtilbod", "verdhugmynd", "verdbil", "verdmida", "verdmat", "tilbod", "hvad tharf eg ad borga", "hvad thyrfti eg ad borga", "hvad er verdid", "hvad er verd", "hvad kemur thetta til med ad kosta", "hvad myndi thetta kosta", "hvad rukkid", "hvad takid", "hvad taka", "fjarhagsaetlun", "fjarhagur", "budget", "peningar", "peninga", "krona", "krónur", "kronur", "isk", "vsk", "virdisauka", "ad borga", "borga fyrir", "verdupplysingar", "hvad er kostnadurinn", "hversu mikid kostar", "hvad myndi", "ca verd", "lagmarksverd", "byrjunarverd", "upphafsverd", "frá hvada verdi", "fra hvada verdi", "fra hvada upphaed", "hvad dyrt", "verdflokkar", "pakkar", "pakki"],
+      a: [] /* built in bot.js (topic-aware) */ },
+
+    { id: "objection", kind: "question",
+      kw: ["dyrt", "dyr$", "of dyrt", "of dyr", "odyrt", "odyr", "odyrara", "ódýrara", "afslattur", "afslaetti", "afslatt", "tilbod i bodi", "samkeppnishaef", "samkeppnishaefur", "hef ekki rad", "hef ekki efni", "ekki efni a", "rad a thessu", "of mikid", "hagstaedara", "laegra verd", "laekka verd", "laekka verdid", "gefa afslatt", "prutta", "semja um verd", "kostar of mikid", "ofvaxid", "ofurverd"],
+      a: ["Ég skil það, þetta er raunveruleg fjárfesting. Við keppum ekki í því að vera ódýrust. Við leggjum áherslu á skýrt tilboð, vef sem skapar traust og leið sem breytir heimsóknum í fyrirspurnir, svo peningarnir vinni fyrir þig. Gagnlegast er að taka stutta ráðgjöf þar sem við skoðum markmiðin þín og mótum umfang og verð í kringum þau í stað fastra pakka."],
+      chips: [C_CONSULT, C_ANALYSIS] },
+
+    { id: "timeline", kind: "question",
+      kw: ["hversu lengi", "hve lengi", "hvad tekur", "tekur langan", "langan tima", "hvenaer verdur", "hvenaer getid", "hvenaer getum", "hvenaer faum", "hvenaer aetti", "afhendingartimi", "afhending", "afhenda", "afhent", "frestur", "timaaetlun", "timalina", "timaramma", "timarammi", "hversu fljott", "hvad tekur thad", "vikur", "manudi", "manudir", "strax", "sem fyrst", "bradlega", "brad$", "klara fyrir", "tilbuid fyrir", "hvenaer byrjid", "hvenaer getid thid byrjad", "hvenaer getid byrjad"],
+      a: ["Tímalínan fer eftir umfangi, svo ég get ekki lofað dagsetningum hér. Eina tímasetningin sem ég get gefið er fyrir ókeypis greininguna: þú færð hana sem PDF í tölvupósti innan 48 klukkustunda. Fyrir verkefni ákveðum við tímaáætlun eftir stutta ráðgjöf."],
+      chips: [C_ANALYSIS, C_CONSULT] },
+
+    { id: "process", kind: "question",
+      kw: ["hvernig vinnid", "hvernig virkar thetta", "hvernig virkar ferlid", "hvernig virkar samstarfid", "hvernig gengur thetta fyrir sig", "hvernig fer", "vinnuferli", "ferlid", "ferli ykkar", "ferlinu", "adferd", "adferdir", "vinnubrogd", "skref", "hvernig byrjum", "hvernig er ferlid", "hvad gerist fyrst", "hvad gerist naest", "hvernig fer thetta", "hvernig er thetta unnid", "hvernig er verkefni unnid", "hvernig er thetta gert", "hvernig faer", "vinnuadferd"],
+      a: ["Við byrjum á skýrleika áður en hönnun eða forritun hefst: tilboðið, markhópurinn, uppbygging skilaboða, leið notandans og hvernig hann tekur næsta skref. Síðan smíðum við uppbyggingu, hönnun og tæknilegan grunn, og eftir opnun skoðum við árangurinn og höldum áfram að bæta út frá gögnum. [Hvernig við vinnum](/about)"],
+      more: "Í reynd þýðir þetta að stefnan setur stefnuna, hönnunin skapar traust, forritunin smíðar upplifunina, SEO eykur sýnileika og stöðug bestun heldur áfram að bæta árangurinn.",
+      chips: [{ t: "Nánar", go: "is:more" }, C_ANALYSIS, C_CONSULT] },
+
+    { id: "free_analysis", kind: "question", pending: "analysis",
+      kw: ["okeypis", "ókeypis", "kostar greiningin", "greiningin kostar", "kostar greining", "kostar uttektin", "kostar thetta ekkert", "okeypis greining", "greiningin ykkar", "greining ykkar", "hvernig virkar greiningin", "hvernig virkar okeypis", "greining", "greiningu", "greina", "greiningin", "uttekt", "uttekta", "skoda vefinn minn", "skoda vefsidu", "skoda sidu", "yfirfara", "yfirfarid", "yfirfera", "ahugasemdir um vefinn", "gefa mer alit", "athuga vefinn", "athuga sidu", "ahuga vefinn", "profun a vef", "fa greiningu", "seo uttekt", "seo greining"],
+      a: ["Við bjóðum upp á ókeypis greiningu á vefsíðu og leitarvæðingu. Við förum yfir síðurnar þínar, tæknina á bak við vefinn og SEO-vandamál og sendum þér PDF í tölvupósti innan 48 klukkustunda með almennum ráðleggingum fyrir þína vefsíðu. Ef þú vilt ganga lengra sendum við sundurliðað tilboð í allar lagfæringar. Ítarleg lagfæringaráætlun er ekki hluti af ókeypis greiningunni og hvert fyrirtæki getur fengið eina greiningu. Á ég að setja hana af stað?"],
+      chips: [{ t: "Já, setjum hana af stað", go: "analysis_start" }, { t: "Hvað er innifalið?", go: "is:analysis_detail" }, C_NO] },
+
+    { id: "analysis_detail", kind: "question", pending: "analysis",
+      kw: ["hvad er innifalid i greiningu", "hvad er i greiningunni", "hvad er innifalid", "hvad faer eg", "hvad skodid thid", "hvad athugid thid", "hvad felst i greiningu", "hvad inniheldur greiningin", "hvad er i thessari greiningu"],
+      a: ["Greiningin nær yfir yfirferð á síðunum þínum, skoðun á tækninni á bak við vefinn og þeim SEO-vandamálum sem við finnum, með almennum ráðleggingum fyrir þína vefsíðu. Hún inniheldur ekki ítarlega lagfæringaráætlun. Ef þú vilt hana sendum við sundurliðað tilboð í allar lagfæringar. Greiningin kemur sem PDF í tölvupósti innan 48 klukkustunda."],
+      chips: [{ t: "Já, setjum hana af stað", go: "analysis_start" }, C_CONSULT] },
+
+    { id: "consultation", kind: "question", pending: "consult",
+      kw: ["radgjof", "radgjafi", "radgjafar", "bóka tima", "boka tima", "boka fund", "bóka fund", "fundur", "fundi", "hittast", "hitting", "spjalla um verkefnid", "spjalla um verkefni", "kynningarfund", "kynningarfundur", "fund$", "fa fund", "fund med ykkur", "fundi med ykkur", "hitta ykkur", "bóka samtal", "boka samtal", "taka samtal", "hringja i mig", "hringid i mig", "kynning"],
+      a: ["Ráðgjöf er samtal um markmiðin þín þar sem við mótum umfang og verð í kringum verkefnið. Ég get sent beiðnina til teymisins núna. Á ég að gera það?"],
+      chips: [{ t: "Já, endilega", go: "handoff_start_consult" }, C_NO] },
+
+    { id: "human", kind: "question", pending: "handoff",
+      kw: ["tala vid manneskju", "tala vid starfsmann", "tala vid einhvern", "spjalla vid einhvern", "spjalla vid manneskju", "spjalla vid starfsmann", "tala vid manneskju", "tala vid mann", "tala vid person", "manneskju", "starfsmann", "starfsfolk", "teymid", "teymisins", "teyminu", "senda til teymisins", "senda teyminu", "serfraedinga", "serfraeding", "einhver fra ykkur", "lifandi manneskju", "lifandi mann", "alvoru manneskju", "hafa samband vid mig", "hafid samband", "senda ykkur skilabod", "senda skilabod", "skilabod til ykkar", "skrifa ykkur", "senda ykkur", "senda thetta til ykkar", "skilabod til teymisins", "senda fyrirspurn", "sendid mer", "hringid", "svara mer", "vilja tala vid", "vil tala vid", "vil fa ad tala", "vil fa svar fra manneskju", "thjonustufulltrui", "thjonustuver", "senda thessa spurningu", "senda spurninguna", "koma skilabodum afram", "koma thessu afram", "framsenda"],
+      a: ["Að sjálfsögðu. Ég get sent þetta samtal til teymisins okkar í tölvupósti og það svarar þér. Á ég að gera það?"],
+      chips: [C_YES, C_NO] },
+
+    { id: "contact", kind: "question",
+      kw: ["netfang", "netfangid", "tolvupost", "tolvupostur", "simanumer", "siminn", "sima$", "simi$", "hringja", "heimilisfang", "heimilisfangid", "skrifstofa", "skrifstofu", "opnunartimi", "opnunartima", "afgreidslutimi", "heimsaekja", "kikja vid", "whatsapp", "hafa samband", "nå í ykkur", "na i ykkur", "nad i ykkur", "ná í ykkur", "hvar finn eg ykkur", "hvernig nae eg", "hvernig get eg haft samband", "hvernig hef eg samband"],
+      a: ["Þú nærð í okkur á hello@mrkxlabs.com eða í síma 837 8339 (+354 837 8339). Heimilisfangið okkar er 781 Höfn í Hornafirði og á [samskiptasíðunni](/contact) er eyðublað. Við erum líka á Facebook, Instagram (mrkx.labs) og LinkedIn."],
+      chips: [{ t: "Senda til teymisins", go: "human" }, C_ANALYSIS] },
+
+    { id: "location", kind: "question",
+      kw: ["hvar eruda", "hvar eru thid", "hvar eruð", "hvar erud", "stadsetning", "stadsett", "stadsetta", "i hofn", "a hofn", "hofn i hornafirdi", "hornafirdi", "reykjavik", "akureyri", "um allt land", "landsbyggd", "landsbyggdin", "utan reykjavikur", "fjarvinna", "fjarvinnu", "erlendis", "utanlands", "alla leid", "bua ekki a hofn", "bua i reykjavik", "bua uti a landi", "thjonustid thid", "hvar a landinu"],
+      a: ["Við erum með aðsetur á Höfn í Hornafirði og vinnum með fyrirtækjum um allt Ísland. Við vinnum líka í fjarvinnu, svo staðsetning setur verkefnum engin takmörk."],
+      chips: [C_SERVICES, { t: "Hafa samband", go: "is:contact" }] },
+
+    { id: "portfolio", kind: "question",
+      kw: ["dæmi um verk", "daemi um verk", "daemi", "fyrri verk", "fyrri verkefni", "thid unnid fyrir", "hverja hafid thid unnid fyrir", "viðskiptavini", "vidskiptavini", "vidskiptavinir", "vidskiptavinum", "tilvisanir", "safn", "portfolio", "road1", "dratt", "dráttarbíl", "drattarbil", "vegaadstod", "synishorn", "synishorni", "hvad hafid thid gert", "sja verkefni", "verkefnin ykkar", "ykkar verkefni", "fyrri verkefni", "sja dæmi", "sja daemi", "haegt ad sja", "sýna mer verk", "syna mer verk", "syna okkur"],
+      a: ["Verkefnið sem við sýnum opinberlega er ROAD1 TOW, vefsíða fyrir dráttarbíla- og vegaaðstoð á Suðurlandi: skýr uppbygging, bein leið til að hringja með einum smelli, grunnur að staðbundinni leitarvæðingu, dökk og gul hönnun og samræmt nafnspjald. Sem stofa erum við ung, en við erum ekki ný í faginu: við vorum að vinna á þessu sviði áður en MRKX Labs varð að stofu, og viljum frekar sýna fá verkefni sem við stöndum á bak við en langan lista. [Verkefni](/portfolio)"],
+      chips: [{ t: "ROAD1 TOW", go: "is:portfolio_detail" }, { t: "Hvernig vinnið þið?", go: "is:process" }, C_ANALYSIS] },
+
+    { id: "portfolio_detail", kind: "question", noCount: true,
+      kw: ["road1 tow", "road1tow", "um road1", "meira um road1"],
+      a: ["ROAD1 TOW er vefsíða fyrir dráttarbíla- og vegaaðstoð á Suðurlandi. Hún er byggð í kringum það sem gesturinn þarf mest á að halda þegar eitthvað kemur upp á: að ná sambandi strax. Þess vegna er bein símaleið með einum smelli, skýr uppbygging og staðbundinn grunnur fyrir leitarvélar. Í verkefninu var líka hannað samræmt nafnspjald. [Skoða verkefnið](/portfolio-case-study-road1tow)"],
+      chips: [{ t: "Öll verkefni", go: "is:portfolio" }, C_CONSULT] },
+
+    { id: "platform", kind: "question",
+      kw: ["wix", "wordpress", "shopify", "squarespace", "webflow", "vefsmidakerfi", "vefsmidja", "hvada kerfi", "hvada taekni", "hvada tol", "taeknilausn", "vefumsjon", "vefumsjonarkerfi", "cms", "sniðmat", "snidmat", "snidmati", "custom code", "serkodun", "serkodi", "kodi$", "kodinn", "kodann", "sjalfsmidada", "serhonnud"],
+      a: ["Vefsíður viðskiptavina okkar eru sérsmíðaðar í kóða, ekki settar saman í vefsmíðakerfi eða úr tilbúnu sniðmáti, svo uppbygging, hraði og SEO-uppsetning miðast við fyrirtækið þitt en ekki takmarkanir verkfæris. Ef þú ert nú þegar með vef á öðru kerfi sýnir ókeypis greiningin hvað er þess virði að halda og hvað þarf að endurbyggja.",
+          "Við smíðum vefi viðskiptavina með kóða en ekki í vefsmíðakerfi. Þannig höfum við fulla stjórn á uppbyggingu, hraða og tæknilegri leitarvélabestun. Ef núverandi vefur þinn er á öðru kerfi skoðum við í ókeypis greiningunni hvað er hægt að byggja á."],
+      chips: [C_ANALYSIS, { t: "Vefsíðuþjónusta", go: "is:svc_website" }, C_CONSULT] },
+
+    { id: "payment_terms", kind: "question", pending: "handoff",
+      kw: ["greidslu", "greidsla", "greidslur", "greidslumata", "greidsluskilmala", "greidsluskilmalar", "greidsludreifing", "dreifa greidslum", "borga i hlutum", "borga mánadarlega", "borga manadarlega", "innborgun", "fyrirframgreidsla", "reikning", "reikningur", "raðgreidslur", "radgreidslur", "afborganir", "afborgun", "hvernig borga eg", "hvenaer borga eg", "hvernig er greitt"],
+      a: ["Greiðsluskilmálar eru ákveðnir fyrir hvert verkefni, svo ég get ekki nefnt þá hér. Í stuttri ráðgjöf mótum við umfang og verð og teymið staðfestir nákvæmlega hvernig greiðslum er háttað. Á ég að senda spurninguna þína áfram?"],
+      chips: [C_YES, C_CONSULT, C_NO] },
+
+    { id: "ownership_hosting", kind: "question", pending: "handoff",
+      kw: ["hver a vefinn", "a eg vefinn", "eigandi", "eignarhald", "eignarrettur", "hysing", "hysingu", "hysa", "vefthjonn", "len$", "lenid$", "lenid minu", "lenid mitt", "domain", "lensskraning", "kodinn minn", "afhenda kodann", "frumkodi", "hver a kodann", "hysingaradili", "vefhysing"],
+      a: ["Atriði eins og eignarhald, hýsing og lén fara eftir verkefninu og eru ákveðin skriflega, svo ég vil ekki giska. Teymið getur svarað þessu nákvæmlega. Á ég að senda spurninguna þína áfram?"],
+      chips: [C_YES, C_NO] },
+
+    { id: "revisions", kind: "question", pending: "handoff",
+      kw: ["likar ekki hönnunina", "likar ekki honnunina", "likar ekki utlitid", "ef mer likar ekki", "breytingar eftir", "breyta aftur", "endurgreid", "endurgreit", "endurgreida", "endurgreidsla", "endurgreidslu", "ekki anaegdur", "ekki anaegd", "ekki sattur", "ekki satt", "yfirferdir", "yfirferd a honnun", "breytingalotur", "breytingaloturnar", "hvad eru margar breytingar", "skipta um skodun", "ef eg skipti um skodun"],
+      a: ["Við byrjum á skýrleika: tilboðið, markhópurinn og uppbyggingin eru ákveðin áður en hönnunin hefst, svo stefnan er samræmd snemma. Hvernig breytingar og yfirferðir eru meðhöndlaðar er ákveðið fyrir hvert verkefni, svo ég get ekki nefnt nákvæma skilmála hér. Á ég að senda spurninguna þína áfram til teymisins?"],
+      chips: [C_YES, { t: "Hvernig vinnið þið?", go: "is:process" }, C_NO] },
+
+    { id: "nda", kind: "question", pending: "handoff",
+      kw: ["trunadarsamning", "trunadarsamningur", "trunadur", "trunadarmal", "nda$", "leynd", "halda leyndu", "leyndarmal", "thagnarskylda", "thagnarskyldu"],
+      a: ["Skilmálar af þessu tagi eru ákveðnir fyrir hvert verkefni, svo ég get ekki lofað þeim hér. Taktu þetta upp við teymið, ég sendi spurninguna þína gjarnan áfram."],
+      chips: [C_YES, C_NO] },
+
+    { id: "need_from_you", kind: "question",
+      kw: ["hvad tharf eg ad utvega", "hvad tharf eg ad undirbua", "hvad tharf eg ad hafa", "hvad thurfid thid fra mer", "hvad tharftu fra mer", "hvad tharf eg ad koma med", "hvad tharf eg ad eiga", "hvad tharf eg fyrir", "tharf eg ad vera med", "efni fra mer", "texta fra mer", "myndir fra mer", "eiga myndir", "tharf eg ad eiga", "tharf eg ad hafa", "tharf eg ad utvega", "tharf eg ad skrifa", "tharf eg ad koma med", "eiga texta", "skrifa textana", "myndir$", "myndum$", "hvad thurfid thid"],
+      a: ["Í byrjun þurfum við að skilja tilboðið þitt, markhópinn og markmiðin. Ef þú átt nú þegar vefsíðu, lógó, texta eða myndir hjálpar það, en þú þarft ekki að hafa allt tilbúið. Í ráðgjöfinni finnum við út nákvæmlega hvað þarf."],
+      chips: [C_CONSULT, C_ANALYSIS, { t: "Hvernig vinnið þið?", go: "is:process" }] },
+
+    { id: "not_on_google", kind: "faq", pending: "analysis",
+      kw: ["birtist ekki a google", "birtist ekki i google", "finnst ekki a google", "finnst ekki i google", "kemur ekki upp a google", "kemur ekki upp i google", "sest ekki a google", "sest ekki i google", "enginn finnur mig", "enginn finnur okkur", "finnst ekki", "finn ekki vefinn minn", "finn ekki vefsidu", "vefurinn minn finnst ekki", "synist ekki i leit", "kemur ekki fram i leit", "ekki ad koma upp", "ekki upp a google", "ekki upp i google", "upp a google", "ekki a google", "kemur ekki upp", "kemst ekki upp", "kemur ekki upp i leit", "ekki i leitarnidurstodum", "hverfur i leit", "faer enga umferd", "enga umferd", "litla umferd", "engar heimsoknir", "faar heimsoknir"],
+      a: ["Það geta verið nokkrar ástæður: síður sem eru ekki skráðar í leitarvélinni, noindex-stilling, veik uppbygging síðna, óskýrar þjónustusíður, skortur á staðbundnum merkjum eða tæknileg vandamál. Best er að skoða raunverulegan vef. Ókeypis greining á vef og leitarvæðingu er góð fyrsta skref: við förum yfir síðurnar, tæknina og SEO-vandamálin og sendum þér PDF í tölvupósti innan 48 klukkustunda. Á ég að setja hana af stað?"],
+      chips: [{ t: "Já, setjum hana af stað", go: "analysis_start" }, { t: "Hvað er innifalið?", go: "is:analysis_detail" }, C_NO] },
+
+    { id: "ads", kind: "faq",
+      kw: ["auglysingar", "auglysing", "auglysa", "auglysingaherferd", "auglysingaherferdir", "google ads", "facebook auglysingar", "facebook ads", "instagram auglysingar", "meta ads", "ppc", "keyptar auglysingar", "birta auglysingar", "sja um auglysingar", "stjorna auglysingum"],
+      a: ["Rekstur auglýsingaherferða er ekki ein af sex þjónustum okkar. Það sem við gerum er að smíða lendingarsíður fyrir umferð af auglýsingum, þar sem skilaboð, eyðublað og mælingar eru skipulögð saman, svo herferðin beini fólki á stað sem virkar. [Lendingarsíður](/services/landing-page)"],
+      chips: [{ t: "Lendingarsíður", go: "is:svc_landing" }, C_CONSULT] },
+
+    { id: "social", kind: "faq",
+      kw: ["samfelagsmidla", "samfelagsmidlar", "samfelagsmidlum", "facebook sidu", "instagram sidu", "postur a samfelagsmidla", "posta fyrir mig", "sja um samfelagsmidla", "stjorna samfelagsmidlum", "efni a samfelagsmidla", "somu"],
+      a: ["Rekstur samfélagsmiðla er ekki ein af sex þjónustum okkar. Vörumerkjakerfin okkar ná hins vegar yfir það hvernig ímyndin birtist á samfélagsmiðlum: sniðmát, útlitsreglur og tón í texta. [Vörumerkjakerfi](/services/brand-system)"],
+      chips: [{ t: "Vörumerkjakerfi", go: "is:svc_brand" }, C_SERVICES] },
+
+    { id: "ecommerce", kind: "faq",
+      kw: ["vefverslun", "*vefverslun", "netverslun", "*netverslun", "verslun a netinu", "selja a netinu", "selja vorur", "selur vorur", "selur vorurnar", "sem selur", "sem saelir", "selja vorurnar", "selja vorur a netinu", "webshop", "woocommerce", "greidslugatt", "innkaupakarfa", "karfa$", "karfan$", "selja sjalf", "netsala"],
+      a: ["Vefverslun getur verið hluti af vefsíðuverkefni. Mestu skiptir skýr uppbygging, hraði og traust leið að kaupum, og hægt er að tengja greiðslumiðlara eftir umfangi. Smáatriði og verð fara eftir vörunum þínum, tungumálum og tengingum, svo best er að byrja á stuttri ráðgjöf."],
+      chips: [{ t: "Vefsíðuþjónusta", go: "is:svc_website" }, C_CONSULT] },
+
+    { id: "chatbot_ai", kind: "faq", pending: "handoff",
+      kw: ["spjallmenni", "spjallbot", "chatbot", "gervigreind", "gervigreindar", "ai$", "sjalfvirkur adstodarmadur", "thjonustumenni", "vefspjall", "spjall a vefinn", "spjall a vefsidu", "bot a vefinn"],
+      a: ["Spjallmenni eru ekki ein af sex þjónustum okkar, en vinnuferli með aðstoð gervigreindar og sjálfvirkni eru það: að flokka fyrirspurnir, taka saman beiðnir og semja drög að svörum, alltaf með skýrum mörkum og samþykki manns þar sem það skiptir máli. Ef þú ert með spjallmenni í huga skaltu segja teyminu hvað það á að gera. [Sjálfvirkni](/services/automation-systems)"],
+      chips: [{ t: "Tala við teymið", go: "handoff_start" }, { t: "Um sjálfvirkni", go: "is:svc_automation" }, C_NO] },
+
+    { id: "mobile_ok", kind: "faq",
+      kw: ["farsima", "farsimum", "simanum$", "simann$", "simum", "simtaekjum", "simtaeki", "snjallsimum", "spjaldtolvum", "spjaldtolvu", "responsive", "adlagast", "adlagar", "virkar a simanum", "virkar i simanum", "virkar a simum", "mobile", "mobile friendly", "i ollum taekjum", "a ollum taekjum", "ollum taekjum", "skjastaerd", "skjastaerdir"],
+      a: ["Já. Vefsíður eru smíðaðar þannig að þær aðlagast skjástærð og eru prófaðar í síma, spjaldtölvu og tölvu sem aðskildum notkunaraðstæðum, í Safari, Chrome og Firefox á iOS, Android og borðtölvum. [Vefsíðuþjónusta](/services/websites)"],
+      chips: [{ t: "Vefsíðuþjónusta", go: "is:svc_website" }, C_PRICE] },
+
+    { id: "need_customers", kind: "question",
+      kw: ["fleiri vidskiptavini", "fleiri vidskiptavinir", "fa fleiri vidskiptavini", "vantar vidskiptavini", "vantar kaupendur", "vantar fleiri", "vantar fyrirspurnir", "fleiri fyrirspurnir", "fa fyrirspurnir", "fleiri solur", "meiri sala", "meiri solu", "meira af vidskiptum", "auka solu", "auka veltu", "stækka fyrirtaekid", "staekka fyrirtaekid", "stækka reksturinn", "staekka reksturinn", "na til fleiri", "fleiri vidskipti", "fleiri kaupendur", "fleira folk", "fleiri gesti", "fleiri gestir", "na i vidskiptavini", "finna vidskiptavini", "laða ad", "lada ad", "laða að", "adgengi ad vidskiptavinum"],
+      a: ["Byggingarefnið er venjulega þetta: vefur sem útskýrir tilboðið þitt skýrt, sýnileiki í leit (líka staðbundinni leit ef þú þjónar ákveðnu svæði) og auðveld leið til að senda fyrirspurn. Hvað hentar fer eftir því hvar þú ert núna. Ertu nú þegar með vefsíðu?"],
+      chips: [{ t: "Já, ég er með vef", go: "is:existing_site" }, { t: "Ekki ennþá", go: "is:svc_website" }, { t: "SEO", go: "is:svc_seo" }] },
+
+    { id: "existing_site", kind: "question",
+      kw: ["er med vef", "er nu thegar med vef", "a vef nu thegar", "a vefsidu nu thegar", "er med vefsidu", "er med heimasidu", "a nuverandi vef", "nuverandi vefur", "nuverandi vefsida", "gomlu vefsidunni", "gamli vefurinn", "gamla vefsidan", "gamli vefurinn minn", "uppfaera vefinn", "uppfaera vefsiduna", "uppfaera vefinn minn", "endurnyja vefinn", "endurnyja vefsiduna", "endurnyja", "laga vefinn", "laga vefsiduna", "bæta vefinn", "baeta vefinn", "bæta vefsiduna", "baeta vefsiduna", "betrumbaeta", "gamall vefur", "gomul vefsida", "gomul heimasida", "gamla sidu", "gamla vefinn", "gamla vefsidu", "gamla heimasidu", "gomul sida", "gomul vefsida", "gomlu sidunni", "gomlu vefsidunni", "lit illa ut", "litur illa ut", "utlitid er gamaldags", "gamaldags", "ur sér gengin", "ur ser gengin", "illa uppbyggd", "illa uppbyggdur", "virkar ekki vel", "virkar illa", "erfid i notkun"],
+      a: ["Gott að heyra. Með núverandi vef er byrjunin yfirleitt að sjá hvað virkar og hvað ekki. Ókeypis greiningin okkar nær einmitt yfir það: uppbyggingu, tækni og SEO-vandamál, og hún kemur sem PDF í tölvupósti innan 48 klukkustunda. Viltu að ég setji hana af stað?"],
+      pending: "analysis",
+      chips: [{ t: "Já, setjum hana af stað", go: "analysis_start" }, { t: "Hvað er innifalið?", go: "is:analysis_detail" }, C_NO] },
+
+    { id: "seo_guarantee", kind: "faq",
+      kw: ["abyrgist", "abyrgjast", "abyrgd", "abyrgdir", "tryggja", "tryggid", "tryggir", "lofa", "lofid", "lofad", "fyrsta saeti", "fyrsta saetid", "fyrsta sidan", "fyrstu sidu", "efsta saeti", "efst a google", "efst i google", "efst i leit", "numer eitt", "topp 3", "topp thrju", "i fyrsta saeti", "fyrsta saeti a google", "tryggt saeti", "efst$", "verdi efst", "komast efst", "komast a toppinn", "toppinn", "toppsaeti"],
+      a: ["Við getum ekki ábyrgst ákveðin sæti í leitarniðurstöðum, og enginn heiðarlegur aðili getur það, því leitarvélarnar ráða því. Það sem við gerum er að vinna í því sem við getum haft áhrif á: tæknilegum grunni, uppbyggingu síðna, skýrleika efnis, staðbundnu mikilvægi og mælingum. Við ábyrgjumst heldur ekki ákveðið hlutfall umbreytinga."],
+      chips: [{ t: "Hvað tekur SEO langan tíma?", go: "is:seo_time" }, C_ANALYSIS] },
+
+    { id: "seo_time", kind: "faq",
+      kw: ["hvad tekur seo", "seo langan tima", "hvenaer sé eg arangur", "hvenaer ser madur arangur", "hvenaer koma nidurstodur", "hvenaer koma arangur", "arangur af seo", "hversu lengi ad sja arangur", "hve lengi ad sja arangur", "hvenaer fer eg ad sja", "hvenaer birtist arangur", "hvenaer fer thetta ad virka", "hvenaer fer eg ad finnast", "hvenaer byrja eg ad finnast"],
+      a: ["Framfarir í SEO eru stigvaxandi. Sum tæknileg vandamál er hægt að laga og sjá áhrifin af nokkuð fljótt, en raunverulegur vöxtur í lífrænni umferð tekur oft lengri tíma, því leitarvélarnar þurfa tíma til að skoða síðurnar aftur og endurmeta þær."],
+      chips: [{ t: "Einu sinni eða viðvarandi?", go: "is:seo_ongoing" }, C_ANALYSIS] },
+
+    { id: "seo_ongoing", kind: "faq",
+      kw: ["einu sinni", "einskiptis", "viðvarandi", "vidvarandi", "stodugt", "stodug", "stodugri", "a hverjum manudi", "manadarlega", "manudarlega", "thurfa ad halda afram", "tharf ad halda afram", "tharf stodugt", "bara einu sinni"],
+      a: ["Grunnur að SEO er hægt að leggja í einu verkefni, en leitarvélar og samkeppni breytast, svo stöðug yfirferð og bestun skilar yfirleitt mestu til lengri tíma. Við bjóðum upp á mánaðaráskriftir fyrir þá sem vilja halda áfram að þróa vefinn."],
+      chips: [{ t: "Mánaðaráskriftir", go: "is:monthly_plans" }, C_CONSULT] },
+
+    { id: "monthly_plans", kind: "faq",
+      kw: ["manadaraskrift", "manadaraskriftir", "manadargjald", "manadargjold", "manadarlegt gjald", "manadarlegar greidslur", "manadaralag", "manadarlegt vidhald", "hvad kostar manadarlegt vidhald", "kostar manadarlegt vidhald", "kostar vidhald manadarlega", "manadarlegt gjald", "manadarlega vidhald", "manadarleg gjold", "vidhald$", "reglulega", "uppfaerid thid", "uppfaera vefinn reglulega", "sja um vefinn", "halda vefnum vid", "vidhalda vefnum", "halda vid", "kostar vidhald", "vidhald a manudi", "vidhald a manudi", "thjonustusamningur", "thjonustusamning", "viðhaldssamning", "vidhaldssamning", "vidhald", "vidhaldi", "umsjon med vef", "care plan", "growth plan", "partner plan", "mánaðaráskrift", "binditimi", "binding", "bindandi", "lagmarksbinding"],
+      a: ["Við bjóðum upp á þrjár mánaðaráskriftir, allar án vsk., með sex mánaða lágmarkstíma og 48 klukkustunda svartíma. Care (30.000 kr. á mánuði): umsjón með hýsingu og léni, öryggisuppfærslur, ein lítil efnisbreyting á mánuði og stutt stöðuskýrsla. Growth (80.000 kr. á mánuði): allt í Care auk mánaðarlegrar SEO-vinnu (Search Console, titlar, staðbundin leit), umsjón með Google Business Profile og mánaðarskýrslu. Partner (140.000 kr. á mánuði): allt í Growth auk allt að þriggja klukkustunda þróunarvinnu á mánuði og föstum mánaðarlegum fundi."],
+      chips: [C_CONSULT, C_PRICE] },
+
+    { id: "local_seo", kind: "faq",
+      kw: ["stadbundin leit", "stadbundinni leit", "stadbundid seo", "google business", "google maps", "kort", "nalaegt mer", "i nagrenni", "umsagnir", "umsagnirnar", "umsogn", "umsogn", "google my business", "stadbundin leitarvelabestun", "stadbundna leit"],
+      a: ["Staðbundin leitarvélabestun eykur sýnileika þinn og traust í leit sem tengist staðsetningu, með því að samræma vefinn, Google Business Profile, umsagnir og upplýsingar um fyrirtækið. Google Business Profile eitt og sér er ekki nóg, því vefurinn þarf að styðja sömu upplýsingar. [SEO-þjónusta](/services/seo)"],
+      chips: [{ t: "SEO-þjónusta", go: "is:svc_seo" }, C_ANALYSIS] },
+
+    { id: "multilingual", kind: "faq",
+      kw: ["fleiri tungumal", "tvo tungumal", "tvimaela", "tvitungu", "tvitungur", "ensku og islensku", "islensku og ensku", "thyda", "thydingu", "thydingar", "tungumalaval", "fleiri en einu tungumali", "fleiri en eitt tungumal", "fleiri tungumalum", "einu tungumali", "tungumalum", "tungumal$", "vefinn a ensku", "vefinn a fleiri", "vefur a ensku", "a fleiri malum", "a odrum tungumalum", "enska utgafa", "ensk utgafa", "islensk utgafa", "erlenda gesti", "erlendir gestir", "ferdamenn", "ferdamenn", "turistar"],
+      a: ["Vefur á fleiri en einu tungumáli þarf yfirvegaða skipulagningu: slóðir fyrir hvert mál, lýsigögn á hverju tungumáli, tengdar útgáfur af síðum og samræmt leiðakerfi, svo vefurinn sé viðráðanlegur og skýr fyrir leitarvélar. Vefurinn okkar er sjálfur á ensku og íslensku."],
+      chips: [{ t: "Vefsíðuþjónusta", go: "is:svc_website" }, C_CONSULT] },
+
+    { id: "languages", kind: "question",
+      kw: ["talid thid islensku", "talid thid ensku", "talar thu islensku", "talar thu ensku", "svarar thu a islensku", "islenska", "islensku$", "english", "enska$", "ensku$", "haegt ad skrifa a", "get eg skrifad a", "skrifad a islensku", "skrifad a ensku", "polsku", "polish", "spaensku", "thysku"],
+      a: ["Vefurinn okkar er bæði á íslensku og ensku og þú mátt skrifa til teymisins á hvoru málinu sem er. Ég get svarað algengustu spurningum á íslensku, og ef ég get ekki svarað einhverju vel býð ég þér að halda áfram á ensku eða sendi spurninguna til teymisins."],
+      chips: [C_SERVICES, C_TEAM] },
+
+    { id: "response_time", kind: "question",
+      kw: ["hvad svarid thid fljott", "hvad eru thid fljot ad svara", "fljot ad svara", "fljotir ad svara", "erud thid fljot", "erud thid fljotir", "hradi ad svara", "svartimi", "hvad tekur langan tima ad fa svar", "hvenaer fae eg svar", "hvenaer svarid thid", "svartimi", "svartima", "svarar teymid", "svorun", "um helgar", "helgar", "svarid thid um helgar", "faer eg svar", "hvad fljott", "bidtimi", "bidtima", "fengid svar", "faid svar", "fa svar", "svar fra ykkur", "hvenaer faer madur svar"],
+      a: ["Ég svara strax. Þegar skilaboð fara til teymisins svarar það með tölvupósti, og í mánaðaráskriftunum er svartíminn 48 klukkustundir. Ég get ekki lofað svörum um helgar, svo ef málið er brýnt skaltu hringja í +354 837 8339."],
+      chips: [C_TEAM, { t: "Hafa samband", go: "is:contact" }] },
+
+    { id: "website_edit", kind: "faq",
+      kw: ["breyta sjalf", "breytt sjalf", "uppfaera sjalf", "uppfaert sjalf", "sjalfur breytt", "sjalf breytt", "get eg breytt", "get eg uppfaert", "get eg sjalf", "breyta texta", "breyta myndum", "skipta um texta", "skipta um myndir", "breyta efni", "uppfaera efni", "efnisstjornun", "ritstyra", "ritstjorn", "stjorna efni", "halda utan um efni", "setja inn efni sjalf", "bæta vid sjalf", "baeta vid sjalf", "baeta vid efni"],
+      a: ["Já, fyrir viðeigandi efni eins og texta, myndir, bloggfærslur, verkefni og algengar spurningar. Uppsetning, mælingar, SEO-stillingar og tengingar eru meðhöndluð af meiri varfærni til að vernda stöðugleika vefsins."],
+      chips: [{ t: "Eftir opnun", go: "is:after_launch" }, { t: "Vefsíðuþjónusta", go: "is:svc_website" }] },
+
+    { id: "after_launch", kind: "faq",
+      kw: ["eftir opnun", "eftir ad vefurinn", "eftir ad vefsidan", "eftir ad vefurinn er kominn", "eftir ad thetta er komid", "thegar vefurinn er kominn", "thegar vefurinn er opnadur", "eftir afhendingu", "eftir afhendingu", "stuðningur eftir", "studningur eftir", "studningur", "support", "thjonusta eftir", "hvad gerist eftir", "hvad tha", "eftir launch", "launch$", "opnun$", "opnunina", "opnun vefs"],
+      a: ["Opnun er áfangi en ekki endir. Eftir að vefurinn fer í loftið förum við yfir eyðublöð, hvernig hann aðlagast skjástærð, lýsigögn, mælingar, skráningu í leitarvélum, tengla, tilvísanir og hraða við raunverulegar aðstæður."],
+      chips: [C_PRICE, C_CONSULT] },
+
+    { id: "landing_vs_site", kind: "faq",
+      kw: ["lendingarsida eda vefur", "lendingarsida eda vefsida", "munur a lendingarsidu", "munurinn a lendingarsidu", "lendingarsida vs", "adeins lendingarsida", "bara lendingarsida", "nog ad hafa lendingarsidu", "thurfum vid vef eda", "vef eda lendingarsidu"],
+      a: ["Lendingarsíða er ein einbeitt síða fyrir eitt markmið, til dæmis eina herferð eða eitt tilboð. Vefsíða fyrir fyrirtæki útskýrir allt tilboðið, byggir upp traust og gerir vefinn finnanlegan í leit. Fyrir nýtt tilboð eða herferð dugar oft lendingarsíða, en til lengri tíma þarf fyrirtæki yfirleitt vef sem heldur utan um allt."],
+      chips: [{ t: "Lendingarsíður", go: "is:svc_landing" }, { t: "Vefsíður", go: "is:svc_website" }, C_CONSULT] },
+
+    { id: "brand_vs_logo", kind: "faq",
+      kw: ["vorumerkjakerfi eda logo", "munur a logo", "munur a lógói", "bara logo", "nog ad hafa logo", "thurfum vid vorumerkjakerfi", "hvad er vorumerkjakerfi", "hvad er vorumerkjakerfid"],
+      a: ["Lógó er ein tákn eða merki. Vörumerkjakerfi lýsir því hvernig lógóið, litirnir, letrið, myndirnar og tónninn í textanum vinna saman á öllum stöðum þar sem fólk mætir fyrirtækinu þínu, svo allt virki samræmt og áreiðanlegt. Lógó getur verið hluti af kerfinu. [Vörumerkjakerfi](/services/brand-system)"],
+      chips: [{ t: "Vörumerkjakerfi", go: "is:svc_brand" }, C_CONSULT] },
+
+    { id: "automation_what", kind: "faq",
+      kw: ["hvad er haegt ad sjalfvirknivaeda", "hvad get eg sjalfvirknivaett", "hvad er haegt ad sjalfvirkja", "daemi um sjalfvirkni", "hvad getur sjalfvirkni", "hvad getur sjalfvirknin", "hvad er sjalfvirknivaett"],
+      a: ["Sjálfvirkni hentar fyrir endurtekin verkefni sem fylgja föstum reglum: að taka á móti fyrirspurnum af vefnum og skrá þær í CRM, senda eftirfylgnipóst, minna á bókanir, útbúa skýrslur og senda tilkynningar. Verkefni sem krefjast mats eða ákvarðana eru studd en ekki tekin yfir. [Sjálfvirkni](/services/automation-systems)"],
+      chips: [{ t: "Sjálfvirkni", go: "is:svc_automation" }, C_CONSULT] },
+
+    { id: "app_need", kind: "faq",
+      kw: ["tharf eg app", "tharf eg smaforrit", "thurfum vid app", "thurfum vid smaforrit", "vantar mig app", "hvenaer a app vid", "hvenaer a smaforrit vid", "app eda vefur", "smaforrit eda vefur", "smaforrit eda vefsida", "er thess virdi ad gera app", "er app rett", "er app thess virdi", "app eda vef", "app eda vefsidu", "vef eda app", "tharf app eda", "hvort eg tharf app", "hvort eg tharf smaforrit", "hvort eg tharf thad", "tharf eg app eda"],
+      a: ["Ekki þarf hvert fyrirtæki app. Smáforrit á við þegar notendur þurfa reglulegan aðgang, aðganga, notkun án nettengingar, tilkynningar eða einbeitta upplifun. Við athugum alltaf fyrst hvort smáforrit sé rétta lausnin."],
+      chips: [{ t: "Smáforrit", go: "is:svc_app" }, C_CONSULT] },
+
+    { id: "performance", kind: "faq",
+      kw: ["hradi vefs", "hradi vefsins", "hladist", "hladast", "hladist hradar", "hlada hradar", "hladast hradar", "hradari vef", "hradara", "hradar$", "hradari$", "haegur vefur", "haeg$", "haeg sida", "haegur$", "haegari", "haegt$", "hraedi vefs", "haegur vefur", "haeg vefsida", "haeg sida", "haegt ad hlada", "hledst haegt", "hladast haegt", "hledslutimi", "hladtimi", "core web vitals", "pagespeed", "lighthouse", "vefurinn er haegur", "sidan er haeg"],
+      a: ["Hraði, aðlögun að skjástærð og stöðugt útlit móta upplifun notandans, og óstýrð forskrift, myndir eða utanaðkomandi verkfæri geta skemmt hana. Core Web Vitals eru gagnlegir mælikvarðar en ekki fullkomin mynd af gæðum."],
+      chips: [C_ANALYSIS] },
+
+    { id: "security", kind: "faq",
+      kw: ["oryggi", "oruggt", "oruggur", "oruggar", "hakkad", "hakkari", "hakkarar", "ruslpostur", "spam", "ssl", "https", "vernda vefinn", "verja vefinn", "vernd gegn", "gagnaoryggi"],
+      a: ["Við vinnum með þetta á hagnýtan hátt: öruggari eyðublöð, minni ruslpóstur, stýrður aðgangur að stjórnun, varkár notkun á utanaðkomandi verkfærum og skýr tæknileg ábyrgð, til að draga úr óþarfa áhættu."],
+      chips: [{ t: "Vefsíðuþjónusta", go: "is:svc_website" }] },
+
+    { id: "privacy", kind: "question",
+      kw: ["personuvernd", "personuverndarstefna", "personuverndarstefnu", "personuupplysingar", "personuupplysingum", "gogn", "gognin mín", "gognin min", "vid gognin", "gerid thid vid gognin", "hvad verdur um gognin", "hvad gerist vid gognin", "vafrakokur", "vafrakokum", "kokur", "skilmalar", "skilmalum", "gdpr", "hvad gerid thid vid skilabodin", "hvad verdur um skilabodin", "vistid thid skilabod", "vistast thetta", "er thetta vistad"],
+      a: ["Þetta spjall virkar í vafranum þínum og ekkert er sent til okkar nema þú biðjir mig um að koma skilaboðunum til teymisins. Ef þú gerir það sendum við samtalið til teymisins í tölvupósti. Persónuverndarstefnu, stefnu um vafrakökur og skilmála finnur þú neðst á hverri síðu."],
+      chips: [C_TEAM] },
+
+    { id: "why_us", kind: "rule",
+      kw: ["af hverju thid", "af hverju ykkur", "af hverju aetti eg ad velja", "af hverju velja", "betri en", "hvad gerir ykkur", "hvad greinir ykkur", "frabrugdin", "frabrugdin ykkur", "samanburdur", "samanburd", "adrar stofur", "adrar auglysingastofur", "keppinautar", "samkeppnisadilar", "hvad er serstakt", "hvad er serstakt vid ykkur", "serstakt vid ykkur", "serstakt$", "serstok$", "serstaeda", "hvad er svona serstakt", "hvers vegna ykkur", "hvers vegna thid"],
+      a: ["Við getum ekki talað fyrir aðrar stofur, en svona vinnum við. Við byrjum á tilboðinu og markhópnum, lítum á vefinn sem viðskiptakerfi en ekki bækling og leggjum áherslu á skýrleika, trúverðugleika og aðgerð. Við vorum að vinna á þessu sviði áður en MRKX Labs varð að stofu, svo fagið er okkur ekki nýtt. Ef þetta hljómar eins og það sem þú þarft sýnir stutt ráðgjöf fljótt hvort við eigum saman."],
+      chips: [{ t: "Hvernig vinnið þið?", go: "is:process" }, C_CONSULT] },
+
+    { id: "howstart", generic: true, kind: "question", w: 0.6,
+      kw: ["hvernig byrja eg", "hvernig byrjum vid", "hvad tharf eg ad gera til ad byrja", "hvad tharf eg ad gera", "til ad byrja", "til ad hefja", "hvernig hef eg verkefnid", "hvernig hef eg thetta", "hvar byrja eg", "hvar a eg ad byrja", "hvad er naesta skref", "naesta skref", "hvernig kemst eg af stad", "hvernig komumst vid af stad", "vil byrja", "viljum byrja", "byrja verkefni", "byrja verkefnid", "fara af stad", "koma mer af stad", "thetta er spennandi", "eg hef ahuga", "vid hofum ahuga", "mig langar", "okkur langar", "vantar mig", "vantar okkur", "eg vil", "eg thyrfti", "eg tharf", "vid thurfum", "eg vantar", "vantar vef", "vantar sidu", "mig vantar"],
+      a: ["Besta næsta skref er stutt ráðgjöf, þar sem við förum yfir markmiðin þín og mótum umfang og verð í kringum þau. Ef þú ert nú þegar með vefsíðu getur ókeypis greining líka verið góð byrjun. Hvort viltu?"],
+      chips: [C_CONSULT, C_ANALYSIS, C_SERVICES] },
+
+    { id: "just_looking", generic: true, kind: "question",
+      kw: ["er bara ad skoda", "bara ad skoda", "bara ad kikja", "bara ad forvitnast", "er ad forvitnast", "bara forvitni", "bara ad spa", "er ad spa", "er bara ad spa", "ekki tilbuin", "ekki tilbuinn", "ekki alveg tilbuin", "kannski seinna", "kannski sidar", "seinna meir", "hugsa malid", "hugsa mig um", "thurfum ad hugsa", "hugsa um thetta", "hugsa thetta", "tharf ad hugsa", "ég hef samband seinna", "eg hef samband seinna", "hef samband seinna", "hafa samband seinna"],
+      a: ["Ekkert mál, taktu þér þann tíma sem þú þarft. Spurðu mig að hverju sem er, eða líttu í kringum þig. Ef þú vilt halda áfram síðar nærðu í okkur á hello@mrkxlabs.com."],
+      chips: [C_SERVICES, C_PRICE] },
+
+    { id: "not_interested", kind: "question",
+      kw: ["ekki ahugasamur", "ekki ahugasom", "hef ekki ahuga", "hef engan ahuga", "ekki ahuga", "ekki fyrir mig", "ekki thorf", "ekki thorf a", "engin thorf", "ekki nuna", "nei takk", "ekki taka", "thad er ekki fyrir mig", "ekki fyrir okkur", "ekki fyrir thetta"],
+      a: ["Skil það, takk fyrir að láta vita. Ef eitthvað breytist nærðu í okkur hvenær sem er á hello@mrkxlabs.com."] },
+
+    { id: "ack", generic: true, noCount: true, kind: "question", w: 1.1,
+      kw: ["ok$", "okei$", "skil$", "skil thad", "ju$", "jamm", "ja$", "jaja", "jaeja", "iss", "ahhh", "ah$", "aha$", "ahja", "flott", "agaett", "agaetlega", "fint$", "fint tha", "frabaert tha", "gott tha", "gott", "sjalfsagt", "audvitad"],
+      a: ["Gott. Hvað langar þig að vita næst?", "Frábært. Spurðu mig að hverju sem er, eða veldu efni hér að neðan."],
+      chips: [C_SERVICES, C_PRICE, C_ANALYSIS] },
+
+    { id: "more", noCount: true, kind: "question",
+      kw: ["meira$", "nanar$", "meira um thetta", "segdu mer meira", "segdu meira", "nanari upplysingar", "nanar um thetta", "itarlegra", "itarlegar", "ítarlegar", "itarlegri", "frekari upplysingar", "meiri upplysingar", "meira af upplysingum", "utskyra betur", "utskyrdu betur", "hvad meira", "og meira", "fleiri upplysingar", "kafa dypra", "dyggri", "dýpra", "dypra"],
+      a: [] /* built in bot.js (last topic's longer text) */ },
+
+    { id: "website_included", kind: "faq",
+      kw: ["hvad er innifalid i vefsidu", "hvad er innifalid i vef", "hvad er innifalid i vefsidugerd", "hvad inniheldur vefsida", "hvad inniheldur vefverkefni", "hvad fylgir med vef", "hvad fylgir vefsidu", "hvad fylgir med vefsidu", "hvad felst i vefverkefni", "hvad er i vefverkefni", "hvad er innifalid i verkefninu"],
+      a: ["Vefsíðuverkefni nær yfir meira en útlitið. Það felur í sér uppbyggingu efnis, smíði sem aðlagast öllum skjástærðum, efnisskipulag, tæknilegan grunn fyrir leitarvélar, hraða, aðgengi, eyðublöð, mælingar og tengingar, allt unnið sem eitt samtengt kerfi."],
+      chips: [C_PRICE, { t: "Vefsíðuþjónusta", go: "is:svc_website" }] },
+
+    { id: "booking_system", kind: "faq",
+      kw: ["bokunarkerfi", "bokunarkerfid", "bokunarsida", "bokanir", "bokunum", "netbokun", "netbokanir", "bokunarvel", "bokunarvelar", "taka vid bokunum", "baeta vid bokunum", "dagatal", "dagatalid", "panta tima", "pontunarkerfi", "tima pantanir", "timapantanir", "timabokanir"],
+      a: ["Bókanir eru algengur hluti af okkar vinnu. Við tengjum vefi við bókunar- og dagatalskerfi og getum sjálfvirknivætt staðfestingar og eftirfylgni. Hvaða uppsetning hentar fer eftir fyrirtækinu þínu, svo nánari útfærsla er mótuð fyrir hvert verkefni."],
+      chips: [{ t: "Vefsíðuþjónusta", go: "is:svc_website" }, { t: "Sjálfvirkni", go: "is:svc_automation" }, C_CONSULT] },
+
+    { id: "not_offered", kind: "faq", pending: "handoff", w: 1.4,
+      kw: ["grafisk honnun", "grafiska honnun", "grafisk", "grafiska", "baeklinga", "baeklingar", "baeklingur", "prentefni", "prentun", "plakot", "plakat", "auglysingaskilti", "ljosmyndun", "ljosmyndir", "ljosmyndari", "myndataka", "myndbond", "myndband", "videogerd", "videoframleidsla", "kvikmynd", "hlada fra", "hladvarp", "podcast", "bokhaldskerfi", "tolvukerfi", "tolvuvidgerdir", "netthjonustu", "netthjonusta"],
+      a: ["Þetta er ekki ein af sex þjónustum okkar (lendingarsíður, vefsíður fyrir fyrirtæki, SEO, vörumerkjakerfi, sjálfvirkni og smáforrit), svo ég vil ekki lofa því. Ef það er hluti af stærra verkefni getur teymið sagt þér heiðarlega hvað hentar. Á ég að senda spurninguna þína áfram?"],
+      chips: [C_YES, C_NO] },
+
+    { id: "copywriting", kind: "faq", w: 1.4,
+      kw: ["textagerd", "textaskrif", "skrifa textann", "skrifa textann sjalf", "skrifa textann sjalfur", "textann sjalf", "texta sjalf", "texta sjalfur", "textann$", "textarnir", "sja um textana", "sja um texta", "texti$", "skrifid thid texta", "skrifid thid textana", "skrifa textana", "skrifa texta", "hver skrifar texta", "hver skrifar textana", "textar$", "textana", "textinn", "vefefni", "innihald vefsins", "efnisgerd", "efnisskrif", "greinar", "bloggfaerslur"],
+      a: ["Það getur verið hluti af verkefninu. Við mótum texta sem skilar fyrirspurnum út frá markhópnum, tilboðinu, mótbárum og því sem þú vilt að fólk geri, í stað þess að setja inn staðgengilstexta eftir að hönnuninni lýkur."],
+      chips: [C_CONSULT, { t: "Hvað þarf ég að útvega?", go: "is:need_from_you" }] },
+
+    { id: "no_content", kind: "faq",
+      kw: ["engan texta", "enga texta", "ekki med texta", "ekki til texta", "ekki til myndir", "ekki med myndir", "a enga texta", "a engar myndir", "ekkert efni", "ekkert efni til", "engar myndir", "ekki med efni", "vantar texta", "vantar myndir", "vantar efni"],
+      a: ["Þú þarft ekki að hafa allt tilbúið. Við skýrum fyrst tilboðið, markhópinn og uppbygginguna, og í ráðgjöfinni finnum við út hvað þarf, líka texta og myndir. Hver skrifar og útvegar hvað er ákveðið fyrir hvert verkefni."],
+      chips: [C_CONSULT, { t: "Hvað þarf ég að útvega?", go: "is:need_from_you" }] },
+
+    { id: "urgent", kind: "question", pending: "handoff",
+      kw: ["brydd", "brydt", "bradnaudsyn", "bradavandi", "thetta er bradt", "tharf thetta fljott", "tharf thetta strax", "thurfum thetta fljott", "thurfum thetta strax", "fyrir manadamot", "fyrir helgi", "fyrir naestu viku", "fyrir sumarid", "tharf ad opna", "opnum eftir", "opnum um", "opnunardagur", "opnunardagsetning", "skiladagur", "skiladagsetning", "dagsetning"],
+      a: ["Tímalínur fara eftir umfangi og efni, svo ég get ekki lofað dagsetningu hér og vil ekki lofa of miklu. Ef þú ert með fasta dagsetningu skaltu segja teyminu hvaða dagur það er og hvað liggur að baki, þá geta þau sagt þér heiðarlega hvað er raunhæft. Á ég að senda það áfram?"],
+      chips: [C_YES, C_NO] },
+
+    { id: "will_rank", kind: "faq",
+      kw: ["nyr vefur finnst", "mun nyr vefur", "finnst nyr vefur", "kemur nyr vefur upp", "birtist nyr vefur", "naer nyr vefur", "nyr vefur a google", "nyja vefnum finnst", "kemst nyr vefur", "mun vefurinn birtast", "mun vefurinn finnast", "mun hann finnast", "mun hann birtast", "birtist hann a google", "kemur hann upp a google", "finnst hann a google"],
+      a: ["Nýr vefur finnst ekki sjálfkrafa. Við smíðum þann tæknilega grunn sem leitarvélar þurfa (uppbyggingu, skráningu, lýsigögn, vefkort) og setjum upp Search Console svo þú sjáir hvernig gengur. Hvar þú lendir í leit ræðst af leitarvélunum og samkeppninni, svo við lofum ekki ákveðnum sætum."],
+      chips: [{ t: "SEO-þjónusta", go: "is:svc_seo" }, C_ANALYSIS] },
+
+    { id: "changes_later", kind: "faq",
+      kw: ["breyta seinna", "breytingar seinna", "breytingar sidar", "baeta vid sidar", "baeta vid seinna", "baeta vid siduum", "baeta vid sidum", "stækka seinna", "staekka seinna", "vaxa seinna", "breyta eftir ad vefurinn", "eftir ad vefurinn er kominn", "eftir ad vefurinn er kominn upp", "eftir ad vefurinn er opnadur", "nyjar sidur seinna", "fleiri sidur seinna", "thegar eg vil breyta", "ef eg vil breyta"],
+      a: ["Já. Vefir sem við smíðum eru skipulagðir með vöxt í huga: endurnýtanleg sniðmát og efnisskipulag sem er auðvelt að breyta án þess að hönnunin skemmist, svo ný síða eða textabreyting seinna þýðir ekki að byrja þurfi upp á nýtt. Hver gerir breytingarnar, þú eða við, og með hvaða skilmálum er ákveðið fyrir hvert verkefni."],
+      chips: [{ t: "Eftir opnun", go: "is:after_launch" }, C_CONSULT] },
+
+    { id: "design_input", kind: "faq",
+      kw: ["mina liti", "minn lit", "mitt logo", "mitt lógó", "mitt logo", "mina hugmyndir", "mina oskir", "minn smekkur", "hef eg eitthvad ad segja", "hef eg eitthvad um", "get eg haft ahrif a utlitid", "get eg haft ahrif", "get eg komid med hugmyndir", "komid med hugmyndir", "eigin hugmyndir", "likar ekki utlitid", "valid thid utlitid", "hver akvedur utlitid", "hver velur utlitid", "hver akvedur honnunina", "get eg breytt honnuninni", "endurgjof", "athugasemdir um honnun"],
+      a: ["Hönnunin er hluti af verkefninu. Við ákveðum fyrst tilboðið, markhópinn og uppbygginguna og hönnum svo í kringum það, svo þú getir brugðist við stefnunni snemma. Þínir litir, lógó og óskir eru vel þegnar. Hvernig yfirferðir fara fram er ákveðið fyrir hvert verkefni, svo teymið getur gefið þér nákvæma skilmála."],
+      chips: [C_CONSULT, { t: "Senda til teymisins", go: "human" }] },
+
+    { id: "reviews", kind: "faq",
+      kw: ["umsagnir fra vidskiptavinum", "umsagnir vidskiptavina", "medmaeli", "medmaeli fra vidskiptavinum", "einhver medmaeli", "med medmaeli", "medmaelendur", "reynslusogur", "hvad segja vidskiptavinir", "hvad segja adrir", "hvad segja their", "get eg hringt i fyrri", "talad vid fyrri", "fyrri vidskiptavini", "get eg sed umsagnir", "get eg sed umsogn", "hafa adrir verid anaegdir", "eru vidskiptavinir anaegdir"],
+      a: ["Ég get ekki vísað þér á umsagnir viðskiptavina hér. Það sem við getum sýnt er opinbera verkefnið okkar, ROAD1 TOW, og útskýrt hvernig við vinnum. Ókeypis greiningin gefur þér líka færi á að meta gæði hugsunarinnar á þínum eigin vef áður en þú skuldbindur þig til nokkurs. Við vorum að vinna á þessu sviði áður en MRKX Labs varð að stofu, svo fagið er okkur ekki nýtt."],
+      chips: [{ t: "Verkefni", go: "is:portfolio" }, C_ANALYSIS] },
+
+    { id: "company_size", kind: "question",
+      kw: ["litid fyrirtaeki", "of litid fyrirtaeki", "of litil", "of litill", "smafyrirtaeki", "smafyrirtaekjum", "litlu fyrirtaeki", "litlum fyrirtaekjum", "sprotafyrirtaeki", "sprotar", "nytt fyrirtaeki", "ny stofnad", "nystofnad", "stor fyrirtaeki", "storum fyrirtaekjum", "med hvernig fyrirtaekjum", "hvers konar fyrirtaeki", "hvers konar fyrirtaekjum", "hvada fyrirtaeki", "fyrir hverja", "fyrir hvada", "einyrki", "einstaklingar", "einstaklingur", "einn a bati", "einyrkja"],
+      a: ["Við vinnum með fyrirtækjum sem vilja skarpari stafræna ímynd, sterkari staðsetningu og skýrari leið frá athygli á netinu til fyrirspurna. Stærðin skiptir minna máli en að hafa skýrt markmið. Fyrir nýtt fyrirtæki er forgangsatriðið skýrt tilboð og síða sem útskýrir það fljótt. [Verkefni](/portfolio)"],
+      chips: [C_SERVICES, C_ANALYSIS, C_CONSULT] },
+
+    { id: "biz_type", kind: "question", w: 0.5,
+      kw: ["verktaka", "verktaki", "verktakar", "idnadarmenn", "idnadarmadur", "pipulagningamenn", "pipulagningamadur", "rafvirki", "rafvirkja", "malari", "malara", "smidur", "smida", "hotel$", "hoteli", "gistiheimili", "gistiheimilid", "gistihus", "farfuglaheimili", "veitingastad", "veitingastadur", "veitingahus", "kaffihus", "kaffihusid", "bakari", "bakari$", "fisksala", "fiskbud", "bud$", "verslun$", "versluninni", "blomabud", "hotelid", "ferdathjonustu", "ferdathjonusta", "ferdaskrifstofa", "bilaleiga", "bilaleigu", "bilaleigan", "verkstaedi", "bilaverkstaedi", "hardverk", "lagnir", "heilsurækt", "heilsuraekt", "likamsraekt", "snyrtistofa", "snyrtistofu", "harsnyrti", "ljosmyndari", "arkitekt", "logmannsstofa", "endurskodun", "baendur", "baeinn", "sveitabaer", "gaesla", "afthreying", "afthreyingu", "bjorgunarsveit", "felag$", "felagasamtok", "skoli$", "namskeid"],
+      a: ["Gott að heyra. Flest fyrirtæki byrja á vef sem útskýrir tilboðið skýrt og gerir fólki auðvelt að senda fyrirspurn eða bóka. Hvað viltu helst ná fram: fleiri fyrirspurnir, fleiri bókanir eða finnast betur á Google?"],
+      chips: [{ t: "Vefsíða", go: "is:svc_website" }, { t: "SEO", go: "is:svc_seo" }, C_ANALYSIS, C_CONSULT] },
+
+    { id: "offtopic", kind: "rule", w: 1.4,
+      kw: ["hvernig er vedrid", "vedrid i dag", "vedrid$", "vedrid a", "brandara", "brandari", "segdu mer brandara", "uppskrift", "uppskriftir", "fotbolta", "fotbolti", "urslit", "frettir", "frettirnar", "stjornmal", "kosningar", "bitcoin", "hlutabref", "heilsufar", "laeknir", "lyf$", "sjukdomur", "veikindi", "hvad er klukkan", "hvad er klukkan nuna", "hvada dagur", "hver er forsetinn", "hver er forsaetisradherra", "hver vann", "ferdalag", "flug$", "flugmida", "hotel$", "gisting"],
+      a: ["Þetta er utan þess sem ég get hjálpað með. Ég get svarað spurningum um vefsíður, SEO, lendingarsíður, vörumerki, sjálfvirkni, smáforrit, verð og ókeypis greiningu, eða sent spurninguna þína áfram til teymisins."],
+      chips: [C_SERVICES, C_TEAM] },
+
+    { id: "legal_tax", kind: "rule",
+      kw: ["logfraedi", "logfraedilegt", "logmann", "logmadur", "skattur", "skatta", "skattamal", "bokhald", "bokhaldid", "skattframtal", "framtal", "virdisaukaskattur um"],
+      a: ["Lögfræði- og skattamál eru utan míns sviðs og ég get ekki gefið ráð um þau. Það er best að ræða þau við lögmann eða endurskoðanda. Ég get hins vegar svarað spurningum um vefi, SEO, vörumerki, sjálfvirkni og smáforrit."],
+      chips: [C_SERVICES, C_TEAM] }
+  ];
+
+  /* chip labels that the shared (English) flow code produces, shown in Icelandic when the chat is in Icelandic */
+  var chipMap = {
+    "What do you offer?": "Hvað bjóðið þið upp á?", "Pricing": "Verð", "Free analysis": "Ókeypis greining",
+    "Book a consultation": "Bóka ráðgjöf", "Talk to the team": "Tala við teymið", "Send to the team": "Senda til teymisins",
+    "Yes, please": "Já, endilega", "Not now": "Ekki núna", "Yes, set it up": "Já, setjum hana af stað", "What's in it?": "Hvað er innifalið?",
+    "I don't have a website": "Ég er ekki með vefsíðu", "More detail": "Nánar", "Help me choose": "Hjálpaðu mér að velja",
+    "Contact details": "Hafa samband", "Contact": "Hafa samband", "How do you work?": "Hvernig vinnið þið?", "Services": "Þjónusta", "Cancel": "Hætta við", "Skip": "Sleppa"
+  };
+
+  var texts = {
+    fallback: [
+      "Þessu get ég því miður ekki svarað nógu vel á íslensku. Ég get haldið áfram á ensku, eða sent skilaboðin þín til teymisins, sem svarar þér með tölvupósti.",
+      "Þarna náði ég þér ekki alveg. Ég get reynt aftur á ensku, eða komið spurningunni til teymisins svo manneskja svari þér."
+    ],
+    fallbackAgain: "Ég næ þessu ekki á íslensku. Réttast er að senda spurninguna til teymisins svo manneskja svari þér með tölvupósti. Á ég að gera það?",
+    switchEn: "Að sjálfsögðu, við höldum áfram á ensku. What would you like to know?",
+    emailNoted: "Takk, ég skrái netfangið {email}. Á ég að senda skilaboðin þín til teymisins svo það svari þér þar?",
+    phoneNoted: "Takk, ég skrái númerið. Á ég að senda skilaboðin þín til teymisins svo það hafi samband?",
+    hello1: "Halló! Hvað get ég gert fyrir þig?",
+    moreNone: "Hvað viltu vita meira um? Þjónustuna, verðið, ferlið eða ókeypis greininguna?",
+    sayYes: "Frábært. Með hverju viltu byrja?",
+    sayNo: "Ekkert mál. Er eitthvað annað sem ég get hjálpað með?"
+  };
+
+  var pricing = {
+    all: "Upphafsverð hjá okkur eru: vefsíða fyrir fyrirtæki frá " + P_WEB + ", Search Foundation (SEO) frá " + P_SEO + " og smáforrit frá " + P_APP + ", allt án vsk. Annað, eins og lendingarsíður, sjálfvirkni og vörumerkjakerfi, er verðlagt fyrir hvert verkefni. Besta leiðin til að fá rétt verð er stutt ráðgjöf þar sem við förum yfir markmiðin þín.",
+    website: "Vefsíður fyrir fyrirtæki byrja frá " + P_WEB + " án vsk. Endanlegt verð fer eftir fjölda síðna, tungumálum, tengingum og efni, svo best er að taka stutta ráðgjöf þar sem við mótum umfangið og verðið í kringum markmiðin þín.",
+    seo: "Search Foundation byrjar frá " + P_SEO + " án vsk. Hvað þarf umfram það fer eftir vefnum þínum og markmiðum, svo við mótum umfangið og verðið í stuttri ráðgjöf.",
+    app: "Smáforrit byrja frá " + P_APP + " án vsk. Við athugum fyrst hvort smáforrit sé yfirhöfuð rétta lausnin, og endanlegt verð fer eftir eiginleikum, kerfum og tengingum. Stutt ráðgjöf er besta leiðin til að fá raunhæft verð.",
+    other: "Þetta er verðlagt fyrir hvert verkefni, því umfangið er mjög breytilegt. Í stuttri ráðgjöf skoðum við markmiðin þín og gefum þér skýrt verð. Til viðmiðunar byrja vefsíður frá " + P_WEB + ", Search Foundation frá " + P_SEO + " og smáforrit frá " + P_APP + ", allt án vsk."
+  };
+
+  return { intents: intents, chipMap: chipMap, texts: texts, pricing: pricing };
+})();
+
 /* MRKX Assistant: detailed service knowledge, one section per topic of each service page.
    Facts only from mrkxlabs.com/services/*. No rankings, results or timelines are promised anywhere in here. */
 var MRKX_SECTIONS = {
@@ -1186,6 +1632,7 @@ var MRKX_DISC = {
   var KB = MRKX_KB;
   var TEAMCHIP = { t: "Talk to the team", go: "human" };
   var KB2 = (typeof MRKX_KB2 !== "undefined") ? MRKX_KB2 : null;
+  var KBI = (typeof MRKX_KB_IS !== "undefined") ? MRKX_KB_IS : null;
   if (KB2) {
     // wider phrasings for existing intents, then the extra intents and friendlier fallbacks
     KB.intents = KB.intents.concat(KB2.intents);
@@ -1250,7 +1697,9 @@ var MRKX_DISC = {
     is: {
       title: "MRKX aðstoðarmaður", sub: "Sjálfvirkur aðstoðarmaður", ph: "Skrifaðu skilaboð…", send: "Senda",
       open: "Opna spjall", close: "Loka spjalli", renew: "Nýtt spjall", renewQ: "Byrja nýtt spjall? Þetta eyðir núverandi spjalli.", renewYes: "Byrja upp á nýtt", renewNo: "Halda áfram", note: "Sjálfvirkur aðstoðarmaður. Skilaboðin þín eru aðeins send til teymisins ef þú biður um það.",
-      welcome: "Halló! Ég er sjálfvirkur aðstoðarmaður MRKX Labs og svara sem stendur á ensku, en get sent spurninguna þína áfram til teymisins. Hvað get ég gert fyrir þig?",
+      welcome: "Halló! Ég er MRKX aðstoðarmaður, sjálfvirkur aðstoðarmaður MRKX Labs (ekki manneskja). Ég get útskýrt þjónustuna okkar, svarað spurningum og sett upp ókeypis greiningu á vefsíðunni þinni.",
+      moreNone: "Hvað viltu vita meira um? Þjónustuna, verðið, ferlið eða ókeypis greininguna?",
+      reAsk: "Aftur að beiðninni þinni:",
       askEmail: "Á hvaða netfang eigum við að svara?",
       badEmail: "Þetta lítur ekki út eins og netfang. Geturðu athugað það?",
       askName: "Og hvað heitir þú? (Þú getur sleppt þessu.)",
@@ -1627,21 +2076,158 @@ var MRKX_DISC = {
     if (/\b\d{6}-?\d{4}\b/.test(raw)) return true;
     return /(password|passwd|cvv|cvc|pin code|passport number|social security|lykilorð|lykilord)/i.test(raw);
   }
-  var IS_STRONG = ["takk", "hallo", "halló", "teymisins", "senda", "svara", "spurningu", "ensku", "íslensku", "vinsamlegast", "netfang", "hvernig", "vefsíða", "vefsíðu", "heimasíða", "fyrirtæki", "verð", "góðan", "daginn", "sæl", "sæll", "viltu", "vantar", "þjónusta", "þarf"];
-  var IS_WEAK = [" og ", " ég ", " að ", " ekki ", " það ", " hvað ", " er ", " við ", " mig ", " vil ", " get ", " hefur ", " fyrir "];
-  // keyword rules for the commonest Icelandic questions (first match wins)
-  function icelandicAnswer(raw) {
-    var rules = KB2 ? KB2.isRules : [], s = raw.toLowerCase();
-    for (var i = 0; i < rules.length; i++) if (rules[i].re.test(s)) { S.last = "is_" + rules[i].id; return rules[i].a; }
+  /* ---------- Icelandic engine ---------- */
+  var FOLD_MAP = { "á": "a", "à": "a", "â": "a", "ä": "a", "é": "e", "è": "e", "ê": "e", "ë": "e", "í": "i", "ì": "i", "î": "i", "ï": "i", "ó": "o", "ò": "o", "ô": "o", "ö": "o", "ú": "u", "ù": "u", "û": "u", "ü": "u", "ý": "y", "ÿ": "y", "æ": "ae", "þ": "th", "ð": "d" };
+  function fold(s) { return String(s).normalize("NFC").toLowerCase().replace(/[áàâäéèêëíìîïóòôöúùûüýÿæþð]/g, function (c) { return FOLD_MAP[c]; }); }
+  function toksI(raw) { return fold(raw).replace(/[^a-z0-9@]+/g, " ").trim().split(" ").filter(Boolean); }
+  var ICE_STRONG = /\b(hvad|hvernig|hvenaer|hvada|hvar|kostar|thid|bjodid|thurfum|ykkur|okkur|langar|vantar|vefsid\w*|heimasid\w*|smaforrit\w*|takk|halo|hallo|hae|sael\w*|fyrirtaeki\w*|islensku|leitarvel\w*|godan|vorumerki|verdid|verd|thjonusta|thjonustu|tilbod|radgjof|teymid|teymisins|senda|spurningu|vinsamlegast|netfang\w*|ekkert|thakka|bless|jaeja|haegt)\b/;
+  var ICE_WEAK = /\b(og|er|ekki|ad|fyrir|med|thad|thetta|eg|vid|mig|mer|til|thu|vil|hef|hefur|hafa|fra|eda|enn|bara|mjog|thvi|thar|hvort|hvort)\b/g;
+  var EN_FUNC = /\b(the|what|how|do|you|can|to|for|my|we|of|and|are|this|that|with|have|need|want|about|does|your|please|would|could|should|will|there|im|dont|cant|build|website|hello|hi)\b/g;
+  function isIcelandic(raw) {
+    if (/[þðæ]/i.test(raw)) return true;
+    var f = " " + fold(raw) + " ";
+    var en = (f.match(EN_FUNC) || []).length;
+    if (ICE_STRONG.test(f)) return en < 3;
+    return ((f.match(ICE_WEAK) || []).length >= 3) && en < 2;
+  }
+  function looksEnglish(raw) {
+    var t = toksI(raw);
+    if (t.length < 3 || /[þðæ]/i.test(raw)) return false;
+    var n = 0; t.forEach(function (w) { if (/^(the|what|how|do|you|can|to|for|my|we|of|and|are|this|that|with|have|need|want|about|does|your|please|would|could|should|will|there|im|dont|cant|build|website|hello|hi)$/.test(w)) n++; });
+    return n >= 2;
+  }
+
+  var ISC = null;
+  function isCompile() {
+    if (ISC || !KBI) return ISC;
+    ISC = KBI.intents.map(function (it) {
+      var ph = (it.kw || []).map(function (k) {
+        return fold(k).trim().split(/\s+/).map(function (w) {
+          var m = 0; if (w.charAt(0) === "*") { m = 1; w = w.slice(1); } if (w.charAt(w.length - 1) === "$") { m = 2; w = w.slice(0, -1); }
+          if (m === 0 && w.length < 4) m = 2; // very short stems must be whole words
+          return { t: w, m: m };
+        });
+      }).filter(function (p) { return p.length && p[0].t; });
+      ph.sort(function (x, y) { return y.length - x.length; });
+      return { it: it, ph: ph };
+    });
+    return ISC;
+  }
+  function stMatch(st, tok) { return st.m === 2 ? tok === st.t : (st.m === 1 ? tok.indexOf(st.t) > -1 : tok.indexOf(st.t) === 0); }
+  var KIND_B = { question: 0.1, faq: 0.1, topic: 0.3, rule: 0 };
+  function isScore(raw) {
+    var c = isCompile(); if (!c) return [];
+    var tk = toksI(raw), out = [];
+    c.forEach(function (ci) {
+      var used = [], sc = 0, hits = 0;
+      ci.ph.forEach(function (p) {
+        var L = p.length;
+        for (var i = 0; i + L <= tk.length; i++) {
+          var ok = true, fresh = false;
+          for (var j = 0; j < L; j++) { if (!stMatch(p[j], tk[i + j])) { ok = false; break; } if (!used[i + j]) fresh = true; }
+          if (ok && fresh) { for (var j2 = 0; j2 < L; j2++) used[i + j2] = 1; sc += L === 1 ? 1 : L + 0.5; hits++; }
+        }
+      });
+      if (sc > 0) out.push({ it: ci.it, sc: sc * (ci.it.w || 1) + (KIND_B[ci.it.kind] || 0), n: tk.length });
+    });
+    out.sort(function (x, y) { return y.sc - x.sc; });
+    return out;
+  }
+  var IS_MIN = 1.0;
+  function isBest(raw) {
+    var r = isScore(raw);
+    // generic intents (greeting, thanks, "I need...") only answer when nothing concrete matched
+    if (r.some(function (x) { return !x.it.generic && x.sc >= IS_MIN; })) r = r.filter(function (x) { return !x.it.generic; });
+    return r[0] && r[0].sc >= IS_MIN ? { it: r[0].it, all: r } : null;
+  }
+  function isByTopic(all) {
+    for (var i = 0; i < all.length; i++) if (all[i].it.kind === "topic" && all[i].sc >= 1) return all[i].it.topic;
     return null;
   }
-  function isIcelandic(raw) {
-    var s = " " + raw.toLowerCase() + " ";
-    if (/[þðæ]/.test(s)) return true;
-    var strong = 0, weak = 0;
-    IS_STRONG.forEach(function (w) { if (s.indexOf(w) > -1) strong++; });
-    IS_WEAK.forEach(function (w) { if (s.indexOf(w) > -1) weak++; });
-    return strong >= 1 || weak >= 4;
+  function isPriceText(topic) {
+    var P = KBI.pricing;
+    return P[topic] || (topic ? P.other : P.all);
+  }
+  function isIntentById(id) { var l = KBI ? KBI.intents : []; for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i]; return null; }
+  function isSay(it, topicHint) {
+    S.isFails = 0;
+    var text, chips = it.chips;
+    if (it.id === "pricing") {
+      var tp = topicHint || S.topic; text = isPriceText(tp);
+      chips = [C_IS.consult, C_IS.analysis];
+    } else if (it.id === "more") {
+      if (S.lastMore) { text = S.lastMore; S.lastMore = null; return finishIS(null, text, [C_IS.price, C_IS.analysis, C_IS.consult]); }
+      return say(KBI.texts.moreNone, [C_IS.services, C_IS.price]);
+    } else text = pick(it.a, "is_" + it.id);
+    return finishIS(it, text, chips);
+  }
+  var C_IS = {
+    services: { t: "Hvað bjóðið þið upp á?", go: "is:services" }, price: { t: "Verð", go: "is:pricing" },
+    analysis: { t: "Ókeypis greining", go: "is:free_analysis" }, consult: { t: "Bóka ráðgjöf", go: "is:consultation" }
+  };
+  function finishIS(it, text, chips, keepMore) {
+    if (it) {
+      if (it.topic) S.topic = it.topic;
+      if (it.more) S.lastMore = it.more; else if (it.id !== "pricing" && !it.noCount) S.lastMore = null;
+      S.pending = it.pending || null;
+      S.last = "is_" + it.id;
+      if (!it.noCount && it.kind !== "rule") S.subst++;
+    }
+    var p = say(text, chips);
+    save();
+    return p;
+  }
+  function isRoute(id) {
+    if (id === "more") return isSay(isIntentById("more"));
+    var it = isIntentById(id);
+    if (!it) return say(KBI.texts.moreNone, [C_IS.services, C_IS.price]);
+    if (it.id === "human") { S.pending = "handoff"; S.last = "is_human"; return say(T("askHandoff"), [{ t: T("yes"), go: "handoff_start" }, { t: T("notNow"), go: "decline" }]); }
+    return isSay(it);
+  }
+  function isYN(raw) {
+    var w = toksI(raw).join(" ");
+    if (/^(ja|ju|jaja|jamm|ja takk|ja endilega|ja gjarnan|gjarnan|endilega|endilega gerdu thad|gerdu thad|gerdu tha|i lagi|allt i lagi|ok|okei|okey|sjalfsagt|audvitad|helst|ja audvitad|ja plis|ja thakka ther fyrir|ja sendu|sendu|sendu thad|ja sendu thad|settu hana af stad|ja settu hana af stad)$/.test(w)) return "yes";
+    if (/^(nei|nei takk|nei nei|ekki nuna|seinna|ekki thorf|ekki thess|sleppum thvi|sleppum|nei thakka ther fyrir|nei kannski seinna|kannski seinna|ekki alveg)$/.test(w)) return "no";
+    return null;
+  }
+  function isHandle(raw) {
+    if (!KBI) return false;
+    var ice = isIcelandic(raw);
+    if (!ice && S.lang !== "is") return false;
+    if (S.lang !== "is") { S.lang = "is"; labels(); }
+    if (!ice && looksEnglish(raw)) { S.enTurn = true; return false; }
+    // pending offer: yes / no
+    var yn = isYN(raw);
+    if (yn && S.pending) {
+      var p = S.pending; S.pending = null;
+      if (yn === "yes") return route(p === "analysis" ? "analysis_start" : (p === "consult" ? "handoff_start_consult" : "handoff_start"));
+      return route("decline");
+    }
+    if (yn && !S.pending && !S.flow) return say(yn === "yes" ? KBI.texts.sayYes : KBI.texts.sayNo, [C_IS.services, C_IS.price, C_IS.analysis]);
+    // contact details given in the open
+    var em = findEmail(raw);
+    var best = isBest(raw);
+    var urlIn = !em && normUrl(raw);
+    if (urlIn && (!best || best.it.id === "free_analysis" || best.all[0].sc < 2)) {
+      S.slots.url = urlIn; S.pending = "analysis";
+      return say("Takk. Viltu að við gerum ókeypis greiningu á vefsíðu og leitarvæðingu fyrir " + domainOf(urlIn) + "?", [{ t: "Já, setjum hana af stað", go: "analysis_start" }, { t: T("notNow"), go: "decline" }]);
+    }
+    var ph = !em && raw.replace(/[^\d+]/g, "");
+    if (ph && /^\+?\d{7,15}$/.test(ph) && (!best || best.all[0].sc < 2.5)) { S.pending = "handoff"; return say(KBI.texts.phoneNoted, [{ t: T("yes"), go: "handoff_start" }, { t: T("notNow"), go: "decline" }]); }
+    if (em && (!best || best.all[0].sc < 2)) { S.slots.email = em; S.pending = "handoff"; return say(KBI.texts.emailNoted.replace("{email}", em), [{ t: T("yes"), go: "handoff_start" }, { t: T("notNow"), go: "decline" }]); }
+    if (!best) {
+      S.isFails = (S.isFails || 0) + 1;
+      if (S.isFails >= 2) { S.pending = "handoff"; return say(KBI.texts.fallbackAgain, [{ t: T("yes"), go: "handoff_start" }, { t: "Halda áfram á ensku", go: "lang_en" }, { t: T("notNow"), go: "decline" }]); }
+      return say(pick(KBI.texts.fallback, "is_fb"), [{ t: "Halda áfram á ensku", go: "lang_en" }, { t: "Senda til teymisins", go: "human" }, C_IS.services]);
+    }
+    var it = best.it;
+    if (it.id === "human") return isRoute("human");
+    return isSay(it, it.id === "pricing" ? isByTopic(best.all) : null);
+  }
+  function isBestText(raw) {
+    var b = isBest(raw); if (!b || b.all[0].sc < 1.5) return null;
+    var it = b.it; if (it.id === "pricing") return isPriceText(isByTopic(b.all) || S.topic);
+    return it.a && it.a.length ? pick(it.a, "is_" + it.id) : null;
   }
   function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function pathLink(p) { return PAGE_IS ? (p === "/" ? "/is" : "/is" + p) : p; }
@@ -1965,6 +2551,10 @@ var MRKX_DISC = {
     setTimeout(function () { focusInput(); }, 30);
   }
   function say(text, chips) {
+    if (chips && S.lang === "is" && KBI) {
+      var en = S.enTurn;
+      chips = chips.map(function (c) { return en ? { t: c.t, go: c.go, en: 1 } : (KBI.chipMap[c.t] ? { t: KBI.chipMap[c.t], go: c.go } : c); });
+    }
     var g = GEN;
     var delay = CFG.fast ? 0 : Math.min(420 + text.length * 7, 1300);
     Q = Q.then(function () {
@@ -1989,8 +2579,8 @@ var MRKX_DISC = {
   /* ---------- core ---------- */
   function welcome() {
     var txt = T("welcome");
-    var chips = PAGE_IS
-      ? [{ t: "What do you offer?", go: "services" }, { t: "Free analysis", go: "free_analysis" }, { t: "Senda til teymisins", go: "human" }]
+    var chips = S.lang === "is"
+      ? [{ t: "Hvað bjóðið þið upp á?", go: "is:services" }, { t: "Verð", go: "is:pricing" }, { t: "Ókeypis greining", go: "is:free_analysis" }, { t: "Tala við teymið", go: "human" }]
       : [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "Talk to the team", go: "human" }];
     say(txt, chips);
   }
@@ -2019,20 +2609,18 @@ var MRKX_DISC = {
   }
 
   function handle(raw, fromChip, chip) {
+    S.enTurn = false;
     // 1. chip actions
-    if (chip && chip.go) { if (String(chip.go).indexOf("q:") !== 0 && String(chip.go).indexOf("d:") !== 0) dropAwaiting(); return route(chip.go); }
+    if (chip && chip.go) { if (String(chip.go).indexOf("q:") !== 0 && String(chip.go).indexOf("d:") !== 0) dropAwaiting(); return route(chip.go, chip.en ? { en: 1 } : null); }
 
     // 2. active flow consumes input
     if (S.flow) { var r = flowInput(raw); if (r !== false) return r; }
 
-    // 3. icelandic
+    // 3. icelandic (own knowledge base and matching, see "Icelandic engine")
     if (!fromChip && !PAGE_IS && S.lang === "is" && !isIcelandic(raw) && words(raw).split(" ").length >= 3) { S.lang = "en"; labels(); }
-    if (!fromChip && isIcelandic(raw)) {
-      S.lang = "is"; labels();
-      if (/teymi|senda|starfsmann|manneskj/i.test(raw)) return route("human");
-      var isr = icelandicAnswer(raw);
-      if (isr) return say(isr, [{ t: "Senda til teymisins", go: "human" }, { t: "Ókeypis greining", go: "analysis_start" }, { t: "Svara á ensku", go: "services" }]);
-      return say(T("isNote"), [{ t: "Svara á ensku", go: "services" }, { t: "Senda til teymisins", go: "human" }]);
+    if (!fromChip && (S.lang === "is" || isIcelandic(raw))) {
+      var ir = isHandle(raw);
+      if (ir !== false) return ir;
     }
 
     // punctuation only ("?", "...") is hesitation
@@ -2257,6 +2845,9 @@ var MRKX_DISC = {
   function route(id, opt) {
     if (id === "cont") return S.cont ? contAnswer("") : say(T("moreNone"), [{ t: "Services", go: "services" }, { t: "Pricing", go: "pricing" }]);
     opt = opt || {};
+    if (id === "lang_en") { S.lang = "en"; labels(); S.pending = null; return say(KBI ? KBI.texts.switchEn : "Sure, we'll continue in English.", [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "Talk to the team", go: "human" }]); }
+    if (KBI && id.indexOf("is:") === 0) return isRoute(id.slice(3));
+    if (KBI && S.lang === "is" && !opt.en && !S.enTurn && id !== "human" && isIntentById(id)) return isRoute(id);
     if (id.indexOf("q:") === 0) {
       var parts = id.split(":");
       if (parts[1] === "skip") { S.awaiting = null; return say(T("declined"), [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }]); }
@@ -2412,11 +3003,11 @@ var MRKX_DISC = {
   function flowInput(raw) {
     var f = S.flow; if (!f) return false;
     var d = f.data, step = f.step, txt = raw.trim();
-    if (/^(cancel|stop|never ?mind|forget it|hætta við)$/i.test(txt)) return cancelFlow();
+    if (/^(cancel|stop|never ?mind|forget it|hætta við|haetta vid|hætta|sleppa þessu)$/i.test(txt)) return cancelFlow();
     // a question in the middle of a form is answered first, then the form question is repeated
     if (step !== "consent" && REASK[step] && txt !== "__skip__" && looksLikeQuestion(txt) && !findEmail(txt)) { var qa = maybeAnswerThenRe(raw, null); if (qa) return qa; }
     if (step === "url") {
-      if (/(don'?t have|no website|no site|none|nothing|do not have)/i.test(txt)) return route("flow:nosite");
+      if (/(don'?t have|no website|no site|none|nothing|do not have|ekki með vef|ekki med vef|enga vef|á ekki vef|a ekki vef|enga síðu|enga sidu)/i.test(txt)) return route("flow:nosite");
       var u = normUrl(txt);
       if (!u) return maybeAnswerThenRe(raw, "badUrl");
       d.url = u; S.slots.url = u; save(); return nextStep();
@@ -2427,15 +3018,15 @@ var MRKX_DISC = {
       d.email = e; S.slots.email = e; save(); return nextStep();
     }
     if (step === "name") {
-      if (txt !== "__skip__" && !/^skip$/i.test(txt)) { d.name = txt.replace(/^(i am|i'm|my name is|it's|its)\s+/i, "").slice(0, 60); S.slots.name = d.name; }
+      if (txt !== "__skip__" && !/^(skip|sleppa)$/i.test(txt)) { d.name = txt.replace(/^(i am|i'm|my name is|it's|its)\s+/i, "").slice(0, 60); S.slots.name = d.name; }
       save(); return nextStep();
     }
     if (step === "company") {
-      if (txt !== "__skip__" && !/^skip$/i.test(txt)) d.company = txt.slice(0, 80);
+      if (txt !== "__skip__" && !/^(skip|sleppa)$/i.test(txt)) d.company = txt.slice(0, 80);
       save(); return nextStep();
     }
     if (step === "note") {
-      if (txt !== "__skip__" && !/^skip$/i.test(txt)) d.note = txt.slice(0, 400);
+      if (txt !== "__skip__" && !/^(skip|sleppa)$/i.test(txt)) d.note = txt.slice(0, 400);
       save(); return nextStep();
     }
     if (step === "consent") {
@@ -2448,8 +3039,13 @@ var MRKX_DISC = {
   }
   // invalid input: if it is clearly a question, answer it, then re-ask the step
   var REASK = { url: "askUrl", email: "askEmail", name: "askName", company: "askCompany", note: "askNote" };
-  function looksLikeQuestion(txt) { return /\?\s*$/.test(txt) || (/^(what|how|why|when|where|who|which|can|could|do|does|did|is|are|will|would|should)\b/i.test(txt) && txt.split(/\s+/).length >= 3); }
+  function looksLikeQuestion(txt) { return /\?\s*$/.test(txt) || (/^(hvad|hvernig|hvenaer|hvar|hver|hvada|af hverju|getid|geta|eruda|erud|kostar|taka)\b/.test(fold(txt)) && txt.split(/\s+/).length >= 3) || (/^(what|how|why|when|where|who|which|can|could|do|does|did|is|are|will|would|should)\b/i.test(txt) && txt.split(/\s+/).length >= 3); }
   function maybeAnswerThenRe(raw, badKey) {
+    if (S.lang === "is" && KBI && isIcelandic(raw)) {
+      var itx = isBestText(raw);
+      if (itx && REASK[S.flow.step]) { var p0 = say(itx); return p0.then(function () { return say(T("reAsk") + " " + T(REASK[S.flow.step])); }); }
+      return badKey ? say(T(badKey)) : false;
+    }
     var cm = cleanMatch(raw), M = toks(cm), ranked = scoreAll(M, cm), step = S.flow.step, text = null;
     if (ranked[0] && ranked[0].sc >= 1.5 && !/@/.test(raw)) {
       var it = ranked[0].it;
@@ -2526,6 +3122,7 @@ var MRKX_DISC = {
       ask: function (t) { return Promise.resolve(userSays(t, false)).then(function () { return Q; }); },
       chip: function (label, go) { return Promise.resolve(userSays(label, true, { t: label, go: go })).then(function () { return Q; }); },
       toks: function (t) { return toks(t); },
+      _is: function (t) { return isScore(t).slice(0, 4).map(function (x) { return x.it.id + ":" + x.sc.toFixed(2); }); },
       done: function () { return Q; },
       state: function () { return JSON.parse(JSON.stringify(S)); },
       reset: function () { restart(); }
