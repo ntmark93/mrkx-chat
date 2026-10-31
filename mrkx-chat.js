@@ -2700,6 +2700,12 @@ var MRKX_DISC = {
       return say(nameLine + "Good, the two work well together. We'd scope them as one project so they support each other instead of being built separately. The next step is a short consultation, where we shape it around your goals.", [{ t: "Pricing", go: "pricing" }, { t: "Book a consultation", go: "consultation" }, { t: "Free analysis", go: "free_analysis" }]);
     }
 
+    // 4c. "I need all the services / everything": answer with the whole offer, not the detail of the last topic
+    if (!S.pending && !S.flow && ALL_CUE.test(raw) && !/\b(price|prices|pricing|cost|costs|how much|quote|budget|thanks|thank|bye|cheers)\b/i.test(raw) && /\b(need|want|require|looking|include|included|includes|get|have|offer|do|cover|covers|combine|together|can|could|all)\b/i.test(raw)) {
+      dropAwaiting(); S.fails = 0;
+      return route("services", { prefix: nameLine + "Yes, everything can be combined into one project. " });
+    }
+
     // 5. awaiting qualification answer
     if (S.awaiting) {
       var aw = awaitingInput(raw, M);
