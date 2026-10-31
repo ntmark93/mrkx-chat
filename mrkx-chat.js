@@ -421,6 +421,22 @@ var MRKX_KB2 = (function () {
 
   /* extra phrasings for intents that already exist in kb.js (how real people word it) */
   var kwAdd = {
+    /* round 3: indirect / conversational phrasings (see test/messy.js) */
+    "pricing#m1": ["the total", "total price", "total cost", "what would the total be", "grand total", "all in", "all together", "altogether", "in total", "overall cost", "what is the damage", "ballpark", "ball park", "rough price", "rough cost", "price range", "how much do i pay", "how much would i pay", "what do i pay", "what would i pay", "what would that be", "what would that come to", "what does that come to", "what are we looking at", "what am i looking at", "money wise", "cost wise", "price wise"],
+    "svc_website#m1": ["web developer", "web developers", "web designer", "web designers", "web dev", "web guy", "looking for a developer", "looking for a designer", "need a developer", "need a designer", "build a site", "build me a site", "make me a site", "make a site", "get a site", "new site", "site for my business", "page for my business", "online home", "digital home"],
+    "svc_seo#m1": ["find us", "find me", "people to find", "customers to find", "tourists to find", "guests to find", "people find me", "people find us", "people can find", "people see us", "people to see us", "get seen", "be seen", "more people to see", "show up when people search", "show up when someone searches", "appear on google", "come up on google", "come up first", "visibility", "more visible", "get customers from google", "customers from google", "clients from google", "visitors from google"],
+    "svc_app#m1": ["ios and android", "android and ios", "for ios", "for android", "for iphone", "iphone and android", "android and iphone", "cross platform", "cross-platform", "both platforms", "app store", "google play", "mobile application", "something for phones", "something for mobile", "phone app", "app for phones", "app for my customers", "app for my clients"],
+    "svc_automation#m1": ["automatic replies", "auto replies", "automatic responses", "auto responses", "reply automatically", "respond automatically", "send automatically", "automatically send", "automatically reply", "automatic confirmations", "send confirmations", "automatic invoices", "automatic follow up", "follow ups", "follow-ups", "save me time", "free up my time", "stop doing manually", "do it manually", "by hand every day", "too much admin", "drowning in admin", "connect my website to", "connect my systems", "integrate my systems"],
+    "portfolio#m1": ["customers i can check", "clients i can check", "any customers", "any clients", "past clients", "past customers", "previous clients", "previous customers", "your customers", "your clients", "who have you built for", "who did you build for", "can i check", "can i look at", "can i see", "something to look at", "anything i can look at", "case studies", "case study", "proof"],
+    "revisions#m1": ["what if i dont like it", "what if i dont like the result", "what if it is not what i want", "what if i am not happy", "what if im not happy", "what if i dont like how it looks", "if i dont like it", "if i dont like the result", "if i dont like what you make", "not what i expected", "not what i wanted", "not satisfied", "unhappy with the result", "money back", "refund"],
+    "need_from_you#m1": ["what info should i prepare", "what should i prepare", "what do i prepare", "what should i bring", "what do i bring", "what do i need to prepare", "what do i need to send", "what should i send you", "what should i send", "what do you need to get started", "what do you need to start", "what do i need to get started", "what do i need to have", "what to prepare", "what to have ready", "before we start", "before i start", "info you need", "information you need", "what information do you need"],
+    "changes_later#m1": ["start small", "start small and add", "start with a small", "start with something small", "start simple", "start with the basics", "start basic", "start with one", "add later", "add more later", "add things later", "add features later", "grow later", "expand later", "extend later", "build in phases", "in phases", "in stages", "step by step", "one step at a time", "phase one", "first version", "small first"],
+    "portfolio#m2": ["something like that", "something similar", "similar to that", "similar to this", "like the one you made", "like the towing", "like road1", "same as that", "like that one", "like what you did"],
+    "human#m1": ["talk with somebody", "talk to somebody", "talk with someone", "speak with someone", "speak with somebody", "speak to somebody", "someone to talk to", "somebody to talk to", "a real person", "real human", "actual person", "someone from your team", "somebody from your team"],
+    "consultation#m1": ["do it online", "online meeting", "meet online", "teams or zoom", "zoom", "google meet", "ms teams", "microsoft teams", "remote meeting", "video meeting", "meeting online", "can we meet", "meet in person", "meet up", "coffee"],
+    "contact#m1": ["cant call", "can t call", "dont want to call", "do not want to call", "prefer chat", "prefer to write", "prefer writing", "rather write", "only chat", "email only", "no calls", "text only", "message only", "i hate calls", "dont like calls"],
+    "fix_existing#m1": ["developer disappeared", "developer left", "developer is gone", "developer stopped", "developer quit", "lost my developer", "freelancer disappeared", "freelancer left", "nobody maintains", "no one maintains", "abandoned site", "orphaned site", "took over my site", "take over my site", "takeover"],
+    "timeline#m2": ["how soon", "how quickly", "how quick", "how long would it be", "how long would that be", "how long is it", "turnaround", "turn around", "lead time", "time frame", "timeframe", "ready by", "done by", "online by"],
     greet: ["anyone there", "anyone around", "is anyone there", "are you there", "hello there", "hi there", "hey there", "yo", "sup", "whats up", "howdy", "hiya", "good day", "hej", "hae", "sael", "saell", "gm"],
     thanks: ["thank you so much", "many thanks", "thanks a lot", "ok thanks", "okay thanks", "great thanks", "thanks for the help", "ty", "much appreciated", "tack", "takk"],
     bye: ["have a good day", "talk later", "talk soon", "gotta go", "see ya", "cya", "good night", "goodnight", "ok bye", "bless"],
@@ -865,7 +881,7 @@ var MRKX_KB_IS = (function () {
       chips: [{ t: "Nánar", go: "is:more" }, C_PRICE, C_ANALYSIS, { t: "Hvernig vinnið þið?", go: "is:process" }] },
 
     { id: "svc_seo", kind: "topic", topic: "seo",
-      kw: ["seo", "leitarvelabestun", "*leitarvel", "leitarvael", "bestun", "bestunar", "a google", "i google", "google leit", "google nidurstodur", "google rod", "gugl leit", "googla", "finnast", "finna mig", "finni mig", "finni okkur", "finna okkur", "finnur mig", "finnur okkur", "folk finni", "finnanleg", "finnanlegur", "synileika", "synileiki", "leitarnidurstod", "leitarord", "search foundation", "lifraen leit", "organic"],
+      kw: ["seo", "leitarvelabestun", "*leitarvel", "leitarvael", "bestun", "bestunar", "a google", "i google", "google leit", "google nidurstodur", "google rod", "gugl leit", "googla", "finnast", "finna mig", "finni mig", "finni okkur", "finna okkur", "finnur mig", "finnur okkur", "folk finni", "finnanleg", "finnanlegur", "synileika", "synileiki", "leitarnidurstod", "leitarord", "search foundation", "lifraen leit", "organic", "kemur enginn inn", "enginn kemur inn", "enginn heimsaekir", "enginn kemur a sidu", "enginn fer inn a", "fleiri gesti", "fa fleiri gesti", "fleiri kaupendur", "fleiri vidskiptavini", "fleiri vidskiptavini a netinu"],
       a: ["Í leitarvélabestun vinnum við með uppbyggingu síðna, efni, tæknilegan grunn, lýsigögn, innri tengingar og staðbundna leit. Search Foundation byrjar frá " + P_SEO + " án vsk. [SEO-þjónusta](/services/seo)"],
       more: "Við lítum á SEO sem hluta af uppbyggingu vefsins en ekki sem gátlista. Fyrst kemur tæknilegi grunnurinn (skráning í leitarvélum, vefkort, tilvísanir, skipulögð gögn, hraði), síðan leitarásetningur og uppbygging síðna, svo hver mikilvæg þjónusta hafi sína síðu með skýrt hlutverk. Við bætum við skýrleika í efni, lýsigögnum, staðbundinni leit fyrir íslensk fyrirtæki (vefur, Google Business Profile og samræmdar upplýsingar) og mælingum í gegnum Search Console og greiningartól. Við lofum ekki ákveðnum sætum, því leitarvélarnar ráða því. [SEO-þjónusta](/services/seo)",
       chips: [{ t: "Nánar", go: "is:more" }, C_PRICE, { t: "Hvað tekur SEO langan tíma?", go: "is:seo_time" }, C_ANALYSIS] },
@@ -883,7 +899,7 @@ var MRKX_KB_IS = (function () {
       chips: [{ t: "Nánar", go: "is:more" }, { t: "Vörumerkjakerfi eða lógó?", go: "is:brand_vs_logo" }, C_CONSULT] },
 
     { id: "svc_automation", kind: "topic", topic: "automation",
-      kw: ["sjalfvirkni", "*sjalfvirk", "sjalfvirkt", "sjalfvirka", "sjalfvirknivaeda", "crm", "zapier", "n8n", "ferli", "verkferli", "spara tima", "minnka handavinnu", "handavinna", "skyrslur"],
+      kw: ["sjalfvirkni", "*sjalfvirk", "sjalfvirkt", "sjalfvirka", "sjalfvirknivaeda", "crm", "zapier", "n8n", "ferli", "verkferli", "spara tima", "minnka handavinnu", "handavinna", "skyrslur", "pappirsvinnu", "pappirsvinna", "pappirsvinnan", "eydi miklum tima", "eyd miklum tima", "miklum tima i", "handvirk", "handvirkt", "handvirka vinnu", "endurtekin verk", "endurteknum verkum", "spara mer tima", "spara okkur tima", "vinnusparnad"],
       a: ["Við smíðum sjálfvirkni fyrir endurtekin verkefni sem fylgja föstum reglum, til dæmis meðhöndlun fyrirspurna, uppfærslur í CRM, eftirfylgnipóst, skýrslur, tilkynningar og bókanir. Þar sem þarf mannlegt mat er kerfið stuðningur en kemur ekki í stað fólks. Verð er sett fyrir hvert verkefni. [Sjálfvirkni](/services/automation-systems)"],
       more: "Við byrjum á verkferlinu en ekki á verkfærinu: hvar upplýsingarnar koma inn, hvert þær þurfa að fara og hver samþykkir hvað. Algeng svið eru meðhöndlun fyrirspurna og uppfærslur í CRM, eyðublöð á vefnum, móttaka nýrra viðskiptavina, eftirfylgnipóstur, innri verkefni og tilkynningar, bókanir, skýrslur og skjalameðhöndlun. Áreiðanlegt kerfi hefur líka staðfestingar, meðhöndlun tvítekninga, endurtekningar, villuviðvaranir, annála og skýra ábyrgð, svo bilun fari aldrei fram hjá neinum. Gervigreind er aðeins notuð þar sem túlkun skilar virði og maður samþykkir áhættusöm skref. [Sjálfvirkni](/services/automation-systems)",
       chips: [{ t: "Nánar", go: "is:more" }, { t: "Hvað er hægt að sjálfvirknivæða?", go: "is:automation_what" }, C_CONSULT] },
@@ -925,7 +941,7 @@ var MRKX_KB_IS = (function () {
       chips: [{ t: "Já, setjum hana af stað", go: "analysis_start" }, C_CONSULT] },
 
     { id: "consultation", kind: "question", pending: "consult",
-      kw: ["radgjof", "radgjafi", "radgjafar", "bóka tima", "boka tima", "boka fund", "bóka fund", "fundur", "fundi", "hittast", "hitting", "spjalla um verkefnid", "spjalla um verkefni", "kynningarfund", "kynningarfundur", "fund$", "fa fund", "fund med ykkur", "fundi med ykkur", "hitta ykkur", "bóka samtal", "boka samtal", "taka samtal", "hringja i mig", "hringid i mig", "kynning"],
+      kw: ["radgjof", "radgjafi", "radgjafar", "bóka tima", "boka tima", "boka fund", "bóka fund", "fundur", "fundi", "hittast", "hitting", "spjalla um verkefnid", "spjalla um verkefni", "kynningarfund", "kynningarfundur", "fund$", "fa fund", "fund med ykkur", "fundi med ykkur", "hitta ykkur", "bóka samtal", "boka samtal", "taka samtal", "hringja i mig", "hringid i mig", "kynning", "get eg hitt ykkur", "get eg hitt thid", "eigum vid ad hittast", "hittast"],
       a: ["Ráðgjöf er samtal um markmiðin þín þar sem við mótum umfang og verð í kringum verkefnið. Ég get sent beiðnina til teymisins núna. Á ég að gera það?"],
       chips: [{ t: "Já, endilega", go: "handoff_start_consult" }, C_NO] },
 
@@ -935,7 +951,7 @@ var MRKX_KB_IS = (function () {
       chips: [C_YES, C_NO] },
 
     { id: "contact", kind: "question",
-      kw: ["netfang", "netfangid", "tolvupost", "tolvupostur", "simanumer", "siminn", "sima$", "simi$", "hringja", "heimilisfang", "heimilisfangid", "skrifstofa", "skrifstofu", "opnunartimi", "opnunartima", "afgreidslutimi", "heimsaekja", "kikja vid", "whatsapp", "hafa samband", "nå í ykkur", "na i ykkur", "nad i ykkur", "ná í ykkur", "hvar finn eg ykkur", "hvernig nae eg", "hvernig get eg haft samband", "hvernig hef eg samband"],
+      kw: ["netfang", "netfangid", "tolvupost", "tolvupostur", "simanumer", "siminn", "sima$", "simi$", "hringja", "heimilisfang", "heimilisfangid", "skrifstofa", "skrifstofu", "opnunartimi", "opnunartima", "afgreidslutimi", "heimsaekja", "kikja vid", "whatsapp", "hafa samband", "nå í ykkur", "na i ykkur", "nad i ykkur", "ná í ykkur", "hvar finn eg ykkur", "hvernig nae eg", "hvernig get eg haft samband", "hvernig hef eg samband", "ma eg hringja", "get eg hringt", "mega hringja", "hringt i ykkur", "hringja i ykkur", "ma eg senda", "get eg sent"],
       a: ["Þú nærð í okkur á hello@mrkxlabs.com eða í síma 837 8339 (+354 837 8339). Heimilisfangið okkar er 781 Höfn í Hornafirði og á [samskiptasíðunni](/contact) er eyðublað. Við erum líka á Facebook, Instagram (mrkx.labs) og LinkedIn."],
       chips: [{ t: "Senda til teymisins", go: "human" }, C_ANALYSIS] },
 
@@ -945,7 +961,7 @@ var MRKX_KB_IS = (function () {
       chips: [C_SERVICES, { t: "Hafa samband", go: "is:contact" }] },
 
     { id: "portfolio", kind: "question",
-      kw: ["dæmi um verk", "daemi um verk", "daemi", "fyrri verk", "fyrri verkefni", "thid unnid fyrir", "hverja hafid thid unnid fyrir", "viðskiptavini", "vidskiptavini", "vidskiptavinir", "vidskiptavinum", "tilvisanir", "safn", "portfolio", "road1", "dratt", "dráttarbíl", "drattarbil", "vegaadstod", "synishorn", "synishorni", "hvad hafid thid gert", "sja verkefni", "verkefnin ykkar", "ykkar verkefni", "fyrri verkefni", "sja dæmi", "sja daemi", "haegt ad sja", "sýna mer verk", "syna mer verk", "syna okkur"],
+      kw: ["dæmi um verk", "daemi um verk", "daemi", "fyrri verk", "fyrri verkefni", "thid unnid fyrir", "hverja hafid thid unnid fyrir", "viðskiptavini", "vidskiptavini", "vidskiptavinir", "vidskiptavinum", "tilvisanir", "safn", "portfolio", "road1", "dratt", "dráttarbíl", "drattarbil", "vegaadstod", "synishorn", "synishorni", "hvad hafid thid gert", "sja verkefni", "verkefnin ykkar", "ykkar verkefni", "fyrri verkefni", "sja dæmi", "sja daemi", "haegt ad sja", "sýna mer verk", "syna mer verk", "syna okkur", "get eg sed eitthvad", "sed eitthvad sem thid hafid", "eitthvad sem thid hafid gert", "hafid gert", "hafid buid til", "hafid smidad", "sja verk", "sja daemi", "hvad hafid thid gert", "hvad hafid thid buid til", "eitthvad til ad skoda", "eitthvad til ad sja"],
       a: ["Verkefnið sem við sýnum opinberlega er ROAD1 TOW, vefsíða fyrir dráttarbíla- og vegaaðstoð á Suðurlandi: skýr uppbygging, bein leið til að hringja með einum smelli, grunnur að staðbundinni leitarvæðingu, dökk og gul hönnun og samræmt nafnspjald. Sem stofa erum við ung, en við erum ekki ný í faginu: við vorum að vinna á þessu sviði áður en MRKX Labs varð að stofu, og viljum frekar sýna fá verkefni sem við stöndum á bak við en langan lista. [Verkefni](/portfolio)"],
       chips: [{ t: "ROAD1 TOW", go: "is:portfolio_detail" }, { t: "Hvernig vinnið þið?", go: "is:process" }, C_ANALYSIS] },
 
@@ -986,7 +1002,7 @@ var MRKX_KB_IS = (function () {
       chips: [C_CONSULT, C_ANALYSIS, { t: "Hvernig vinnið þið?", go: "is:process" }] },
 
     { id: "not_on_google", kind: "faq", pending: "analysis",
-      kw: ["birtist ekki a google", "birtist ekki i google", "finnst ekki a google", "finnst ekki i google", "kemur ekki upp a google", "kemur ekki upp i google", "sest ekki a google", "sest ekki i google", "enginn finnur mig", "enginn finnur okkur", "finnst ekki", "finn ekki vefinn minn", "finn ekki vefsidu", "vefurinn minn finnst ekki", "synist ekki i leit", "kemur ekki fram i leit", "ekki ad koma upp", "ekki upp a google", "ekki upp i google", "upp a google", "ekki a google", "kemur ekki upp", "kemst ekki upp", "kemur ekki upp i leit", "ekki i leitarnidurstodum", "hverfur i leit", "faer enga umferd", "enga umferd", "litla umferd", "engar heimsoknir", "faar heimsoknir"],
+      kw: ["birtist ekki a google", "birtist ekki i google", "finnst ekki a google", "finnst ekki i google", "kemur ekki upp a google", "kemur ekki upp i google", "sest ekki a google", "sest ekki i google", "finnst ekki", "finn ekki vefinn minn", "finn ekki vefsidu", "vefurinn minn finnst ekki", "synist ekki i leit", "kemur ekki fram i leit", "ekki ad koma upp", "ekki upp a google", "ekki upp i google", "upp a google", "ekki a google", "kemur ekki upp", "kemst ekki upp", "kemur ekki upp i leit", "ekki i leitarnidurstodum", "hverfur i leit", "faer enga umferd", "enga umferd", "litla umferd", "engar heimsoknir", "faar heimsoknir", "enginn finnur mig", "enginn finnur okkur"],
       a: ["Það geta verið nokkrar ástæður: síður sem eru ekki skráðar í leitarvélinni, noindex-stilling, veik uppbygging síðna, óskýrar þjónustusíður, skortur á staðbundnum merkjum eða tæknileg vandamál. Best er að skoða raunverulegan vef. Ókeypis greining á vef og leitarvæðingu er góð fyrsta skref: við förum yfir síðurnar, tæknina og SEO-vandamálin og sendum þér PDF í tölvupósti innan 48 klukkustunda. Á ég að setja hana af stað?"],
       chips: [{ t: "Já, setjum hana af stað", go: "analysis_start" }, { t: "Hvað er innifalið?", go: "is:analysis_detail" }, C_NO] },
 
@@ -1117,7 +1133,7 @@ var MRKX_KB_IS = (function () {
       chips: [{ t: "Hvernig vinnið þið?", go: "is:process" }, C_CONSULT] },
 
     { id: "howstart", generic: true, kind: "question", w: 0.6,
-      kw: ["hvernig byrja eg", "hvernig byrjum vid", "hvad tharf eg ad gera til ad byrja", "hvad tharf eg ad gera", "til ad byrja", "til ad hefja", "hvernig hef eg verkefnid", "hvernig hef eg thetta", "hvar byrja eg", "hvar a eg ad byrja", "hvad er naesta skref", "naesta skref", "hvernig kemst eg af stad", "hvernig komumst vid af stad", "vil byrja", "viljum byrja", "byrja verkefni", "byrja verkefnid", "fara af stad", "koma mer af stad", "thetta er spennandi", "eg hef ahuga", "vid hofum ahuga", "mig langar", "okkur langar", "vantar mig", "vantar okkur", "eg vil", "eg thyrfti", "eg tharf", "vid thurfum", "eg vantar", "vantar vef", "vantar sidu", "mig vantar"],
+      kw: ["hvernig byrja eg", "hvernig byrjum vid", "hvad tharf eg ad gera til ad byrja", "hvad tharf eg ad gera", "til ad byrja", "til ad hefja", "hvernig hef eg verkefnid", "hvernig hef eg thetta", "hvar byrja eg", "hvar a eg ad byrja", "hvad er naesta skref", "naesta skref", "hvernig kemst eg af stad", "hvernig komumst vid af stad", "vil byrja", "viljum byrja", "byrja verkefni", "byrja verkefnid", "fara af stad", "koma mer af stad", "thetta er spennandi", "eg hef ahuga", "vid hofum ahuga", "mig langar", "okkur langar", "vantar mig", "vantar okkur", "eg vil", "eg thyrfti", "eg tharf", "vid thurfum", "eg vantar", "vantar vef", "vantar sidu", "mig vantar", "gerum thad", "jamm gerum thad", "ja endilega", "endilega", "eg hef ahuga", "eg hef mikinn ahuga", "eg er til", "eg vil byrja", "vid skulum byrja", "byrjum", "skulum gera thad", "latum slag standa", "ja takk", "eg er tilbuin", "eg er tilbuinn", "klart mal", "maela med", "maelid thid med", "geturdu maelt med", "hvad radleggid thid", "hvad myndir thu radleggja", "hvad aettir eg ad gera", "hvad a eg ad gera"],
       a: ["Besta næsta skref er stutt ráðgjöf, þar sem við förum yfir markmiðin þín og mótum umfang og verð í kringum þau. Ef þú ert nú þegar með vefsíðu getur ókeypis greining líka verið góð byrjun. Hvort viltu?"],
       chips: [C_CONSULT, C_ANALYSIS, C_SERVICES] },
 
@@ -1165,7 +1181,7 @@ var MRKX_KB_IS = (function () {
       chips: [C_CONSULT, { t: "Hvað þarf ég að útvega?", go: "is:need_from_you" }] },
 
     { id: "urgent", kind: "question", pending: "handoff",
-      kw: ["brydd", "brydt", "bradnaudsyn", "bradavandi", "thetta er bradt", "tharf thetta fljott", "tharf thetta strax", "thurfum thetta fljott", "thurfum thetta strax", "fyrir manadamot", "fyrir helgi", "fyrir naestu viku", "fyrir sumarid", "tharf ad opna", "opnum eftir", "opnum um", "opnunardagur", "opnunardagsetning", "skiladagur", "skiladagsetning", "dagsetning"],
+      kw: ["brydd", "brydt", "bradnaudsyn", "bradavandi", "thetta er bradt", "tharf thetta fljott", "tharf thetta strax", "thurfum thetta fljott", "thurfum thetta strax", "fyrir manadamot", "fyrir helgi", "fyrir naestu viku", "fyrir sumarid", "tharf ad opna", "opnum eftir", "opnum um", "opnunardagur", "opnunardagsetning", "skiladagur", "skiladagsetning", "dagsetning", "klarad fyrir jol", "klarad fyrir", "getid thid klarad", "faid thetta fyrir", "fyrir jolin", "fyrir jol", "sem fyrst", "eins fljott og haegt er", "eins fljott og haegt"],
       a: ["Tímalínur fara eftir umfangi og efni, svo ég get ekki lofað dagsetningu hér og vil ekki lofa of miklu. Ef þú ert með fasta dagsetningu skaltu segja teyminu hvaða dagur það er og hvað liggur að baki, þá geta þau sagt þér heiðarlega hvað er raunhæft. Á ég að senda það áfram?"],
       chips: [C_YES, C_NO] },
 
@@ -2610,6 +2626,8 @@ var MRKX_DISC = {
 
   function handle(raw, fromChip, chip) {
     S.enTurn = false;
+    CUR_RAW = fromChip ? "" : String(raw || "");
+    var PREV_PRICE = !!S.lastIdPrice; S.lastIdPrice = false;
     // 1. chip actions
     if (chip && chip.go) { if (String(chip.go).indexOf("q:") !== 0 && String(chip.go).indexOf("d:") !== 0) dropAwaiting(); return route(chip.go, chip.en ? { en: 1 } : null); }
 
@@ -2674,6 +2692,14 @@ var MRKX_DISC = {
       }
     }
 
+    // 4b. "both" / "all of them" after two topics were discussed: take both, don't treat it as an answer to a side question
+    if (!S.pending && !S.flow && S.topic && S.th && S.th[0] && /^(both|both of them|both please|all of them|all of the above|the two|the two of them|all three|everything)$/.test(words(raw))) {
+      dropAwaiting();
+      var two = [S.topic, S.th[0]];
+      if (PREV_PRICE) { S.lastIdPrice = true; return finish(nameLine + priceMulti(two), priceChips(), { id: "pricing", kind: "question" }); }
+      return say(nameLine + "Good, the two work well together. We'd scope them as one project so they support each other instead of being built separately. The next step is a short consultation, where we shape it around your goals.", [{ t: "Pricing", go: "pricing" }, { t: "Book a consultation", go: "consultation" }, { t: "Free analysis", go: "free_analysis" }]);
+    }
+
     // 5. awaiting qualification answer
     if (S.awaiting) {
       var aw = awaitingInput(raw, M);
@@ -2693,7 +2719,7 @@ var MRKX_DISC = {
 
     if (!S.pending && !S.awaiting && !S.flow) {
       var bare = words(raw);
-      if (/^(yes|yeah|yep|yup|sure|ja)$/.test(bare)) return say("Great. What would you like to start with?", [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Help me choose", go: "recommend" }, { t: "Free analysis", go: "free_analysis" }]);
+      if (/^(yes|yeah|yep|yup|sure|ja|(ok |okay |yes |yeah |sure |alright )?(lets|let us|lets go|let s) (do it|go|start|begin|get started|proceed)|(yes |yeah |ok |okay |sure )?(please )?go ahead|(yes |ok |okay )?(i m|im|i am) in|im ready|i m ready|ready|do it|sounds like a plan|lets begin|get started|start now|lets get started)$/.test(bare)) return say("Great. What would you like to start with?", [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Help me choose", go: "recommend" }, { t: "Free analysis", go: "free_analysis" }]);
       if (/^(no|nope|nah|nei)$/.test(bare)) return say("No problem. Is there anything else I can help with?", [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, TEAMCHIP]);
     }
 
@@ -2832,7 +2858,7 @@ var MRKX_DISC = {
     if (hits.length < 2) return null;
     hits = hits.slice(0, 2);
     var texts = hits.map(function (it) {
-      if (it.id === "pricing") return priceText(S.topic);
+      if (it.id === "pricing") return priceText(priceTopicFor(null));
       var t = pick(it.a, it.id);
       return it.kind === "topic" ? (t.match(/^(?:[^.!?]|[.!?](?=\S))*[.!?](?:\s+(?:[^.!?]|[.!?](?=\S))*[.!?])?/) || [t])[0] : t;
     });
@@ -2874,7 +2900,8 @@ var MRKX_DISC = {
       if (S.lastMore) { var mt2 = S.lastMore; S.lastMore = null; return finish(mt2, [{ t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }], null, true); }
       return say(T("moreNone"), [{ t: "Services", go: "services" }, { t: "Pricing", go: "pricing" }]);
     }
-    if (id === "pricing") return finish((opt.prefix || "") + priceText(opt.msgTopic || S.topic), priceChips(), { id: "pricing", kind: "question" });
+    if (id === "pricing") { S.lastIdPrice = true; if (opt.msgTopic && !ALL_CUE.test(CUR_RAW)) S.topic = opt.msgTopic; }
+    if (id === "pricing") return finish((opt.prefix || "") + priceText(priceTopicFor(opt.msgTopic)), priceChips(), { id: "pricing", kind: "question" });
     if (id === "human" && S.lang === "is") { S.pending = "handoff"; return say(T("askHandoff"), [{ t: T("yes"), go: "handoff_start" }, { t: T("notNow"), go: "decline" }]); }
     var it = byId(id);
     if (!it) return say(T("moreNone"));
@@ -2883,7 +2910,30 @@ var MRKX_DISC = {
     return finish((opt.prefix || "") + pick(it.a, it.id), cc, it);
   }
 
+  var CUR_RAW = "";
+  // topics mentioned in the current message ("website and seo together", "everything", "all services")
+  var ALL_CUE = /\b(all|every|everything|whole|entire|full|complete)\b[^.?!]{0,24}\b(services?|package|packages|things?|of (it|them|that)|offer|offers|you (do|offer|have)|work)\b|\beverything\b|\ball of (it|them)\b|\bthe lot\b|\bfull (package|service|stack)\b/i;
+  var TOPIC_RX = { website: /\b(web ?sites?|web ?sites|site|web design|webpage|homepage)\b/i, seo: /\b(seo|google|search engine|found online|ranking)\b/i, app: /\b(apps?|mobile app|ios|android)\b/i, landing: /\blanding( page)?s?\b/i, brand: /\b(logo|brand(ing)?|identity)\b/i, automation: /\b(automat\w*|workflows?)\b/i };
+  function priceTopicFor(msgTopic) {
+    if (ALL_CUE.test(CUR_RAW)) return "all";
+    var hit = Object.keys(TOPIC_RX).filter(function (k) { return TOPIC_RX[k].test(CUR_RAW); });
+    if (hit.length >= 2) return hit;
+    return msgTopic || S.topic;
+  }
+  function priceMulti(list) {
+    var w = KB.priceWeb, s = KB.priceSeo, a = KB.priceApp, bits = [], per = [];
+    list.forEach(function (k) {
+      if (k === "website") bits.push("a Business Website starts from " + w);
+      else if (k === "seo") bits.push("Search Foundation starts from " + s);
+      else if (k === "app") bits.push("a Mobile App starts from " + a);
+      else per.push({ landing: "landing pages", brand: "brand systems", automation: "automation" }[k]);
+    });
+    var t = "Here is how it breaks down: " + bits.join(", ") + " (all plus VAT)." + (per.length ? " " + per.join(" and ").replace(/^./, function (c) { return c.toUpperCase(); }) + (per.length > 1 || per[0] === "landing pages" || per[0] === "brand systems" ? " are" : " is") + " priced per project." : "");
+    return t + " When several things are combined, we scope them together, so the total is usually clearer than adding up separate prices. A short consultation gives you a real number.";
+  }
   function priceText(topic) {
+    if (topic === "all") topic = null;
+    if (Array.isArray(topic)) return priceMulti(topic);
     var w = KB.priceWeb, s = KB.priceSeo, a = KB.priceApp;
     if (topic === "website") return "Our Business Website projects start from " + w + " plus VAT. The final price depends on the number of pages, languages, integrations and content, so the best next step is a short consultation, where we shape the price around your project.";
     if (topic === "seo") return "Our Search Foundation work starts from " + s + " plus VAT. What you need beyond that depends on your site and goals, so we shape the scope and the price in a short consultation.";
@@ -2951,9 +3001,12 @@ var MRKX_DISC = {
     return null;
   }
   function dropAwaiting() { if (S.awaiting) { S.awaiting = null; S.ignored = (S.ignored || 0) + 1; } }
+  var NEW_REQ = /^(please |pls |and |ok |okay |so |then )*(the )?(price|prices|pricing|cost|costs|how much|how much is it|what does it cost|quote|a quote|an offer|offer|contact|contact details|email|phone|phone number|call me|call|human|a human|real person|someone|examples?|portfolio|timeline|how long|process|services|what do you do|faq|help)( please| pls)?\s*[.!?]*$/i;
+  var NEW_REQ2 = /\b(price|prices|pricing|cost|costs|how much|quote)\b/i;
   function awaitingInput(raw, M) {
     var kind = S.awaiting;
     if (/\?\s*$/.test(raw)) { dropAwaiting(); return false; }
+    if (NEW_REQ.test(raw.trim()) || (NEW_REQ2.test(raw) && words(raw).split(" ").length <= 6 && !/\d/.test(raw))) { dropAwaiting(); return false; }
     if (kind.indexOf("disc:") === 0) {
       var dpp = kind.split(":");
       var rk = scoreAll(M)[0], rr = retrieve(raw, dpp[1]);
