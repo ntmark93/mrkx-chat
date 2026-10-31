@@ -2293,7 +2293,7 @@ var MRKX_DISC = {
     ".x{background:none;border:0;color:#cfd6ee;font-size:22px;line-height:1;cursor:pointer;padding:4px 8px;border-radius:8px}.x:hover{background:rgba(255,255,255,.08)}",
     ".log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}",
     ".m{max-width:86%;padding:10px 13px;border-radius:14px;font-size:14.5px;line-height:1.45;word-wrap:break-word;overflow-wrap:anywhere}",
-    ".m a{color:#93c5fd;text-decoration:underline}",
+    ".m a{color:#93c5fd;text-decoration:underline;padding:4px 0}", // padding enlarges the hit area (WCAG 2.2 target size) without changing line layout
     ".b{align-self:flex-start;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.18);border-bottom-left-radius:4px}",
     ".u{align-self:flex-end;background:linear-gradient(180deg,rgba(96,165,250,.6),rgba(37,99,235,.55));border:1px solid rgba(147,197,253,.5);color:#fff;border-bottom-right-radius:4px}",
     ".typing{align-self:flex-start;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:12px 14px;display:flex;gap:5px}",
