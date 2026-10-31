@@ -1708,7 +1708,8 @@ var MRKX_DISC = {
       qTiming: "Do you have a rough timing in mind?",
       qThanks: "Thanks, noted.",
       offerAnalysis: "If you already have a website, I can set up a free website and search analysis for you. Want that?",
-      reAsk: "Back to your request:"
+      reAsk: "Back to your request:",
+      langSwitched: "Switched to English. Let's pick up where we left off."
     },
     is: {
       title: "MRKX aðstoðarmaður", sub: "Sjálfvirkur aðstoðarmaður", ph: "Skrifaðu skilaboð…", send: "Senda",
@@ -1740,7 +1741,9 @@ var MRKX_DISC = {
       askHandoff: "Að sjálfsögðu. Ég get sent þetta samtal til teymisins okkar í tölvupósti og það svarar þér. Á ég að gera það?",
       yes: "Já, endilega", notNow: "Ekki núna",
       isNote: "Takk fyrir skilaboðin! Ég get ekki svarað ítarlega á íslensku ennþá. Ég get svarað á ensku eða sent spurninguna þína áfram til teymisins.",
-      reAsk: "Aftur að beiðninni þinni:"
+      reAsk: "Aftur að beiðninni þinni:",
+      offerAnalysis: "Ef þú ert nú þegar með vefsíðu get ég sett upp ókeypis greiningu á vefsíðunni og leitarvæðingu fyrir þig. Viltu það?",
+      langSwitched: "Skipt yfir á íslensku. Höldum áfram þar sem frá var horfið."
     }
   };
 
@@ -1749,7 +1752,7 @@ var MRKX_DISC = {
   function fresh() {
     return { lang: PAGE_IS ? "is" : "en", hist: [], slots: {}, topic: null, last: null, lastMore: null, pending: null,
              flow: null, fails: 0, subst: 0, asked: {}, awaiting: null, offeredAnalysis: false, msgs: 0,
-             t0: Date.now(), sent: false, greeted: false, variant: {}, open: false };
+             t0: Date.now(), sent: false, greeted: false, variant: {}, open: false, pageIs: PAGE_IS };
   }
   function T(key, vars) {
     var s = (STR[S.lang] && STR[S.lang][key]) || STR.en[key] || key;
@@ -3169,12 +3172,88 @@ var MRKX_DISC = {
     if (S.open) { elPanel.classList.add("open"); elLauncher.setAttribute("aria-expanded", "true"); }
     labels();
   }
+
+  /* ---------- page language switch (Wix language switcher) ----------
+     When the visitor changes the site language, the chat follows: labels switch, the last answer
+     (or the open form step) is shown again in the new language and the conversation goes on from there. */
+  var EN_OF = null;
+  function enLabel(t) {
+    if (!KBI || !KBI.chipMap) return t;
+    if (!EN_OF) { EN_OF = {}; for (var k in KBI.chipMap) EN_OF[KBI.chipMap[k]] = k; }
+    return EN_OF[t] || t;
+  }
+  var GO_KEY = { handoff_start: "yes", decline: "notNow", "flow:agree": "agree", "flow:cancel": "cancel", "flow:skip": "skip" };
+  function relabel(chips) {
+    var out = [];
+    (chips || []).forEach(function (c) {
+      var key = GO_KEY[c.go];
+      if (key) return out.push({ t: T(key), go: c.go });
+      if (S.lang !== "is") return out.push({ t: enLabel(c.t), go: c.go });
+      var m = KBI && KBI.chipMap && KBI.chipMap[c.t];
+      if (m) out.push({ t: m, go: c.go });
+      else if (!/^[A-Z][a-z]/.test(c.t) || /[þðæöáéíóúýÞÐÆÖ]/.test(c.t)) out.push(c);
+    });
+    return out;
+  }
+  function reaskFlow() {
+    var f = S.flow, d = f.data, isA = f.type === "analysis";
+    var skipChip = [{ t: T("skip"), go: "flow:skip" }, { t: T("cancel"), go: "flow:cancel" }];
+    var cancel = [{ t: T("cancel"), go: "flow:cancel" }];
+    switch (f.step) {
+      case "url": return say(T("askUrl"), [{ t: "I don't have a website", go: "flow:nosite" }, cancel[0]]);
+      case "email": return say(T("askEmail"), cancel);
+      case "name": return say(T("askName"), skipChip);
+      case "company": return say(T("askCompany"), skipChip);
+      case "note": return say(T("askNote"), skipChip);
+      case "consent": return say(T(isA ? "consentAnalysis" : "consentHandoff", { email: d.email }), [{ t: T("agree"), go: "flow:agree" }, cancel[0]]);
+    }
+    return nextStep();
+  }
+  function followPageLang() {
+    var was = S.pageIs;
+    S.pageIs = PAGE_IS;
+    if (was === undefined || was === PAGE_IS) { save(); return; }
+    var target = PAGE_IS ? "is" : "en";
+    if (S.lang === target) { save(); return; }
+    var talked = S.hist.some(function (h) { return h.r === "u"; });
+    S.lang = target; S.enTurn = false; labels();
+    if (!talked) {                       // nothing to continue: just greet again in the new language
+      elLog.innerHTML = ""; S.hist = []; showChips(null); S.greeted = false;
+      if (S.open) { S.greeted = true; welcome(); }
+      save(); return;
+    }
+    var lastId = String(S.last || "").replace(/^is_/, "");
+    var lastBot = null;
+    for (var i = S.hist.length - 1; i >= 0; i--) if (S.hist[i].r === "b") { lastBot = S.hist[i]; break; }
+    save();
+    var bridge = say(T("langSwitched"));
+    if (S.flow) return bridge.then(function () { return reaskFlow(); });
+    if (S.pending === "handoff") return bridge.then(function () { return say(T("askHandoff"), [{ t: T("yes"), go: "handoff_start" }, { t: T("notNow"), go: "decline" }]); });
+    if (S.pending === "analysis") return bridge.then(function () { return say(T("offerAnalysis"), [{ t: T("yes"), go: "analysis_start" }, { t: T("notNow"), go: "decline" }]); });
+    var known = target === "is" ? (KBI && isIntentById(lastId)) : byId(lastId);
+    if (known && lastId !== "human") return bridge.then(function () { return target === "is" ? isRoute(lastId) : route(lastId, {}); });
+    return bridge.then(function () {
+      var chips = lastBot && lastBot.chips && lastBot.chips.length ? relabel(lastBot.chips)
+        : [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }];
+      return say(T("moreNone"), chips);
+    });
+  }
+  /* the site language can change without a full page load, so watch the address too */
+  function watchPageLang() {
+    var cur = PAGE_IS;
+    setInterval(function () {
+      var now = /^\/is(\/|$)/.test(location.pathname);
+      if (now !== cur) { cur = now; PAGE_IS = now; if (elLog) followPageLang(); }
+    }, 500);
+  }
   function init() {
     if (!document.body) return setTimeout(init, 50);
     load();
     S.lang = S.lang || (PAGE_IS ? "is" : "en");
     build();
     restore();
+    followPageLang();
+    watchPageLang();
     window.MRKXChat = {
       open: function () { toggle(true); },
       close: function () { toggle(false); },
