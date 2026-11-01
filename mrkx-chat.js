@@ -1907,7 +1907,7 @@ var MRKX_DISC = {
   function discState() { S.disc = S.disc || { asked: {}, ans: {}, skips: 0, tick: 0, last: -9 }; return S.disc; }
   function nextDisc(topic) {
     var qs = DISC[topic], ds = discState();
-    if (!qs || S.pending || S.flow || S.awaiting || ds.skips >= 2 || (S.ignored || 0) >= 2) return null;
+    if (!qs || S.noAsk || S.pending || S.flow || S.awaiting || ds.skips >= 2 || (S.ignored || 0) >= 2) return null;
     if (ds.tick - ds.last < 2) return null;
     for (var i = 0; i < qs.length; i++) if (!ds.asked[topic + ":" + qs[i].id]) return qs[i];
     return null;
@@ -1941,9 +1941,9 @@ var MRKX_DISC = {
     S.topic = topic; S.last = "disc";
     var p;
     if (left.length) {
-      p = say(reply);
-      ds.last = ds.tick - 2;
-      return Promise.resolve(p).then(function () { return askDisc(topic, left[0]); });
+      // one question at a time: answer, offer the usual next steps, and ask the next question only later
+      ds.last = ds.tick;
+      return say(reply, [{ t: "Pricing", go: "pricing" }, { t: "More detail", go: "sec:" + topic }, { t: "Book a consultation", go: "consultation" }]);
     }
     // last question of the topic answered: suggest a next step
     var offerA = (o && o.offer === "analysis") || S.slots.hasSite;
@@ -1955,6 +1955,35 @@ var MRKX_DISC = {
     save();
     return say(closing, [{ t: "Yes, please", go: "handoff_start_consult" }, { t: "More detail", go: "sec:" + topic }, { t: "Not now", go: "decline" }]);
   }
+
+
+  /* ---------- cross-topic follow-ups: "does that apply to the app?" after a subject answer (accessibility, speed, tracking...) ---------- */
+  var SUBJ = {
+    accessibility: /accessib|wcag|screen reader|contrast|alt text|keyboard/i, performance: /performance|page speed|core web vitals|battery|startup|loading/i,
+    analytics: /analytic|tracking|measure|ga4|conversion track/i, security: /secur|privacy|permission|spam|gdpr|personal data/i,
+    multilingual: /multiling|localis|language|translat/i, maintenance: /maintenance|after launch|updates|support|scalab|long term/i,
+    integrations: /integrat|crm|\bapi\b|systems behind|booking and payment/i, content: /copywriting|content|cms|editable|messaging/i,
+    seo: /seo|metadata|schema|index|sitemap|structured data/i, design: /\bux\b|design|layout|responsive|typography/i
+  };
+  var SUBJ_NAME = { accessibility: "accessibility", performance: "speed and performance", analytics: "tracking and measurement", security: "security and privacy", multilingual: "multiple languages", maintenance: "maintenance and updates", integrations: "integrations", content: "content and copy", seo: "SEO foundations", design: "design and UX" };
+  function subjectOf(text) {
+    var best = null;
+    Object.keys(SUBJ).forEach(function (k) { if (SUBJ[k].test(text) && (!best || text.search(SUBJ[k]) < text.search(SUBJ[best]))) best = k; });
+    return best;
+  }
+  function noteSubject(titleAndKw) { var k = subjectOf(titleAndKw); if (k) S.subj = { k: k, n: S.hist.length }; }
+  function crossTopic(raw, msgTopic) {
+    if (!S.subj || !msgTopic || !SEC[msgTopic] || S.hist.length - S.subj.n > 4) return null;
+    if (!/\b(apply|applies|applicable|same (for|with|goes for)|also (for|apply|work)|for the \w+ too|and for the|does that|does it|is that also|is it also|how about for|what about for)\b/i.test(raw)) return null;
+    var other = subjectOf(raw.replace(SUBJ_RAW_STRIP, " "));
+    if (other && other !== S.subj.k) return null;
+    var k = S.subj.k, items = SEC[msgTopic].items, idx = -1;
+    for (var i = 0; i < items.length; i++) { if (SUBJ[k].test(items[i].t + " " + items[i].kw.join(" "))) { idx = i; break; } }
+    var via = false;
+    if (idx < 0) { for (var j = 0; j < items.length; j++) { if (SUBJ[k].test(items[j].a)) { idx = j; via = true; break; } } }
+    return { key: msgTopic, idx: idx, k: k, via: via };
+  }
+  var SUBJ_RAW_STRIP = /\b(app|apps|website|websites|landing page|landing pages|seo|brand|automation)\b/gi;
 
   /* ---------- detailed service sections ---------- */
   var SEC = (typeof MRKX_SECTIONS !== "undefined") ? MRKX_SECTIONS : {};
@@ -2029,7 +2058,7 @@ var MRKX_DISC = {
     return finish(text, chips, null, true);
   }
   function secAnswer(key, idx, prefix) {
-    var d = SEC[key], x = d.items[idx]; S.topic = key; S.lastMore = null;
+    var d = SEC[key], x = d.items[idx]; S.topic = key; S.lastMore = null; noteSubject(x.t + " " + x.kw.join(" "));
     S.secSeen = S.secSeen || {}; (S.secSeen[key] = S.secSeen[key] || []);
     if (S.secSeen[key].indexOf(idx) < 0) S.secSeen[key].push(idx);
     var chips = [], n = d.items.length, seen = S.secSeen[key];
@@ -2119,7 +2148,7 @@ var MRKX_DISC = {
     return n;
   }
   function docAnswer(d, prefix) {
-    S.topic = d.topic; S.lastMore = null;
+    S.topic = d.topic; S.lastMore = null; noteSubject(d.title);
     var i = DOCS.indexOf(d);
     var related = DOCS.filter(function (x) { return x !== d && x.topic === d.topic && x.kind === "faq"; });
     // related = the 2 FAQ questions that share most terms with this one
@@ -2700,6 +2729,12 @@ var MRKX_DISC = {
   function handle(raw, fromChip, chip) {
     S.enTurn = false;
     CUR_RAW = fromChip ? "" : String(raw || "");
+    // question budget: no extra questions from me when the visitor is asking, rushed or asked me to stop
+    if (!fromChip) {
+      var rr0 = String(raw || "").trim();
+      if (/\b(asap|urgent|in a hurry|hurry|quickly|just (tell|give|answer|show)|stop asking|no more questions|enough questions|too many questions)\b/i.test(rr0)) { S.hurry = 1; if (/stop asking|no more questions|enough questions|too many questions/i.test(rr0)) S.ignored = Math.max(S.ignored || 0, 2); }
+      S.noAsk = !!(S.hurry || /\?/.test(rr0) || /^(what|whats|how|why|when|where|which|who|can|could|do|does|did|is|are|will|would|should|tell|explain|give|show|compare)\b/i.test(rr0));
+    } else S.noAsk = !!S.hurry;
     var PREV_PRICE = !!S.lastIdPrice; S.lastIdPrice = false;
     // 1. chip actions
     if (chip && chip.go) { if (String(chip.go).indexOf("q:") !== 0 && String(chip.go).indexOf("d:") !== 0) dropAwaiting(); return route(chip.go, chip.en ? { en: 1 } : null); }
@@ -2707,6 +2742,11 @@ var MRKX_DISC = {
     // 2. active flow consumes input
     if (S.flow) { var r = flowInput(raw); if (r !== false) return r; }
 
+    // 2a. "stop asking questions": respected at once, for the rest of the chat
+    if (!fromChip && /\b(stop asking|no more questions|enough questions|too many questions|quit asking)\b/i.test(raw)) {
+      S.hurry = 1; S.ignored = Math.max(S.ignored || 0, 2); S.awaiting = null; S.noAsk = true;
+      return say(S.lang === "is" ? "Skiljanlega. Ég spyr ekki fleiri spurninga. Spurðu mig um hvað sem er." : "Understood, no more questions from me. Ask me anything you like.", S.lang === "is" ? [C_IS.services, C_IS.price] : [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }]);
+    }
     // 2b. open a page / change the language of the chat (always confirmed first)
     if (!fromChip && !S.flow) {
       var lr = langRequest(raw);
@@ -2844,6 +2884,15 @@ var MRKX_DISC = {
       if (/\b(the one before|the previous one|previous one|the last one|the one earlier|the earlier one|the one i asked (about )?before|go back)\b/.test(wd) && S.th && S.th[0]) refT = S.th[0];
       else if (/\b(the first one|first one|the one i asked first|the original one|the first thing|from the start|the very first)\b/.test(wd) && S.firstTopic) refT = S.firstTopic;
       if (refT && byId("svc_" + refT)) { S.topic = refT; S.fails = 0; return route("svc_" + refT, { prefix: nameLine }); }
+    }
+    var xt = crossTopic(raw, msgTopic0);
+    if (!xt && !fromChip) { var sj = subjectOf(raw.replace(SUBJ_RAW_STRIP, " ")); if (sj && !/\b(apply|applies|same for|also for)\b/i.test(raw)) S.subj = { k: sj, n: S.hist.length }; }
+    if (xt) {
+      S.fails = 0;
+      var subjN = SUBJ_NAME[xt.k], svcN = SEC[xt.key].name;
+      if (xt.idx >= 0) return secAnswer(xt.key, xt.idx, nameLine + (xt.via ? "For the " + svcN + ", " + subjN + " isn't a topic of its own, but it comes up in this part: " : "Yes, " + subjN + " matters for the " + svcN + " too. Here is how we handle it there: "));
+      S.topic = xt.key;
+      return route("svc_" + xt.key, { prefix: nameLine + "For the " + svcN + ", " + subjN + " isn't a separate topic in our descriptions, but it is part of how we work. Here's the overview of that service. " });
     }
     // "what do you do for websites", "tell me about your landing pages": the named service, not the whole list
     if (msgTopic0 && /^(so |and |ok |okay )*(what do you|what can you|what does your|what is your|what s your|tell me about|tell me more about|what about|how about|whats|what are)\b.*\b(for|with|in|about|your|the)\b/.test(wd) && words(raw).split(" ").length <= 8 && byId("svc_" + msgTopic0) && !priceQ0.test(wd)) { S.topic = msgTopic0; S.fails = 0; return route("svc_" + msgTopic0, { prefix: nameLine }); }
@@ -3099,6 +3148,7 @@ var MRKX_DISC = {
   }
 
   function nextQualifier() {
+    if (S.noAsk) return null;
     if (S.subst >= 2 && !S.asked.biz && !S.ignored) return function () { S.asked.biz = true; S.awaiting = "biz"; return say(T("qBiz"), [{ t: "Restaurant or café", go: "q:biz:Restaurant or café" }, { t: "Shop", go: "q:biz:Shop" }, { t: "Service business", go: "q:biz:Service business" }, { t: "Tourism", go: "q:biz:Tourism" }, { t: "New business", go: "q:biz:New business" }, { t: T("skip"), go: "q:skip" }]); };
     if (S.subst >= 4 && S.asked.biz && !S.asked.goal && !S.ignored) return function () { S.asked.goal = true; S.awaiting = "goal"; return say(T("qGoal"), [{ t: "More enquiries", go: "q:goal:More enquiries" }, { t: "Online sales", go: "q:goal:More online sales" }, { t: "A clearer site", go: "q:goal:A clearer site" }, { t: "Found on Google", go: "q:goal:Being found on Google" }, { t: T("skip"), go: "q:skip" }]); };
     if (S.subst >= 5 && !S.offeredAnalysis && !S.sent) return function () { S.offeredAnalysis = true; S.pending = "analysis"; return say(T("offerAnalysis"), [{ t: "Yes, set it up", go: "analysis_start" }, { t: "Not now", go: "decline" }]); };
