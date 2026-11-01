@@ -449,6 +449,8 @@ var MRKX_KB2 = (function () {
     "languages_spoken#m9": ["anything in english", "anything in icelandic", "can you do icelandic", "can you do english", "do you do icelandic", "do you do english", "icelandic or english", "english version", "icelandic version"],
     "human#m10": ["dont trust bots", "dont like bots", "hate bots", "no bots", "dont want to talk to a bot", "dont want a bot", "bots suck", "tired of bots", "i want a human", "i want a real person", "get me a human"],
     "consultation#m9": ["book it", "book now", "lets book", "book me in", "book me", "sign me up", "lets go ahead", "lets do this", "i want to book", "ok book it", "set it up for me"],
+    "portfolio#m9": ["road1", "road 1", "what did you do for road1", "what did you do for road 1", "the towing project", "your work for", "what did you do for them"],
+    "svc_landing#m9": ["landing", "lander", "lp"],
     greet: ["anyone there", "anyone around", "is anyone there", "are you there", "hello there", "hi there", "hey there", "yo", "sup", "whats up", "howdy", "hiya", "good day", "hej", "hae", "sael", "saell", "gm"],
     thanks: ["thank you so much", "many thanks", "thanks a lot", "ok thanks", "okay thanks", "great thanks", "thanks for the help", "ty", "much appreciated", "tack", "takk"],
     bye: ["have a good day", "talk later", "talk soon", "gotta go", "see ya", "cya", "good night", "goodnight", "ok bye", "bless"],
@@ -523,7 +525,7 @@ var MRKX_KB2 = (function () {
 
   /* chip labels for "did you mean ...?" (only ids listed here can be offered) */
   var labels = {
-    team_details: "The team behind it", sorry_ack: "No problem", young_studio: "Your experience",
+    team_details: "The team behind it", sorry_ack: "No problem", cheapest_option: "Cheapest option", young_studio: "Your experience",
     diy_alternative: "Cheaper alternatives", involvement: "How involved I'd be", advice_honest: "Honest advice", company_details: "Company details", free_catch: "Is the analysis really free", response_time: "Reply times",
     reporting: "Reports", hosting_domain: "Hosting and domain",
     design_input: "Design and colours", pages_count: "How many pages", blog: "A blog", will_rank: "Showing up on Google", support_fix: "Support after launch", contract_terms: "Contracts", results_expect: "What results to expect",
@@ -574,6 +576,10 @@ var MRKX_KB2 = (function () {
     { id: "confused", kind: "question", kw: ["i dont understand", "dont understand", "confusing", "what do you mean", "not clear", "unclear", "huh", "explain simpler", "in simple terms", "plain english", "too technical", "jargon", "im lost", "lost me", "simpler please", "say that again", "explain that again", "what does that mean"],
       a: ["Sorry, let me put it simply: we build websites and the things around them (search visibility, brand, automation, apps) so that visitors become enquiries. Which part would you like me to explain in plain words?"],
       chips: [{ t: "A website", go: "svc_website" }, { t: "Google search", go: "svc_seo" }, { t: "Pricing", go: "pricing" }, { t: "Help me choose", go: "recommend" }] },
+
+    { id: "cheapest_option", kind: "question", kw: ["cheapest", "which is cheapest", "which one is cheaper", "which is the cheapest", "least expensive", "most affordable", "lowest price", "which of these is cheapest", "cheapest option", "cheapest one", "which is cheaper"],
+      a: ["Of the services with a starting price, SEO (Search Foundation) is the lowest at 220,000 ISK, then a Business Website from 450,000 ISK and a Mobile App from 1,200,000 ISK, all plus VAT. Landing pages, automation and brand systems are priced per project, because the scope varies a lot. A short consultation gives you a clear price for the one you need."],
+      chips: [{ t: "Pricing", go: "pricing" }, CONSULT, ANALYSIS] },
 
     { id: "sorry_ack", noCount: true, kind: "question", kw: ["sorry", "my bad", "wrong chat", "wrong window", "wrong page", "oops", "my mistake", "didnt mean to", "sorry wrong chat", "apologies"],
       a: ["No worries at all. Is there anything I can help you with?", "No problem. What can I help you with?"],
@@ -1801,6 +1807,7 @@ var MRKX_DISC = {
   }
   function save() {
     // remember the previous topics, so "what about the other one?" can be answered
+    if (S.topic && !S.firstTopic) S.firstTopic = S.topic;
     if (S.topic !== S._lt) { if (S._lt) S.th = [S._lt].concat((S.th || []).filter(function (x) { return x !== S._lt && x !== S.topic; })).slice(0, 3); S._lt = S.topic; }
     try { sessionStorage.setItem(CFG.storageKey, JSON.stringify(S)); } catch (e) {}
   }
@@ -2830,12 +2837,21 @@ var MRKX_DISC = {
     if ((S.last === "free_analysis" || S.last === "analysis_detail") && (/\b(what do i (have|need) to do|what do i need to (send|give|provide)|(just|only) (my|the) (url|website|link|address))\b/.test(cleaned)) && cleaned.split(" ").length <= 10) return route("analysis_detail");
     if ((S.last === "free_analysis" || S.last === "analysis_detail") && /^(what|how|is|does|will)\b.*\b(in it|include|included|get|cover|check|work|long|take|free)\b/.test(cleaned) && cleaned.split(" ").length <= 9) return route("analysis_detail");
     var wd = words(raw);
+    var msgTopic0 = topicOf(M);
+    // "and the one before?", "the first one", "back to the first thing I asked"
+    if (!S.pending && !S.flow) {
+      var refT = null;
+      if (/\b(the one before|the previous one|previous one|the last one|the one earlier|the earlier one|the one i asked (about )?before|go back)\b/.test(wd) && S.th && S.th[0]) refT = S.th[0];
+      else if (/\b(the first one|first one|the one i asked first|the original one|the first thing|from the start|the very first)\b/.test(wd) && S.firstTopic) refT = S.firstTopic;
+      if (refT && byId("svc_" + refT)) { S.topic = refT; S.fails = 0; return route("svc_" + refT, { prefix: nameLine }); }
+    }
+    // "what do you do for websites", "tell me about your landing pages": the named service, not the whole list
+    if (msgTopic0 && /^(so |and |ok |okay )*(what do you|what can you|what does your|what is your|what s your|tell me about|tell me more about|what about|how about|whats|what are)\b.*\b(for|with|in|about|your|the)\b/.test(wd) && words(raw).split(" ").length <= 8 && byId("svc_" + msgTopic0) && !priceQ0.test(wd)) { S.topic = msgTopic0; S.fails = 0; return route("svc_" + msgTopic0, { prefix: nameLine }); }
     if (/\b(the other one|the other|other one|another one)\b/.test(wd) && S.th && S.th[0] && byId("svc_" + S.th[0])) { var ot = S.th[0]; S.topic = ot; S.fails = 0; return route("svc_" + ot, { prefix: nameLine }); }
     var bud = parseBudget(cleaned);
     if (bud) return budgetAnswer(bud, topicOf(M) || S.topic, nameLine);
     var ranked = scoreAll(M, cleaned);
     var best = ranked[0];
-    var msgTopic0 = topicOf(M);
     var sec = bestSection(M, msgTopic0);
     if (!sec && !msgTopic0 && !S.topic && (!best || best.sc < 1.5) && DISTINCT.test(fold(raw))) { var sa = anySection(M); if (sa && sa.sc >= 1.5 && !/\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/i.test(raw)) { S.fails = 0; return secAnswer(sa.key, sa.idx, nameLine); } }
     var cue = DETAIL_CUE.test(raw), priceQ = /\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/i.test(raw) || /\banalysis\b/i.test(raw);
@@ -2908,6 +2924,7 @@ var MRKX_DISC = {
   // openers that mark a change of subject or a follow-up ("and how much", "actually what about seo")
   var SWITCH_RE = /^(or|actually|wait|hold on|hang on|ok(?:ay)?\s+(?:but|and|so|now)|and|but|so|what about|how about|now|back to|let s talk about|lets talk about|let us talk about|can we talk about|i meant|i mean|instead|rather|sorry|oh and|also|one more thing|another question|different question|new question|change of topic|something else)\b/;
   function words(raw) { return norm(raw).replace(/[^a-z0-9#]+/g, " ").trim(); }
+  var priceQ0 = /\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/;
   function yesNo(raw) {
     var s = words(raw);
     if (/^(yes|yeah|yep|yup|sure|ok|okay|please|go ahead|do it|sounds good|y|yes please|of course|definitely|let s do it|set it up|ja|ju|endilega|ja takk|ja endilega)$/.test(s)) return "yes";
@@ -3114,21 +3131,25 @@ var MRKX_DISC = {
   function dropAwaiting() { if (S.awaiting) { S.awaiting = null; S.ignored = (S.ignored || 0) + 1; } }
   var NEW_REQ = /^(please |pls |and |ok |okay |so |then )*(the )?(price|prices|pricing|cost|costs|how much|how much is it|what does it cost|quote|a quote|an offer|offer|contact|contact details|email|phone|phone number|call me|call|human|a human|real person|someone|examples?|portfolio|timeline|how long|process|services|what do you do|faq|help)( please| pls)?\s*[.!?]*$/i;
   var NEW_REQ2 = /\b(price|prices|pricing|cost|costs|how much|quote)\b/i;
+  var REF_RE = /\b(the one before|the previous one|previous one|the last one|the one earlier|the first one|first one|the one i asked first|the original one|the other one|another one|go back|back to)\b/;
   function awaitingInput(raw, M) {
     var kind = S.awaiting;
+    if (REF_RE.test(words(raw))) { dropAwaiting(); return false; }
     if (/\?\s*$/.test(raw)) { dropAwaiting(); return false; }
     if (NEW_REQ.test(raw.trim()) || (NEW_REQ2.test(raw) && words(raw).split(" ").length <= 6 && !/\d/.test(raw))) { dropAwaiting(); return false; }
     if (kind.indexOf("disc:") === 0) {
       var dpp = kind.split(":");
       var rk = scoreAll(M)[0], rr = retrieve(raw, dpp[1]);
       var askLike = /^(tell|what|whats|how|why|when|where|which|who|can|could|do|does|did|is|are|will|would|should|explain|give|show|i want|i need|i would like|more|details?)\b/i.test(raw.trim()) && !/^(what s|whats) (my|our)\b/i.test(raw.trim());
-      if (askLike || SWITCH_RE.test(words(raw)) || words(raw).split(" ").length > 9 || (rk && rk.sc >= (words(raw).split(" ").length <= 3 ? 2.5 : 1.5)) || (words(raw).split(" ").length > 3 && rr && rr.mt >= 2 && rr.sc >= 0.5)) { dropAwaiting(); return false; }
+      var swTopic = words(raw).split(" ").length <= 3 ? topicOf(M) : null;
+      if ((swTopic && swTopic !== dpp[1]) || askLike || SWITCH_RE.test(words(raw)) || words(raw).split(" ").length > 9 || (rk && rk.sc >= (words(raw).split(" ").length <= 3 ? 2.5 : 1.5)) || (words(raw).split(" ").length > 3 && rr && rr.mt >= 2 && rr.sc >= 0.5)) { dropAwaiting(); return false; }
       if (/^(skip|no|nope|nothing|not sure|none|pass)$/i.test(raw.trim())) { discState().skips++; S.awaiting = null; return say(T("declined")); }
       return discAnswer(dpp[1], dpp[2], null, raw);
     }
     if (/^(skip|no|nope|nothing|not sure|none|pass)$/i.test(raw.trim())) { dropAwaiting(); return say(T("declined")); }
     var ranked = scoreAll(M), sc = ranked[0] ? ranked[0].sc : 0;
     var shortAns = words(raw).split(" ").length <= 3;
+    if (shortAns && topicOf(M) && topicOf(M) !== S.topic) { dropAwaiting(); return false; }
     if (SWITCH_RE.test(words(raw)) && sc >= 1.5) { dropAwaiting(); return false; }
     if (kind === "biz") {
       if (bizKey(raw) || (words(raw).split(" ").length <= 4 && sc < 1.5)) return storeAnswer(kind, raw);
