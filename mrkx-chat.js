@@ -3168,7 +3168,7 @@ var MRKX_DISC = {
     if (it && it.kind === "topic" && DISC[it.topic] && !S.pending && !S.flow && !S.awaiting) { var dq0 = (discState().tick++, nextDisc(it.topic)); if (dq0) { save(); return Promise.resolve(p).then(function () { return askDisc(it.topic, dq0); }); } }
     // qualification / offer (one per turn, never when a question is already open)
     var skipQual = it && (it.noCount || it.kind === "rule" || /^(pricing|objection|free_analysis|consultation|human|about_bot|greet|analysis_detail|just_looking|thanks|bye|ack|interest|frustrated|not_interested|which_first|recommend)$/.test(it.id));
-    if (counts && !S.pending && !S.flow && !skipQual && !/\?\s*$/.test(text)) {
+    if (counts && !S.pending && !S.flow && !skipQual && !/\?\s*$/.test(text) && !(chips && chips.some(function (c) { return c && /^sec:/.test(c.go || ""); }))) {
       var next = nextQualifier();
       if (next) p = next();
     }
