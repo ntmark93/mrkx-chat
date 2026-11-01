@@ -3453,8 +3453,8 @@ var MRKX_DISC = {
   /* ---------- navigation: the assistant can open pages (always asks first) ---------- */
   var NAV_PAGES = [
     { p: "/", en: "Home", is: "Heim", kw: ["home", "homepage", "home page", "main page", "front page", "start page", "heim", "heimasida", "forsida"] },
-    { p: "/services", en: "Services", is: "Þjónusta", kw: ["services", "services page", "all services", "thjonusta", "thjonustu", "thjonustusida"] },
-    { p: "/services/websites", en: "Websites", is: "Vefsíður", kw: ["websites", "website service", "website page", "web development", "business website", "vefsidur", "vefsidugerd"] },
+    { p: "/services", en: "Services", is: "Þjónusta", kw: ["services", "services page", "all services", "thjonusta", "thjonustu", "thjonustusida", "thjonustusidan", "thjonustusidu", "thjonustusiduna", "thjonustusidunni"] },
+    { p: "/services/websites", en: "Websites", is: "Vefsíður", kw: ["websites", "website", "website details", "website service", "website page", "web development", "business website", "vefsidur", "vefsidugerd"] },
     { p: "/services/landing-page", en: "Landing Page", is: "Lendingarsíða", kw: ["landing page", "landing pages", "landing", "lendingarsida", "lendingarsidur"] },
     { p: "/services/seo", en: "SEO", is: "SEO", kw: ["seo", "seo page", "seo service", "search optimisation", "search optimization", "leitarvelabestun"] },
     { p: "/services/brand-system", en: "Brand System", is: "Vörumerkjakerfi", kw: ["brand system", "brand", "branding", "vorumerkjakerfi", "vorumerki"] },
@@ -3475,6 +3475,7 @@ var MRKX_DISC = {
   var NAV_WHERE = /\b(where is|where can i find|where do i find|how do i get to|how do i find|hvar er|hvar finn eg)\b/;
   function navPageIn(f) {
     var best = null;
+    f = f.replace(/\b(page|section) (about|on|for|regarding) (?=\w)/g, "$1 ").replace(/\bpage (about|on|for) /g, "page ");
     NAV_PAGES.forEach(function (pg) {
       pg.kw.forEach(function (k) {
         var re = new RegExp("(^|[^a-z0-9])" + k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "([^a-z0-9]|$)");
@@ -3486,7 +3487,10 @@ var MRKX_DISC = {
   function navIntent(raw) {
     var f = " " + fold(raw).replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim() + " ";
     if (f.split(" ").length > 14) return null;
-    var pageWord = /\b(page|pages|section|site|link|tab|sida|sidu|sidan|sidunni|siduna)\b/.test(f);
+    var pageWord = /\b(page|pages|section|site|link|tab|service|services)\b|(sida|sidu|sidan|sidunni|siduna)\b/.test(f);
+    // explicit short command: "open pricing", "open the FAQ", "opna verd" -> a page name right after the verb is enough
+    var cmd = /^ (?:(?:can|could|would) you |please |pls )*(?:open|opna|opnadu|visit|pull up)\b/.test(f) && f.trim().split(" ").length <= 7 && !/\b(what|why|how|when|which|who)\b/.test(f);
+    if (cmd) pageWord = true;
     var strong = NAV_STRONG.test(f) || NAV_STRONG.test(fold(raw));
     var weak = NAV_WEAK.test(f) && pageWord, where = NAV_WHERE.test(f) && pageWord;
     if (!strong && !weak && !where) return null;
