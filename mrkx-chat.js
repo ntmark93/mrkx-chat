@@ -437,6 +437,18 @@ var MRKX_KB2 = (function () {
     "contact#m1": ["cant call", "can t call", "dont want to call", "do not want to call", "prefer chat", "prefer to write", "prefer writing", "rather write", "only chat", "email only", "no calls", "text only", "message only", "i hate calls", "dont like calls"],
     "fix_existing#m1": ["developer disappeared", "developer left", "developer is gone", "developer stopped", "developer quit", "lost my developer", "freelancer disappeared", "freelancer left", "nobody maintains", "no one maintains", "abandoned site", "orphaned site", "took over my site", "take over my site", "takeover"],
     "timeline#m2": ["how soon", "how quickly", "how quick", "how long would it be", "how long would that be", "how long is it", "turnaround", "turn around", "lead time", "time frame", "timeframe", "ready by", "done by", "online by"],
+    frustrated: ["you didnt answer", "didnt answer my question", "you did not answer", "not answering", "answer my question", "you dont get it", "useless bot", "this is stupid", "this is pointless", "makes no sense", "doesnt make sense", "you are not listening", "are you even listening", "that is not what i asked", "thats not what i asked"],
+    ack: ["k", "kk", "kay", "alrighty", "fair enough", "fine", "right", "yep ok", "ok great", "ok good", "mhm", "yeah ok"],
+    hesitate: ["idk", "dunno", "i dont know", "no idea", "whatever", "meh", "i guess", "maybe", "not really sure"],
+    not_interested: ["nvm", "nm", "nah forget it", "skip it", "drop it"],
+    diy_alternative: ["cheaper than wix", "cheaper than squarespace", "cheaper than wordpress", "cheaper than shopify", "better than wix", "better than squarespace", "better than wordpress", "vs wix", "vs squarespace", "vs wordpress"],
+    "about#m9": ["scam", "is this a scam", "is this legit", "fraud", "is this real", "trustworthy"],
+    frustrated: ["you suck", "sucks", "terrible", "horrible", "awful", "garbage", "trash", "worst bot", "hate this", "lame", "crap", "wtf", "wth", "ridiculous", "pathetic", "are you stupid", "so dumb"],
+    "human#m9": ["send it to the team", "send this to the team", "send it to your team", "pass it on", "pass it to the team", "pass this on", "send to team", "forward it", "forward this", "have the team contact me", "have someone contact me", "send my message", "send the conversation", "send them this"],
+    "fix_existing#m9": ["ugly", "looks ugly", "outdated", "looks old", "looks dated", "looks bad", "doesnt look good", "unprofessional", "not working", "isnt working", "is not working", "doesnt work", "does not work", "broken", "stopped working", "is down", "has errors", "error on my site", "its broken"],
+    "languages_spoken#m9": ["anything in english", "anything in icelandic", "can you do icelandic", "can you do english", "do you do icelandic", "do you do english", "icelandic or english", "english version", "icelandic version"],
+    "human#m10": ["dont trust bots", "dont like bots", "hate bots", "no bots", "dont want to talk to a bot", "dont want a bot", "bots suck", "tired of bots", "i want a human", "i want a real person", "get me a human"],
+    "consultation#m9": ["book it", "book now", "lets book", "book me in", "book me", "sign me up", "lets go ahead", "lets do this", "i want to book", "ok book it", "set it up for me"],
     greet: ["anyone there", "anyone around", "is anyone there", "are you there", "hello there", "hi there", "hey there", "yo", "sup", "whats up", "howdy", "hiya", "good day", "hej", "hae", "sael", "saell", "gm"],
     thanks: ["thank you so much", "many thanks", "thanks a lot", "ok thanks", "okay thanks", "great thanks", "thanks for the help", "ty", "much appreciated", "tack", "takk"],
     bye: ["have a good day", "talk later", "talk soon", "gotta go", "see ya", "cya", "good night", "goodnight", "ok bye", "bless"],
@@ -511,7 +523,7 @@ var MRKX_KB2 = (function () {
 
   /* chip labels for "did you mean ...?" (only ids listed here can be offered) */
   var labels = {
-    young_studio: "Your experience",
+    team_details: "The team behind it", sorry_ack: "No problem", young_studio: "Your experience",
     diy_alternative: "Cheaper alternatives", involvement: "How involved I'd be", advice_honest: "Honest advice", company_details: "Company details", free_catch: "Is the analysis really free", response_time: "Reply times",
     reporting: "Reports", hosting_domain: "Hosting and domain",
     design_input: "Design and colours", pages_count: "How many pages", blog: "A blog", will_rank: "Showing up on Google", support_fix: "Support after launch", contract_terms: "Contracts", results_expect: "What results to expect",
@@ -562,6 +574,22 @@ var MRKX_KB2 = (function () {
     { id: "confused", kind: "question", kw: ["i dont understand", "dont understand", "confusing", "what do you mean", "not clear", "unclear", "huh", "explain simpler", "in simple terms", "plain english", "too technical", "jargon", "im lost", "lost me", "simpler please", "say that again", "explain that again", "what does that mean"],
       a: ["Sorry, let me put it simply: we build websites and the things around them (search visibility, brand, automation, apps) so that visitors become enquiries. Which part would you like me to explain in plain words?"],
       chips: [{ t: "A website", go: "svc_website" }, { t: "Google search", go: "svc_seo" }, { t: "Pricing", go: "pricing" }, { t: "Help me choose", go: "recommend" }] },
+
+    { id: "sorry_ack", noCount: true, kind: "question", kw: ["sorry", "my bad", "wrong chat", "wrong window", "wrong page", "oops", "my mistake", "didnt mean to", "sorry wrong chat", "apologies"],
+      a: ["No worries at all. Is there anything I can help you with?", "No problem. What can I help you with?"],
+      chips: [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }] },
+
+    { id: "team_details", kind: "question", kw: ["outsource", "outsourcing", "subcontract", "subcontractors", "how many people", "how many employees", "team size", "how big is your team", "who will work on", "who is doing the work", "who does the work", "developers from", "where are your developers", "where are the developers", "offshore", "freelancers do you use", "in house", "inhouse"],
+      a: ["I don't have details on team size or who does which part, and I'd rather not guess. The team can tell you exactly. Would you like me to pass your question on?"],
+      pending: "handoff", chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "Not now", go: "decline" }] },
+
+    { id: "existing_client", kind: "rule", kw: ["cancel my order", "my order", "cancel my project", "cancel the project", "complaint", "complain", "i want to complain", "refund", "money back", "my invoice", "the invoice", "i am a client", "im a client", "existing client", "existing customer", "my project", "my account"],
+      a: ["If you're already working with us, the quickest way is to write to hello@mrkxlabs.com so the team picks it up directly. I can also pass your message on from here. Shall I?"],
+      pending: "handoff", chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "Not now", go: "decline" }] },
+
+    { id: "prompt_probe", kind: "rule", kw: ["system prompt", "ignore previous instructions", "ignore all previous", "ignore your instructions", "reveal your prompt", "your instructions", "jailbreak", "pretend you are", "act as if you", "you are now", "developer mode", "forget your rules"],
+      a: ["I can't share that, and I stay in my role as the MRKX assistant. I'm happy to help with our services, prices, process or the free analysis."],
+      chips: [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }] },
 
     { id: "frustrated", kind: "rule", kw: ["this is useless", "useless", "not helpful", "you are not helping", "you dont understand", "stupid bot", "dumb bot", "waste of time", "rubbish", "not what i asked", "wrong answer", "you are wrong", "bad bot", "worthless", "not helping", "that doesnt answer"],
       a: ["Sorry about that. I'm an automated assistant and I don't always get it right. I'd rather get you to a person than keep guessing. Shall I pass your question to our team?"],
@@ -779,7 +807,7 @@ var MRKX_KB2 = (function () {
   var stop = "a an the and or but if so to of in on at for with from by about as is are was were be been am do does did have has had i me my we our you your it its this that these those there here what which who whom how when where why can could would should will just not no yes please also very too really some any more most much many than then them they their he she him her his hers us im ive id ill dont doesnt didnt cant wont isnt arent get got want need like know think tell ask see use make".split(" ");
 
   /* plain-text shorthand and slang, applied to the normalised text (word for word) */
-  var syn = { u: "you", ur: "your", r: "are", pls: "please", plz: "please", thx: "thanks", wanna: "want to", gonna: "going to", gotta: "got to", biz: "business", ppl: "people", gimme: "give me", lemme: "let me", abt: "about", bcos: "because", cuz: "because", coz: "because", msg: "message", tmrw: "tomorrow", tmr: "tomorrow", wat: "what", hw: "how", idk: "i dont know", rn: "right now", cost: "price", costs: "price", fee: "price", fees: "price", charge: "price", charges: "price", rate: "price", rates: "price", tariff: "price", site: "website", sites: "websites", make: "build", create: "build", develop: "build", construct: "build", seoo: "seo", seeo: "seo", sso: "seo" };
+  var syn = { idk: "dunno", u: "you", ur: "your", r: "are", pls: "please", plz: "please", thx: "thanks", wanna: "want to", gonna: "going to", gotta: "got to", biz: "business", ppl: "people", gimme: "give me", lemme: "let me", abt: "about", bcos: "because", cuz: "because", coz: "because", msg: "message", tmrw: "tomorrow", tmr: "tomorrow", wat: "what", hw: "how", idk: "i dont know", rn: "right now", cost: "price", costs: "price", fee: "price", fees: "price", charge: "price", charges: "price", rate: "price", rates: "price", tariff: "price", site: "website", sites: "websites", make: "build", create: "build", develop: "build", construct: "build", seoo: "seo", seeo: "seo", sso: "seo" };
 
   /* Icelandic: keyword rules for the most common questions (to be proofread by a native speaker) */
   var isRules = [
@@ -2610,7 +2638,7 @@ var MRKX_DISC = {
       chips = chips.map(function (c) { return en ? { t: c.t, go: c.go, en: 1 } : (KBI.chipMap[c.t] ? { t: KBI.chipMap[c.t], go: c.go } : c); });
     }
     var g = GEN;
-    var delay = CFG.fast ? 0 : Math.min(420 + text.length * 7, 1300);
+    var delay = CFG.fast ? 0 : Math.min(240 + text.length * 3, 700);
     Q = Q.then(function () {
       return new Promise(function (resolve) {
         var ty;
@@ -2688,7 +2716,12 @@ var MRKX_DISC = {
     }
 
     // punctuation only ("?", "...") is hesitation
-    if (!fromChip && !words(raw)) return route("hesitate");
+    if (!fromChip && !words(raw)) {
+      if (/[\u{1F44D}\u{1F44C}\u{1F642}\u{1F60A}\u{1F64F}\u{1F44F}\u{1F4AA}\u{2705}\u{1F44B}\u{1F600}\u{1F603}\u{1F604}\u{1F601}]/u.test(raw)) return route("ack");
+      if (/[\u{1F602}\u{1F923}\u{1F606}\u{1F605}]/u.test(raw)) return route("laugh");
+      if (/[\u{1F621}\u{1F620}\u{1F44E}\u{1F624}\u{1F92C}]/u.test(raw)) return route("frustrated");
+      return route("hesitate");
+    }
     // a leading greeting is acknowledged, the rest of the message is what gets answered
     var greetPre = "";
     var gm = !fromChip && /^(hi|hello|hey|hiya|howdy|good (?:morning|afternoon|evening|day)|greetings)\b[\s,!.:;-]*/i.exec(raw);
@@ -2707,7 +2740,7 @@ var MRKX_DISC = {
     var em = findEmail(raw); if (em) S.slots.email = em;
     var ph = (raw.replace(/[^\d+ -]/g, " ").match(/(?:\+\d{2,3}[ -]?)?\b\d{3}[ -]?\d{4}\b/) || [])[0];
     if (ph && !em && !S.flow) { S.slots.phone = ph.trim(); S.slots.details = ((S.slots.details ? S.slots.details + "; " : "") + "Phone: " + ph.trim()).slice(0, 300); }
-    var nm = raw.match(/\b(?:my name is|call me|i am called|i'm called|im called|this is)\s+([A-Za-zÀ-ÿÞþÐðÆæÖö'-]{2,30})/i);
+    var nm = raw.match(/\b(?:my name is|call me|i am called|i'm called|im called)\s+([A-Za-zÀ-ÿÞþÐðÆæÖö'-]{2,30})/i);
     if (!nm) {
       var nm2 = raw.match(/(?:^|[.!?,]\s*)(?:[Ii] am|[Ii]'m|[Ii]m|[Tt]his is|[Ii]t's|[Ii]ts)\s+([A-Z][a-zà-ÿþðæö]{1,20})\b/);
       if (nm2 && !/^(looking|interested|starting|running|hoping|trying|wondering|new|not|just|from|in|at|here|sorry|happy|glad|sure|ready|planning|thinking|working|a|an|the|very|also|still|really|so|it|that|this|good|fine|ok|okay|great|ver)$/i.test(nm2[1]) && !/(ing|ed)$/i.test(nm2[1])) nm = nm2;
@@ -2718,7 +2751,7 @@ var MRKX_DISC = {
 
     // 7. "tell me more"
     if (S.cont && /^(more|tell me more|go on|details|more details?|elaborate|continue|keep going|more info|more information|yes|yes please|ok|okay|sure)$/.test(words(raw))) return contAnswer(nameLine);
-    if (/^(more|tell me more|go on|details|more details?|more detail please|elaborate|and|continue|keep going|next|next one|why|can you elaborate|more info|more information|details please)$/.test(words(raw))) {
+    if (/^(more|tell me more|go on|details|more details?|more detail please|elaborate|and|and then|what then|then what|what next|whats next|what happens next|continue|keep going|next|next one|why|can you elaborate|more info|more information|details please)$/.test(words(raw))) {
       if (S.topic && SEC[S.topic] && S.last && /^(svc_|sec|doc)/.test(String(S.last))) { S.lastMore = null; return secNext(S.topic, nameLine); }
       if (S.topic && SEC[S.topic] && S.lastMore) { S.lastMore = null; return secNext(S.topic, nameLine); }
       if (S.lastMore) { var mt = S.lastMore; S.lastMore = null; return finish(nameLine + mt, [{ t: "Free analysis", go: "free_analysis" }, { t: "Book a consultation", go: "consultation" }], null, true); }
@@ -2739,7 +2772,7 @@ var MRKX_DISC = {
     }
 
     // 4b. "both" / "all of them" after two topics were discussed: take both, don't treat it as an answer to a side question
-    if (!S.pending && !S.flow && S.topic && S.th && S.th[0] && /^(both|both of them|both please|all of them|all of the above|the two|the two of them|all three|everything)$/.test(words(raw))) {
+    if (!S.pending && !S.flow && S.topic && S.th && S.th[0] && /^((do|can|could|would) you (do|handle|build|offer) |what about |how about |and |so )?(both|both of them|both please|all of them|all of the above|the two|the two of them|all three|everything)( please| together)?$/.test(words(raw))) {
       dropAwaiting();
       var two = [S.topic, S.th[0]];
       if (PREV_PRICE) { S.lastIdPrice = true; return finish(nameLine + priceMulti(two), priceChips(), { id: "pricing", kind: "question" }); }
@@ -2776,6 +2809,14 @@ var MRKX_DISC = {
       if (/^(no|nope|nah|nei)$/.test(bare)) return say("No problem. Is there anything else I can help with?", [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, TEAMCHIP]);
     }
 
+    // 7b. a short message that is mostly contact details ("my number is 8371234", "email is a@b.is"): offer to pass them on
+    var shortContact = !fromChip && (em || (ph && !em)) && !/\?/.test(raw) && words(raw).split(" ").length <= 9 && !normUrl(raw.replace(em || "", "")) && !/\b(isk|kr|krona|price|cost|budget)\b/i.test(raw);
+    if (shortContact && S.pending === "handoff") { S.pending = null; return route("handoff_start"); }
+    if (shortContact && !S.pending && !S.awaiting) {
+      var cg = em || S.slots.phone;
+      S.pending = "handoff";
+      return say(nameLine + "Thanks, I've noted " + cg + ". Would you like me to pass your message to the team, so they reply to you there?", [{ t: "Yes, please", go: "handoff_start" }, { t: "Not now", go: "decline" }]);
+    }
     // 8. intent matching on text without emails/addresses/negated services
     var rawO = raw, cleaned = cleanMatch(raw);
     if (cleaned !== norm(raw).replace(/['\u2019]/g, "").replace(/\s+/g, " ").trim()) { raw = cleaned; M = toks(raw); }
@@ -2786,6 +2827,7 @@ var MRKX_DISC = {
       return say(nameLine + "Thanks. Would you like us to run the free website and search analysis for " + domainOf(S.slots.url) + "?", [{ t: "Yes, set it up", go: "analysis_start" }, { t: "What's in it?", go: "analysis_detail" }, { t: "Not now", go: "decline" }]);
     }
     // right after the analysis was offered, "what is in it / how long" means the analysis
+    if ((S.last === "free_analysis" || S.last === "analysis_detail") && (/\b(what do i (have|need) to do|what do i need to (send|give|provide)|(just|only) (my|the) (url|website|link|address))\b/.test(cleaned)) && cleaned.split(" ").length <= 10) return route("analysis_detail");
     if ((S.last === "free_analysis" || S.last === "analysis_detail") && /^(what|how|is|does|will)\b.*\b(in it|include|included|get|cover|check|work|long|take|free)\b/.test(cleaned) && cleaned.split(" ").length <= 9) return route("analysis_detail");
     var wd = words(raw);
     if (/\b(the other one|the other|other one|another one)\b/.test(wd) && S.th && S.th[0] && byId("svc_" + S.th[0])) { var ot = S.th[0]; S.topic = ot; S.fails = 0; return route("svc_" + ot, { prefix: nameLine }); }
@@ -2835,6 +2877,13 @@ var MRKX_DISC = {
 
     // 9b. only said what the business is: acknowledge it and ask what they need
     if (bizLine) return say(nameLine + "What would you like help with?", [{ t: "A website", go: "svc_website" }, { t: "Getting found on Google", go: "svc_seo" }, { t: "Help me choose", go: "recommend" }, { t: "Pricing", go: "pricing" }]);
+    // 9c. a few words in the middle of a project conversation ("candles", "about 20 products"): treat it as a detail, not as noise
+    if (!fromChip && (S.topic || (S.last && !/^(greet|hesitate|ack|thanks|bye|offtopic|laugh|howareyou|sorry_ack|about_bot|frustrated)/.test(String(S.last)))) && !S.pending && !S.awaiting && !S.flow && /^[A-Za-z][A-Za-z' -]{2,30}$/.test(raw.trim()) && words(raw).split(" ").length <= 3 && !/^(skip|none|nothing|honest|both|then|so|and|what|how|why|who|when|where|which|can|do|does|is|are|i|we|you|my)\b/i.test(raw.trim()) && raw.trim().toLowerCase().split(/[\s-]+/).every(function (w) { return /[aeiou]/.test(w) && !/(.{2,})\1/.test(w) && w.length <= 14; }) && (S.ctxNotes || 0) < 2 && (S.msgs || 0) >= 2) {
+      S.ctxNotes = (S.ctxNotes || 0) + 1;
+      S.slots.details = ((S.slots.details ? S.slots.details + "; " : "") + raw.trim().slice(0, 80)).slice(0, 300);
+      var tn = SEC[S.topic] ? SEC[S.topic].name : "project";
+      return say(nameLine + "Thanks, that's useful to know: " + raw.trim().slice(0, 60) + ". It helps shape the " + tn + " scope. Do you want to ask me something specific, or shall I pass your details on to the team?", [{ t: "Pass it on", go: "handoff_start" }, { t: "Pricing", go: "pricing" }, { t: S.topic && SEC[S.topic] ? "More detail" : "What do you offer?", go: S.topic && SEC[S.topic] ? "sec:" + S.topic : "services" }]);
+    }
     // 10. fallback: offer the closest topics before giving up
     var near = nearIntents(M).filter(function (x) { return KB2 && KB2.labels[x.id]; }).slice(0, 3);
     if (near.length && near[0].sc >= 0.55 && S.fails < 1 && words(raw).split(" ").length >= 2) {
@@ -2862,6 +2911,7 @@ var MRKX_DISC = {
   function yesNo(raw) {
     var s = words(raw);
     if (/^(yes|yeah|yep|yup|sure|ok|okay|please|go ahead|do it|sounds good|y|yes please|of course|definitely|let s do it|set it up|ja|ju|endilega|ja takk|ja endilega)$/.test(s)) return "yes";
+    if (/^((ok|okay|yes|yeah|yep|sure|alright|fine|great|good|cool)[ ,]+)?(please )?(do that|do it|go for it|go ahead|lets do it|let s do it|sounds good|that works|that sounds good|yes do it|please do|send it|do it please|why not)( please| then)?$/.test(s)) return "yes";
     if (/^(no|nope|nah|not now|later|no thanks|no thank you|maybe later|n|not really|nei|nei takk|ekki nuna|seinna)$/.test(s)) return "no";
     return null;
   }
@@ -3366,7 +3416,7 @@ var MRKX_DISC = {
     var f = " " + fold(raw).replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim() + " ";
     var n = f.trim().split(" ").length;
     if (n > 9 || /\b(website|websites|site|seo|price|prices|pricing|cost|build|translate my|translation of|market|customers|business)\b/.test(f)) return null;
-    var verb = /\b(speak|talk|chat|switch|change|continue|answer|reply|respond|write|use|language|please|can we|could we|lets|let s|tala|talad|talar|skipta|skiptu|breyta|halda afram|svara|skrifa|getum|getur|geturdu|takk)\b/.test(f) || n <= 3;
+    var verb = /\b(speak|talk|chat|switch|change|continue|answer|reply|respond|write|use|language|please|can we|could we|can you|could you|do you|do u|will you|lets|let s|tala|talad|talar|skipta|skiptu|breyta|halda afram|svara|skrifa|getum|getur|geturdu|takk)\b/.test(f) || n <= 3;
     if (!verb) return null;
     var wantIs = /\b(icelandic|islensku|islenska|islenskt)\b/.test(f), wantEn = /\b(english|ensku|enska|enskt)\b/.test(f);
     if (wantIs === wantEn) return null;
