@@ -132,7 +132,7 @@ var MRKX_KB = (function () {
       chips: [{ t: "Talk to the team", go: "human" }, { t: "What do you offer?", go: "services" }] },
 
     { id: "about", kind: "question", kw: ["real company", "are you real", "legit", "legitimate", "can i trust you", "how long have you been", "who runs", "founder", "who owns mrkx", "about you", "about mrkx", "who is mrkx", "what is mrkx", "tell me about your company", "who are mrkx labs", "your company", "your background", "your experience", "who is behind", "your studio", "your team", "your approach"],
-      a: ["MRKX Labs is a digital systems studio based in Höfn, Iceland. We combine strategy, sales thinking, marketing structure, design, web development, SEO and analytics, so a website isn't just a nice surface but a path from attention to trust to enquiry. Our principles are clarity, credibility and action. We were working in the field before MRKX Labs became an agency, so the craft isn't new to us. [About us](/about)"],
+      a: ["MRKX Labs is an Icelandic digital systems studio. We combine strategy, sales thinking, marketing structure, design, web development, SEO and analytics, so a website isn't just a nice surface but a path from attention to trust to enquiry. Our principles are clarity, credibility and action. We were working in the field before MRKX Labs became an agency, so the craft isn't new to us. [About us](/about)"],
       more: "We define the offer, audience, positioning and message flow before we build anything visual. That's why we treat every website, landing page or brand system as part of a bigger growth system rather than a standalone design.",
       chips: [{ t: "What do you offer?", go: "services" }, { t: "How do you work?", go: "process" }, { t: "Examples of your work", go: "portfolio" }] },
 
@@ -258,12 +258,16 @@ var MRKX_KB = (function () {
       chips: [{ t: "Yes, please", go: "handoff_start" }, { t: "Not now", go: "decline" }],
       pending: "handoff" },
 
-    { id: "contact", kind: "question", kw: ["your email", "what is your email", "email you", "call you", "can i call", "phone you", "office", "opening hours", "office hours", "visit you", "drop by", "whatsapp", "text you", "contact", "phone", "phone number", "telephone", "email address", "e-mail", "address", "where are you", "number", "reach you", "social media", "instagram", "linkedin", "facebook"],
-      a: ["You can reach us at hello@mrkxlabs.com or +354 837 8339. Our address is 781 Höfn í Hornafirði, Iceland, and there's a contact form on the [contact page](/contact). We're also on Facebook, Instagram (mrkx.labs) and LinkedIn."],
+    { id: "contact", kind: "question", kw: ["your email", "what is your email", "email you", "call you", "can i call", "phone you", "office", "opening hours", "office hours", "whatsapp", "text you", "contact", "phone", "phone number", "telephone", "email address", "e-mail", "number", "reach you", "social media", "instagram", "linkedin", "facebook"],
+      a: ["You can reach us at hello@mrkxlabs.com or +354 837 8339. There's a contact form on the [contact page](/contact). We're also on Facebook, Instagram (mrkx.labs) and LinkedIn."],
       chips: [{ t: "Send to the team", go: "handoff_start" }, { t: "Free analysis", go: "free_analysis" }] },
 
-    { id: "location", kind: "question", kw: ["where are you based", "location", "based in", "iceland", "reykjavik", "höfn", "hofn", "remote", "abroad", "outside iceland", "international", "worldwide", "nationwide", "all over iceland", "akureyri"],
-      a: ["We're based in Höfn í Hornafirði and work with businesses across Iceland. We also work remotely, so location isn't a limit for projects."],
+    { id: "address", kind: "question", kw: ["your address", "postal address", "street address", "office address", "physical address", "mailing address", "where is your office", "where exactly", "do you have an office", "your office", "visit you", "visit your office", "drop by", "come to your office", "can i visit", "can we meet in person", "meet in person", "in person"],
+      a: ["Our postal address is 781 Höfn í Hornafirði, Iceland. We work with clients across Iceland and consultations take place online, so a visit isn't necessary. You can reach us at hello@mrkxlabs.com or through the [contact page](/contact)."],
+      chips: [{ t: "Book a consultation", go: "consultation" }, { t: "Contact", go: "contact" }] },
+
+    { id: "location", kind: "question", kw: ["where are you based", "where are you", "where r you", "location", "based in", "iceland", "reykjavik", "höfn", "hofn", "remote", "abroad", "outside iceland", "international", "worldwide", "nationwide", "all over iceland", "akureyri"],
+      a: ["We work with businesses across Iceland, and consultations take place online, so location isn't a limit for projects."],
       chips: [{ t: "What do you offer?", go: "services" }, { t: "Contact", go: "contact" }] },
 
     { id: "portfolio", kind: "question", kw: ["towing company", "tow company", "road1 tow", "road 1 tow", "roadside company", "towing website", "who have you worked with", "who are your clients", "your clients", "worked with before", "other projects", "any projects", "portfolio", "examples", "example of your work", "previous work", "past work", "case study", "case studies", "references", "clients", "work you have done", "showcase", "road1tow"],
@@ -275,7 +279,7 @@ var MRKX_KB = (function () {
       chips: [{ t: "Free analysis", go: "free_analysis" }, { t: "Website service", go: "svc_website" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "why_us", kind: "rule", kw: ["why you", "why should i choose", "why choose you", "better than", "compare", "competitor", "competitors", "other agencies", "other studios", "different from", "what makes you different", "versus", "vs"],
-      a: ["We can't speak for other agencies, but here's how we work. We start from your offer and audience, treat the website as a business system rather than a brochure, and focus on clarity, credibility and action. We were working in the field before MRKX Labs became an agency, so the craft isn't new to us. If that sounds like what you need, a short consultation will show quickly whether we're a good fit."],
+      a: ["We can't speak for other agencies, but here's how we work. We start from your offer and audience, treat the website as a business system rather than a brochure, and focus on clarity, credibility and action. We were working in the field before MRKX Labs became an agency, so the craft isn't new to us. Our starting prices are public, and the free analysis lets you see how we think on your own site before you commit to anything. If that sounds like what you need, a short consultation will show quickly whether we're a good fit."],
       chips: [{ t: "How do you work?", go: "process" }, { t: "Book a consultation", go: "consultation" }] },
 
     { id: "seo_guarantee", kind: "faq", kw: ["guarantee", "guaranteed", "first page", "rank first", "number one", "top of google", "#1", "first place", "top 3", "page one", "promise", "ensure ranking"],
@@ -921,7 +925,7 @@ var MRKX_KB_IS = (function () {
 
     { id: "about", kind: "question",
       kw: ["hverjir eru thid", "hverjir erud thid", "um fyrirtaekid", "um mrkx", "hvad er mrkx", "hver er mrkx", "um ykkur", "segdu mer fra ykkur", "segid mer fra ykkur", "hverjir standa", "stofnandi", "treyst", "treysta ykkur", "treysta thikkur", "ny stofa", "nyleg", "nyfaedd", "eruda ny", "eruda ung", "ung$", "reynsla", "reynslu", "reynd$", "hversu reynd", "traustverd", "alvoru fyrirtaeki", "serdu alvoru", "sagan ykkar", "reynsla ykkar", "reynslu ykkar", "hversu lengi hafid", "stofnadi", "hver stofnadi", "hver a fyrirtaekid", "hver er eigandi", "eigandi fyrirtaekisins", "hver rekur", "hver er a bak vid", "bak vid fyrirtaekid", "hvad hafid thid lengi", "ung stofa"],
-      a: ["MRKX Labs er stafræn kerfastofa á Höfn í Hornafirði. Við sameinum stefnumótun, söluhugsun, markaðsuppbyggingu, hönnun, vefsmíði, SEO og greiningar, svo vefsíða sé ekki bara fallegt yfirborð heldur leið frá athygli til trausts og fyrirspurnar. Grunnreglurnar okkar eru skýrleiki, trúverðugleiki og aðgerð. Við vorum að vinna á þessu sviði áður en MRKX Labs varð að stofu, svo fagið er okkur ekki nýtt. [Um okkur](/about)"],
+      a: ["MRKX Labs er íslensk stafræn kerfastofa. Við sameinum stefnumótun, söluhugsun, markaðsuppbyggingu, hönnun, vefsmíði, SEO og greiningar, svo vefsíða sé ekki bara fallegt yfirborð heldur leið frá athygli til trausts og fyrirspurnar. Grunnreglurnar okkar eru skýrleiki, trúverðugleiki og aðgerð. Við vorum að vinna á þessu sviði áður en MRKX Labs varð að stofu, svo fagið er okkur ekki nýtt. [Um okkur](/about)"],
       more: "Áður en við byggjum nokkuð sjónrænt skilgreinum við tilboðið, markhópinn, staðsetningu og framvindu skilaboða. Þess vegna lítum við á hverja vefsíðu, lendingarsíðu eða vörumerkjakerfi sem hluta af stærra vaxtarkerfi en ekki sem stakt útlit.",
       chips: [C_SERVICES, { t: "Hvernig vinnið þið?", go: "is:process" }, { t: "Dæmi um verk", go: "is:portfolio" }] },
 
@@ -1007,13 +1011,18 @@ var MRKX_KB_IS = (function () {
       chips: [C_YES, C_NO] },
 
     { id: "contact", kind: "question",
-      kw: ["netfang", "netfangid", "tolvupost", "tolvupostur", "simanumer", "siminn", "sima$", "simi$", "hringja", "heimilisfang", "heimilisfangid", "skrifstofa", "skrifstofu", "opnunartimi", "opnunartima", "afgreidslutimi", "heimsaekja", "kikja vid", "whatsapp", "hafa samband", "nå í ykkur", "na i ykkur", "nad i ykkur", "ná í ykkur", "hvar finn eg ykkur", "hvernig nae eg", "hvernig get eg haft samband", "hvernig hef eg samband", "ma eg hringja", "get eg hringt", "mega hringja", "hringt i ykkur", "hringja i ykkur", "ma eg senda", "get eg sent"],
-      a: ["Þú nærð í okkur á hello@mrkxlabs.com eða í síma 837 8339 (+354 837 8339). Heimilisfangið okkar er 781 Höfn í Hornafirði og á [samskiptasíðunni](/contact) er eyðublað. Við erum líka á Facebook, Instagram (mrkx.labs) og LinkedIn."],
+      kw: ["netfang", "netfangid", "tolvupost", "tolvupostur", "simanumer", "siminn", "sima$", "simi$", "hringja", "opnunartimi", "opnunartima", "afgreidslutimi", "whatsapp", "hafa samband", "nå í ykkur", "na i ykkur", "nad i ykkur", "ná í ykkur", "hvar finn eg ykkur", "hvernig nae eg", "hvernig naer eg", "hvernig get eg haft samband", "hvernig hef eg samband", "ma eg hringja", "get eg hringt", "mega hringja", "hringt i ykkur", "hringja i ykkur", "ma eg senda", "get eg sent"],
+      a: ["Þú nærð í okkur á hello@mrkxlabs.com eða í síma 837 8339 (+354 837 8339). Á [samskiptasíðunni](/contact) er eyðublað. Við erum líka á Facebook, Instagram (mrkx.labs) og LinkedIn."],
       chips: [{ t: "Senda til teymisins", go: "human" }, C_ANALYSIS] },
+
+    { id: "address", kind: "question",
+      kw: ["heimilisfang", "heimilisfangid", "heimilisfangid ykkar", "skrifstofa", "skrifstofan", "skrifstofu", "skrifstofuna", "heimsaekja", "kikja vid", "koma til ykkar", "hitta ykkur", "hittast"],
+      a: ["Póstfangið okkar er 781 Höfn í Hornafirði. Við vinnum með viðskiptavinum um allt Ísland og ráðgjöf fer fram á netinu, svo heimsókn er ekki nauðsynleg. Þú nærð í okkur á hello@mrkxlabs.com eða á [samskiptasíðunni](/contact)."],
+      chips: [{ t: "Hafa samband", go: "is:contact" }, C_ANALYSIS] },
 
     { id: "location", kind: "question",
       kw: ["hvar eruda", "hvar eru thid", "hvar eruð", "hvar erud", "stadsetning", "stadsett", "stadsetta", "i hofn", "a hofn", "hofn i hornafirdi", "hornafirdi", "reykjavik", "akureyri", "um allt land", "landsbyggd", "landsbyggdin", "utan reykjavikur", "fjarvinna", "fjarvinnu", "erlendis", "utanlands", "alla leid", "bua ekki a hofn", "bua i reykjavik", "bua uti a landi", "thjonustid thid", "hvar a landinu"],
-      a: ["Við erum með aðsetur á Höfn í Hornafirði og vinnum með fyrirtækjum um allt Ísland. Við vinnum líka í fjarvinnu, svo staðsetning setur verkefnum engin takmörk."],
+      a: ["Við vinnum með fyrirtækjum um allt Ísland og ráðgjöf fer fram á netinu, svo staðsetning setur verkefnum engin takmörk."],
       chips: [C_SERVICES, { t: "Hafa samband", go: "is:contact" }] },
 
     { id: "portfolio", kind: "question",
@@ -3163,6 +3172,33 @@ var MRKX_DISC = {
     if (it && it.kind === "topic" && S.slots.bizKey && !S.slots["pl_" + it.topic]) {
       var bm = KB.bizMap.filter(function (b) { return b.key === S.slots.bizKey; })[0];
       if (bm) { text += "\n\n" + bm.line; S.slots["pl_" + it.topic] = 1; }
+    }
+    // soft sales nudge: a true differentiator + next step, at most 3 per chat and never two answers in a row
+    var skipNudge = !it || it.noCount || it.kind === "rule" || /^(pricing|objection|free_analysis|analysis_detail|consultation|human|about_bot|greet|just_looking|thanks|bye|ack|interest|frustrated|not_interested|which_first|recommend|why_us|worth_it|free_catch|doubt|hesitate|confused|repeat|offtopic|nav|more)$/.test(it.id);
+    if (counts && !skipNudge && !S.pending && !it.pending && !S.flow && !S.awaiting && !S.hurry && !S.ignored && !S.sent && !nextQualifier() &&
+        S.subst >= 2 && (S.nudges || 0) < 3 && (S.nudgeAt == null || S.subst - S.nudgeAt >= 3) && !/\?\s*$/.test(text) && !(chips && chips.some(function (c) { return c && /^sec:/.test(c.go || ""); }))) {
+      var NUDGE = S.lang === "is" ? [
+        "Við vinnum af nákvæmni, og ef þarf með stuttum fresti eftir samkomulagi. Þú ert í stöðugu sambandi við okkur allt verkefnið, ekki bara við upphaf og lok.",
+        "Ef þú vilt sjá hvað við myndum gera í raun, þá sýnir ókeypis greiningin það á þinni eigin síðu, með almennum ráðleggingum í tölvupósti innan 48 klukkustunda og án skuldbindingar.",
+        "Á bak við verkefnið er reyndur sölumaður og reyndur forritari, með alþjóðlega viðskiptareynslu. Því þjónar niðurstaðan fyrirtækinu þínu en lítur ekki bara vel út.",
+        "Allt er gert sérstaklega fyrir þitt fyrirtæki og við sækjum reglulega þjálfun til að vera með nýjustu tækni.",
+        "Við lítum á vefinn sem viðskiptakerfi en ekki bækling: hver síða hefur hlutverk, að skapa traust og leiða að fyrirspurn. Stutt ráðgjöf á netinu sýnir fljótt hvort við eigum saman."
+      ] : [
+        "We work precisely, and where it's needed to a short deadline by agreement. You get continuous contact throughout the project, not silence until launch.",
+        "If you'd like to see what we'd actually do for you, the free analysis shows it on your own site: general recommendations by email within 48 hours, with no commitment.",
+        "You work with an experienced salesperson and an experienced developer, backed by international business experience, so the result serves your business instead of just looking good.",
+        "Everything is built individually around your business, and we train continuously to stay current with the latest technologies.",
+        "We treat the website as a business system rather than a brochure, so every page has a job: build trust and lead to an enquiry. An online consultation shows quickly whether we're a good fit."
+      ];
+      var NGO = ["consultation", "free_analysis", "human", "consultation", "consultation"];
+      var NLB = S.lang === "is" ? ["Bóka ráðgjöf", "Ókeypis greining", "Tala við teymið", "Bóka ráðgjöf", "Bóka ráðgjöf"] : ["Book a consultation", "Free analysis", "Talk to the team", "Book a consultation", "Book a consultation"];
+      if (S.nudgeOff == null) S.nudgeOff = Math.floor(Math.random() * NUDGE.length);
+      var ni = ((S.nudges || 0) + S.nudgeOff) % NUDGE.length;
+      text += "\n\n" + NUDGE[ni];
+      S.nudges = (S.nudges || 0) + 1; S.nudgeAt = S.subst;
+      var cc = (chips || []).slice(0, 3);
+      if (!cc.some(function (c) { return c.go === NGO[ni]; })) cc.push({ t: NLB[ni], go: NGO[ni] });
+      chips = cc;
     }
     var p = say(text, chips);
     if (it && it.kind === "topic" && DISC[it.topic] && !S.pending && !S.flow && !S.awaiting) { var dq0 = (discState().tick++, nextDisc(it.topic)); if (dq0) { save(); return Promise.resolve(p).then(function () { return askDisc(it.topic, dq0); }); } }
