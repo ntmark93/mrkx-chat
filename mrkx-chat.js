@@ -2820,12 +2820,18 @@ var MRKX_DISC = {
     if (ph && !em && !S.flow) { S.slots.phone = ph.trim(); S.slots.details = ((S.slots.details ? S.slots.details + "; " : "") + "Phone: " + ph.trim()).slice(0, 300); }
     var nm = raw.match(/\b(?:my name is|call me|i am called|i'm called|im called)\s+([A-Za-zÀ-ÿÞþÐðÆæÖö'-]{2,30})/i);
     if (!nm) {
-      var nm2 = raw.match(/(?:^|[.!?,]\s*)(?:[Ii] am|[Ii]'m|[Ii]m|[Tt]his is|[Ii]t's|[Ii]ts)\s+([A-Z][a-zà-ÿþðæö]{1,20})\b/);
+      var nm2 = raw.match(/(?:^|[.!?,]\s*|\b(?:[Hh]i|[Hh]ello|[Hh]ey)\s+)(?:[Ii] am|[Ii]'m|[Ii]m|[Tt]his is|[Ii]t's|[Ii]ts)\s+([A-Z][a-zà-ÿþðæö]{1,20})\b/);
       if (nm2 && !/^(looking|interested|starting|running|hoping|trying|wondering|new|not|just|from|in|at|here|sorry|happy|glad|sure|ready|planning|thinking|working|a|an|the|very|also|still|really|so|it|that|this|good|fine|ok|okay|great|ver)$/i.test(nm2[1]) && !/(ing|ed)$/i.test(nm2[1])) nm = nm2;
     }
     if (nm && /^(tomorrow|today|tonight|on|at|back|later|now|soon|please|when|if|after|before|asap|monday|tuesday|wednesday|thursday|friday|saturday|sunday|anytime|whenever|me|a|the|an|about|regarding|in|from|and|but|just|not|so)$/i.test(nm[1])) nm = null;
     var nameLine = "";
     if (nm && !S.slots.name) { S.slots.name = nm[1].charAt(0).toUpperCase() + nm[1].slice(1); nameLine = T("thanksName", { name: S.slots.name }) + " "; }
+
+    // a message that only gives the name ("my name is Mark", "hi I'm Mark"): greet by name and ask what they need, no fallback
+    if (nm && nameLine && !fromChip && !S.pending && !S.flow && !S.awaiting) {
+      var rest = words(raw).replace(/\b(hi|hello|hey|hiya|my name is|name is|i am|i m|im|its|it s|this is|call me|you can call me|people call me|good morning|good evening|good afternoon|hej|halo|)\b/g, " ").replace(new RegExp("\\b" + nm[1].toLowerCase() + "\\b", "g"), " ").replace(/\s+/g, " ").trim();
+      if (!rest) return say(nameLine + (S.lang === "is" ? "Hvað ertu að vinna að?" : "What are you working on?"), [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Help me choose", go: "recommend" }]);
+    }
 
     // 7. "tell me more"
     if (S.cont && /^(more|tell me more|go on|details|more details?|elaborate|continue|keep going|more info|more information|yes|yes please|ok|okay|sure)$/.test(words(raw))) return contAnswer(nameLine);
@@ -2839,7 +2845,7 @@ var MRKX_DISC = {
     nameLine = greetPre + nameLine;
     var bizLine = false;
     // 4b. business type mentioned in passing ("I run a small cafe")
-    var firstPerson = /(?:^|\b)(?:just|recently|newly) (?:started|launched|opened|founded|set up|began)\b.*\b(?:business|company|shop|store|firm|startup|brand)\b|\b(?:(?:i|we) (?:run|own|have|manage|started|founded|work at|work in|operate|sell|make|do)|(?:i am|im|we are|were|ive got|weve got|got) an?|(?:my|our) (?:\w+ ){0,2}(?:business|company|shop|store|cafe|restaurant|hotel|guesthouse|studio|salon|clinic|gym|agency|bakery|bar|workshop|firm|practice|farm|tours?))\b/.test(norm(raw).replace(/['\u2019]/g, ""));
+    var firstPerson = /(?:^|\b)(?:just |now |currently )?(?:starting|launching|opening|setting up|beginning|building)(?: out| up)? (?:a |an |my |our )?(?:new |small |own |little )?(?:own )?(?:business|company|shop|store|firm|startup|brand)\b|(?:^|\b)(?:just|recently|newly) (?:started|launched|opened|founded|set up|began)\b.*\b(?:business|company|shop|store|firm|startup|brand)\b|\b(?:(?:i|we) (?:run|own|have|manage|started|founded|work at|work in|operate|sell|make|do)|(?:i am|im|we are|were|ive got|weve got|got) an?|(?:my|our) (?:\w+ ){0,2}(?:business|company|shop|store|cafe|restaurant|hotel|guesthouse|studio|salon|clinic|gym|agency|bakery|bar|workshop|firm|practice|farm|tours?))\b/.test(norm(raw).replace(/['\u2019]/g, ""));
     if (!S.slots.biz && (firstPerson || /\b(i run|i own|we run|we own|i'm a|i am a|we're a|we are a|i sell|we sell|i'm starting|i am starting|we're starting|my (small |little |new )?(business|company|shop|cafe|café|restaurant|store|studio|hotel)|i have a (small |little )?(business|company|shop|cafe|café|restaurant|store|studio|hotel)|for my)\b/i.test(raw))) {
       var bk = bizKey(raw);
       if (bk && (bk !== "startup" || !firstPerson || /\b(i run|i own|we run|we own|starting|just started)\b/i.test(raw))) {
