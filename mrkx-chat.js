@@ -1276,7 +1276,7 @@ var MRKX_SECTIONS = {
         a: "The front end is built from consistent layout rules, reusable components, typography systems and clear interface states (hover, focus, form errors), not random sections placed by hand. Responsive means more than shrinking the desktop view: we think about content order, navigation, button placement, forms and readability separately for mobile, tablet and desktop, including mouse, keyboard and touch. We also check browser differences across Safari, Chrome, Firefox, iOS and Android, so the site behaves the same in real use and not only in a preview." },
       { t: "Editing & content", kw: ["cms", "content management", "editable", "edit the content", "update content", "manage content", "content structure", "content types", "editor"],
         a: "A business website should be easy to update without becoming unstable. We organise recurring content (services, portfolio items, case studies, FAQs, blog posts, legal pages) into structured content types, so new pages stay consistent and nothing has to be copied by hand. You get practical control over the content you really need to manage, while the structure, design consistency, SEO settings and technical setup stay protected. Good content structure also helps SEO and makes future growth easier." },
-      { t: "Technical SEO", kw: ["technical seo", "seo foundation", "seo foundations", "metadata", "meta description", "title tag", "heading", "headings", "canonical", "sitemap", "structured data", "indexing"],
+      { t: "Technical SEO", kw: ["technical seo", "seo foundation", "seo foundations", "metadata", "meta description", "title tag", "heading", "headings", "canonical", "sitemap", "sitemaps", "hreflang", "robots", "robots txt", "structured data", "indexing"],
         a: "SEO foundations are part of the build from day one, not an afterthought. That includes crawlable and indexable pages, clean title tags and meta descriptions, a logical heading hierarchy, canonical handling, an XML sitemap, structured data where it fits, internal links and a clear URL structure. This gives the site a strong technical base. It doesn't replace ongoing SEO strategy, content production or link building, and it doesn't promise rankings. [SEO service](/services/seo)" },
       { t: "Performance", kw: ["performance", "page speed", "site speed", "fast", "speed", "core web vitals", "image optimization", "layout stability", "loading", "slow"],
         a: "Performance is part of quality: how quickly content appears, how stable the page feels while loading and how responsive it is. We handle image optimisation, script control, third-party embeds, loading behaviour, layout stability, responsive media and Core Web Vitals awareness. Many sites are slow not because of the design but because too many tools load at once (analytics, pixels, cookie banners, chat widgets, maps, video). Each script should have a purpose. The goal is not a perfect test score but a site that feels fast and stable in real conditions." },
@@ -1288,7 +1288,7 @@ var MRKX_SECTIONS = {
         a: "A website should be measurable from launch. We can set up GA4, connect Search Console and track the actions that matter: contact form submissions, phone and email clicks, bookings, quote requests, service-page visits and key CTA clicks. We deliberately don't track everything blindly; we define the meaningful actions first. Search Console shows which pages and queries get impressions and whether there are indexing problems, which matters especially after launching new service pages." },
       { t: "Integrations", kw: ["integration", "integrations", "crm", "booking", "payment", "payments", "api", "email notification", "connect the website", "workflow"],
         a: "A website often has to connect to the systems behind the business: forms, CRM tools, email notifications, booking and payment systems, spreadsheets, calendars and external APIs. We plan these as part of the website system, not as small add-ons, because a poorly built form flow can lose leads silently. We also stay realistic about third-party limits such as authentication, limited documentation and unsupported workflows, and explain them before promising an automated process. [Automation service](/services/automation-systems)" },
-      { t: "After launch", kw: ["maintenance", "scalability", "scalable", "multilingual", "post launch", "grow", "templates", "qa", "future updates"],
+      { t: "After launch", kw: ["maintenance", "scalability", "scalable", "multilingual", "icelandic", "english", "language", "languages", "translate", "translation", "bilingual", "two languages", "post launch", "grow", "templates", "qa", "future updates"],
         a: "We build for change: reusable templates for new services, case studies or localised pages, editable content, documentation and multilingual readiness (localised URLs, language-specific metadata, translated navigation). After launch we check forms, responsive behaviour, indexing status, analytics events, broken links, metadata, speed issues and redirects. Launch is when the site enters real use, not when quality control ends." }
     ]
   },
@@ -1297,7 +1297,7 @@ var MRKX_SECTIONS = {
     name: "SEO", url: "/services/seo",
     intro: "We treat SEO as search infrastructure, not a ranking trick. Pick a topic and I'll go into detail:",
     items: [
-      { t: "Technical foundation", kw: ["technical seo", "technical foundation", "crawl", "crawling", "indexing", "index", "robots", "noindex", "canonical", "redirect", "redirects", "sitemap", "search console"],
+      { t: "Technical foundation", kw: ["technical seo", "technical foundation", "crawl", "crawling", "indexing", "index", "robots", "noindex", "canonical", "redirect", "redirects", "sitemap", "sitemaps", "hreflang", "robots txt", "search console"],
         a: "Before content can perform, the site must be accessible. Technical SEO makes sure search engines can crawl and render your pages, understand the hierarchy and index the right URLs. We review sitemap logic, robots.txt, noindex settings, canonical URLs, redirects, internal links, heading hierarchy, mobile rendering, page speed, JavaScript behaviour, structured data and Search Console validation. A polished site that search engines can't crawl or index correctly is a hidden website, so we check the infrastructure before treating content as the fix." },
       { t: "Page architecture", kw: ["search intent", "page architecture", "site structure", "service page", "service pages", "page structure", "keywords", "keyword"],
         a: "Every SEO page needs a reason to exist. A homepage can't answer every search, and a thin services page rarely earns enough trust from a serious buyer. So each important service gets a clear search purpose, a defined audience, a logical place in the site and a path to the next step. We don't start with keywords alone; we build around the questions a real customer asks before they trust, compare, contact or buy." },
@@ -1330,17 +1330,17 @@ var MRKX_SECTIONS = {
         a: "The page is structured around the questions a potential customer needs answered before acting: am I in the right place, what exactly is offered, what outcome can it create, how does it work, why trust you, how is it different, what happens after I respond. The goal isn't to put every piece of information on the page; it's to remove the important uncertainties that stop the right visitor from taking the next step. Copy starts from the customer's problem or goal, with your business as the credible way forward." },
       { t: "Design & UX", kw: ["design", "ux", "user experience", "visual hierarchy", "layout", "wireframe", "mobile", "hierarchy"],
         a: "The design supports the decision path. Typography, spacing, imagery, contrast, content order, proof placement and call-to-action position are used to control attention and make the most important information hard to miss; the aim is not to decorate the offer. We design mobile separately instead of shrinking the desktop version, looking at content order, tap targets, CTA visibility, form behaviour and performance on small screens." },
-      { t: "Trust & proof", kw: ["trust", "proof", "evidence", "testimonials", "reviews", "case study", "case studies", "credibility", "social proof"],
+      { t: "Trust & proof", kw: ["trust", "proof", "evidence", "testimonials", "reviews", "case study", "case studies", "credibility", "social proof", "build trust", "trustworthy"],
         a: "Words like premium, trusted and results-driven are easy to publish; the real question is whether the visitor has a reason to believe them. Depending on the project we use testimonials, case studies, client logos, reviews, project outcomes, screenshots, demonstrations, credentials, process explanations or examples of completed work. Different claims create different doubts, so evidence is placed where the uncertainty occurs, not added as an afterthought at the bottom of the page." },
       { t: "Forms & conversion", kw: ["form", "forms", "cta", "call to action", "button", "booking", "lead form", "conversion mechanics", "submission"],
         a: "We define how the visitor moves from interest to action: the primary call to action, button language, CTA placement, form length, required and optional fields, qualification logic, booking steps, confirmation messages and what happens after submission. A short form may raise volume but lower quality, and a long one adds friction, so the right choice depends on the offer, the visitor's intent and your sales process. Every field should have a purpose, and the form must handle errors, confirm success and send the data to the right place." },
       { t: "Tracking", kw: ["tracking", "analytics", "measurement", "measure", "conversion tracking", "events", "ads", "lead quality"],
         a: "Measurement is planned before the page gets campaign traffic. Depending on the project we can track primary CTA clicks, form starts and submissions, phone calls, bookings, downloads, purchases and advertising conversions. Where the wider system allows it, we also look at lead quality and downstream outcomes, not just the number of submissions. Without dependable measurement, optimisation becomes guesswork." },
-      { t: "What a project includes", kw: ["included", "include", "includes", "what is included", "scope", "deliverables", "what do i get", "project"],
+      { t: "What a project includes", kw: ["included", "include", "includes", "what is included", "scope", "deliverables", "what do i get", "project", "in a landing page project", "project includes"],
         a: "The exact scope depends on the campaign, your assets and existing systems. A professional landing-page project can include strategy and research, messaging and copy (value proposition, headline, proof structure, FAQ, form microcopy), UX and design (information architecture, wireframe, custom design, responsive layout, trust placement), development and integrations (performance, accessible forms, email notifications, CRM, booking, payment, analytics) and testing before launch (forms, conversion events, browsers, error states, integrations). [Landing page service](/services/landing-page)" },
       { t: "Systems behind it", kw: ["crm", "automation", "email", "integration", "integrations", "follow up", "notifications", "systems behind"],
         a: "A landing page is only as strong as the system behind it. It can lose opportunities if notifications fail, an enquiry goes to the wrong person, the automated reply breaks, the CRM doesn't record the lead, the business responds too slowly or nobody can tell which campaign produced a result. Depending on the project we can connect the page with email systems, CRM platforms, booking tools, payment providers, spreadsheets, advertising platforms, analytics or custom automation workflows. [Automation service](/services/automation-systems)" },
-      { t: "Testing & optimisation", kw: ["testing", "a b test", "ab test", "optimization", "optimisation", "improve", "cro", "experiment"],
+      { t: "Testing & optimisation", kw: ["testing", "a b test", "ab test", "optimization", "optimisation", "improve", "cro", "experiment", "test", "split test", "how do you test", "iterate"],
         a: "There's no universal best headline, page length, button colour or form structure, so optimisation starts by finding the real bottleneck: traffic quality, campaign targeting, message mismatch, weak positioning, thin proof, unclear copy, form friction, technical performance, unreliable tracking or poor follow-up. When traffic is high enough we test variations against a defined hypothesis; when it isn't, we improve through campaign analysis, user feedback, usability review, form diagnostics and controlled sequential changes. We don't call a variation a winner based on a handful of visitors." }
     ]
   },
@@ -1380,7 +1380,7 @@ var MRKX_SECTIONS = {
         a: "Small operational delays often happen because the right person doesn't know something needs attention. Automation can create tasks, send alerts, update project boards, notify teams and keep internal systems synchronised when specific events happen. This reduces missed steps, slow responses and communication gaps." },
       { t: "Reliability", kw: ["reliable", "reliability", "errors", "error handling", "monitoring", "fail", "failure", "logs", "retry", "break", "breaks"],
         a: "A workflow isn't finished just because it worked once. A serious automation system is designed for incomplete data, duplicate entries, failed API calls, expired connections and unexpected behaviour. That means clear trigger logic, input validation, field mapping, duplicate handling, retry logic, error notifications, execution logs, access control, fallback paths, documentation and clear ownership. If a workflow fails silently, it isn't saving time; it's creating hidden risk. The system should also show what happened when something goes wrong." },
-      { t: "How it's built", kw: ["technical", "layers", "workflow logic", "integration logic", "data structure", "api", "apis", "webhook", "webhooks", "tools", "zapier", "make com", "n8n", "how is it built"],
+      { t: "How it's built", kw: ["technical", "layers", "workflow logic", "integration logic", "data structure", "api", "apis", "webhook", "webhooks", "integrate", "connect", "systems", "which systems", "tools", "zapier", "make com", "n8n", "how is it built"],
         a: "A good automation system has several layers. Workflow logic defines the process (trigger, condition, action, notification, log). Integration logic connects tools through APIs, webhooks, low-code platforms, databases, spreadsheets, CRMs, email and calendars, handling authentication, field mapping and failed requests. Data structure comes next: we first ask which system is the source of truth. Then error handling and monitoring, and finally human control over which steps stay manual or need approval." },
       { t: "AI in workflows", kw: ["ai", "artificial intelligence", "chatgpt", "gpt", "llm", "ai assisted", "ai agent", "ai agents"],
         a: "AI can help where a workflow needs interpretation rather than simple rules: summarising customer requests, classifying leads, drafting responses, extracting information from documents or prioritising tickets. But it shouldn't be added everywhere. If a simple rule is safer, cheaper and more predictable, we use the rule. A responsible AI-assisted workflow defines what the AI can read, suggest and change, when approval is required, how outputs are reviewed and which data must stay protected. We use AI as a controlled support layer, not an uncontrolled employee." },
@@ -1709,7 +1709,13 @@ var MRKX_DISC = {
       qThanks: "Thanks, noted.",
       offerAnalysis: "If you already have a website, I can set up a free website and search analysis for you. Want that?",
       reAsk: "Back to your request:",
-      langSwitched: "Switched to English. Let's pick up where we left off."
+      langSwitched: "Switched to English. Let's pick up where we left off.",
+      navAsk: "Would you like me to open the {name} page for you?", navOpening: "Opening {name}...", navHere: "You're already on the {name} page.",
+      navYes: "Yes, open it", navStay: "No, stay here", navOpenEn: "Opening the English version of this page...", navOpenIs: "Opening the Icelandic version of this page...",
+      langAskEn: "Sure, we'll continue in English. Would you like me to open the English version of this page as well?",
+      langAskIs: "Sure, I'll continue in Icelandic. Would you like me to open the Icelandic version of this page as well?",
+      langNowEn: "Sure, we'll continue in English.", langNowIs: "Sure, I'll continue in Icelandic.",
+      langAlreadyEn: "We're already chatting in English.", langAlreadyIs: "We're already chatting in Icelandic."
     },
     is: {
       title: "MRKX aðstoðarmaður", sub: "Sjálfvirkur aðstoðarmaður", ph: "Skrifaðu skilaboð…", send: "Senda",
@@ -1743,7 +1749,13 @@ var MRKX_DISC = {
       isNote: "Takk fyrir skilaboðin! Ég get ekki svarað ítarlega á íslensku ennþá. Ég get svarað á ensku eða sent spurninguna þína áfram til teymisins.",
       reAsk: "Aftur að beiðninni þinni:",
       offerAnalysis: "Ef þú ert nú þegar með vefsíðu get ég sett upp ókeypis greiningu á vefsíðunni og leitarvæðingu fyrir þig. Viltu það?",
-      langSwitched: "Skipt yfir á íslensku. Höldum áfram þar sem frá var horfið."
+      langSwitched: "Skipt yfir á íslensku. Höldum áfram þar sem frá var horfið.",
+      navAsk: "Viltu að ég opni síðuna „{name}“ fyrir þig?", navOpening: "Opna „{name}“...", navHere: "Þú ert nú þegar á síðunni „{name}“.",
+      navYes: "Já, opnaðu hana", navStay: "Nei, vera hér", navOpenEn: "Opna ensku útgáfuna af þessari síðu...", navOpenIs: "Opna íslensku útgáfuna af þessari síðu...",
+      langAskEn: "Að sjálfsögðu, við höldum áfram á ensku. Viltu að ég opni ensku útgáfuna af þessari síðu líka?",
+      langAskIs: "Að sjálfsögðu, við höldum áfram á íslensku. Viltu að ég opni íslensku útgáfuna af þessari síðu líka?",
+      langNowEn: "Að sjálfsögðu, við höldum áfram á ensku.", langNowIs: "Að sjálfsögðu, við höldum áfram á íslensku.",
+      langAlreadyEn: "Við erum nú þegar að spjalla á ensku.", langAlreadyIs: "Við erum nú þegar að spjalla á íslensku."
     }
   };
 
@@ -1929,6 +1941,20 @@ var MRKX_DISC = {
     });
     return out;
   }
+  // no service named and no topic in progress: a distinctive detail word ("hreflang") can still point at one section
+  var DISTINCT = /\b(hreflang|sitemaps?|robots|schema|canonical|wcag|ga4|figma|testflight|mvp|zapier|n8n|webhooks?|flutter|kotlin|swift|react native|cro|core web vitals|rich results|alt text|design tokens?)\b/;
+  function anySection(M) {
+    var out = null, tie = false;
+    Object.keys(SEC).forEach(function (k) {
+      SEC[k].items.forEach(function (x, i) {
+        var sc = 0;
+        x._p.forEach(function (p) { if (hasSeq(M, p.t)) sc += p.w; });
+        if (sc <= 0) return;
+        if (!out || sc > out.sc) { out = { key: k, idx: i, sc: sc }; tie = false; } else if (sc === out.sc && k !== out.key) tie = true;
+      });
+    });
+    return out && !tie ? out : null;
+  }
   var SUMMARY = {
     website: "A professional website is a complete digital system, not a brochure: structure, design, development, technical SEO foundations, performance, accessibility, analytics, integrations and long-term maintainability. Business Website projects start from " + KB.priceWeb + " plus VAT.",
     seo: "We treat SEO as search infrastructure, not a ranking trick: technical foundation, page architecture, clear content, local relevance, structured data and measurement. We don't sell ranking promises. Search Foundation work starts from " + KB.priceSeo + " plus VAT.",
@@ -2048,6 +2074,14 @@ var MRKX_DISC = {
     });
     if (best) best.second = second;
     return best;
+  }
+  // words that only name a service; a question is "specific" when it matches the doc on something beyond them
+  var SVC_WORDS = {}; "landing page pages website websites web site sites seo brand branding system systems automation automations app apps mobile service services project projects business company".split(" ").forEach(function (w) { SVC_WORDS[w] = 1; });
+  function specificHit(rt, raw) {
+    if (!rt) return 0;
+    var n = 0;
+    content(raw).forEach(function (t) { if (!SVC_WORDS[t] && (rt.d.th[t] || rt.d.tm[t] || rt.d.tl[t])) n++; });
+    return n;
   }
   function docAnswer(d, prefix) {
     S.topic = d.topic; S.lastMore = null;
@@ -2219,6 +2253,7 @@ var MRKX_DISC = {
     var yn = isYN(raw);
     if (yn && S.pending) {
       var p = S.pending; S.pending = null;
+      if (p === "nav") { S.pending = "nav"; return route(yn === "yes" ? "nav_go" : "nav_stay"); }
       if (yn === "yes") return route(p === "analysis" ? "analysis_start" : (p === "consult" ? "handoff_start_consult" : "handoff_start"));
       return route("decline");
     }
@@ -2637,6 +2672,14 @@ var MRKX_DISC = {
     // 2. active flow consumes input
     if (S.flow) { var r = flowInput(raw); if (r !== false) return r; }
 
+    // 2b. open a page / change the language of the chat (always confirmed first)
+    if (!fromChip && !S.flow) {
+      var lr = langRequest(raw);
+      if (lr && !(lr === S.lang && PAGE_IS === (lr === "is"))) return handleLangRequest(lr);
+      var nv = navIntent(raw);
+      if (nv) return offerNav(nv);
+    }
+
     // 3. icelandic (own knowledge base and matching, see "Icelandic engine")
     if (!fromChip && !PAGE_IS && S.lang === "is" && !isIcelandic(raw) && words(raw).split(" ").length >= 3) { S.lang = "en"; labels(); }
     if (!fromChip && (S.lang === "is" || isIcelandic(raw))) {
@@ -2720,10 +2763,11 @@ var MRKX_DISC = {
     if (S.pending && yn) {
       var p = S.pending; S.pending = null;
       if (yn === "yes") {
+        if (p === "nav") { S.pending = "nav"; return route("nav_go"); }
         if (p === "analysis") return route("analysis_start");
         if (p === "consult") return route("handoff_start_consult");
         if (p === "handoff") return route("handoff_start");
-      } else { return route("decline"); }
+      } else { return route(p === "nav" ? "nav_stay" : "decline"); }
     }
 
     if (!S.pending && !S.awaiting && !S.flow) {
@@ -2751,9 +2795,12 @@ var MRKX_DISC = {
     var best = ranked[0];
     var msgTopic0 = topicOf(M);
     var sec = bestSection(M, msgTopic0);
+    if (!sec && !msgTopic0 && !S.topic && (!best || best.sc < 1.5) && DISTINCT.test(fold(raw))) { var sa = anySection(M); if (sa && sa.sc >= 1.5 && !/\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/i.test(raw)) { S.fails = 0; return secAnswer(sa.key, sa.idx, nameLine); } }
     var cue = DETAIL_CUE.test(raw), priceQ = /\b(price|prices|pricing|cost|costs|how much|quote|budget)\b/i.test(raw) || /\banalysis\b/i.test(raw);
     // "I need a landing page" is a request for the service, not a detail question about it
     var wantCue = /\b(i need|i want|we need|we want|looking for|interested in|i d like|id like|would like|im looking|i am looking|can you build|can you make|can you create|do you build|do you make)\b/i.test(norm(raw).replace(/['\u2019]/g, " "));
+    // the visitor names a service AND a specific part of it ("why do landing pages fail", "can the app work offline"): go into that part
+    if (sec && (!wantCue || sec.sc >= 3) && !priceQ && msgTopic0 && sec.key === msgTopic0 && sec.sc >= 1.8 && !(best && best.it.kind !== "topic" && best.it.kind !== "faq" && best.sc >= 4)) { S.fails = 0; return secAnswer(sec.key, sec.idx, nameLine); }
     // "actually what about seo": a topic switch gets that topic's introduction, not a detail paragraph
     if (SWITCH_RE.test(words(raw)) && best && best.it.kind === "topic" && content(raw).length <= 5 && !cue) { S.fails = 0; S.topic = best.it.topic; return route(best.it.id, { msgTopic: best.it.topic, prefix: nameLine }); }
     var rt0 = (!priceQ) ? retrieve(raw, msgTopic0) : null;
@@ -2763,8 +2810,10 @@ var MRKX_DISC = {
     if (sec && !skipDetail && (cue || !best || best.it.kind === "topic" || sec.sc >= best.sc - 0.5) && !(priceQ && !(best && best.sc < sec.sc))) return secAnswer(sec.key, sec.idx, nameLine);
     if (cue && !priceQ && (msgTopic0 || S.topic) && SEC[msgTopic0 || S.topic] && (!best || best.it.kind === "topic" || best.sc < 3)) return secOverview(msgTopic0 || S.topic, nameLine);
     var rt = (!priceQ || cue) ? retrieve(raw, msgTopic0) : null;
-    if ((wantCue || content(raw).length <= 3) && best && best.it.kind === "topic" && !cue) rt = null;
-    if (rt && rt.sc >= RT_MIN && rt.mt >= 2 && (!best || best.sc < 2 || (best.it.kind === "topic" && content(raw).length >= 3)) && words(raw).split(" ").length >= 2) { S.fails = 0; return docAnswer(rt.d, nameLine); }
+    // a short question that names a service AND asks about something specific in it still gets the detail, not the intro
+    var specific = rt && !wantCue && rt.sc >= RT_MIN * 1.2 && specificHit(rt, raw) >= 1 && rt.d.kind === "sec" && (msgTopic0 || S.topic) && (!best || best.it.kind === "topic" || best.sc < 2);
+    if (!specific && (wantCue || content(raw).length <= 3) && best && best.it.kind === "topic" && !cue) rt = null;
+    if (rt && rt.sc >= RT_MIN && rt.mt >= 2 && (!best || best.sc < 2 || specific || (best.it.kind === "topic" && content(raw).length >= 3)) && words(raw).split(" ").length >= 2) { S.fails = 0; return docAnswer(rt.d, nameLine); }
     if (best && best.sc >= 1.5) {
       S.fails = 0;
       if (best.it.kind === "topic") S.topic = best.it.topic;
@@ -2880,6 +2929,7 @@ var MRKX_DISC = {
   function route(id, opt) {
     if (id === "cont") return S.cont ? contAnswer("") : say(T("moreNone"), [{ t: "Services", go: "services" }, { t: "Pricing", go: "pricing" }]);
     opt = opt || {};
+    if (id === "lang_en" && PAGE_IS) return handleLangRequest("en");
     if (id === "lang_en") { S.lang = "en"; labels(); S.pending = null; return say(KBI ? KBI.texts.switchEn : "Sure, we'll continue in English.", [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }, { t: "Talk to the team", go: "human" }]); }
     if (KBI && id.indexOf("is:") === 0) return isRoute(id.slice(3));
     if (KBI && S.lang === "is" && !opt.en && !S.enTurn && id !== "human" && isIntentById(id)) return isRoute(id);
@@ -2892,6 +2942,8 @@ var MRKX_DISC = {
     if (id === "analysis_start") return startFlow("analysis");
     if (id === "handoff_start") return startFlow("handoff");
     if (id === "handoff_start_consult") return startFlow("consult");
+    if (id === "nav_go") return doNav();
+    if (id === "nav_stay") { S.pending = null; S.nav = null; return say(T("declined"), S.lang === "is" ? [C_IS.services, C_IS.price] : [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }]); }
     if (id === "decline") { S.pending = null; return say(T("declined"), [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }]); }
     if (id === "flow:cancel") return cancelFlow();
     if (id === "flow:nosite") { S.flow = null; S.pending = "consult"; return say(T("noSite"), [{ t: "Yes, please", go: "handoff_start_consult" }, { t: "Not now", go: "decline" }]); }
@@ -3182,7 +3234,7 @@ var MRKX_DISC = {
     if (!EN_OF) { EN_OF = {}; for (var k in KBI.chipMap) EN_OF[KBI.chipMap[k]] = k; }
     return EN_OF[t] || t;
   }
-  var GO_KEY = { handoff_start: "yes", decline: "notNow", "flow:agree": "agree", "flow:cancel": "cancel", "flow:skip": "skip" };
+  var GO_KEY = { nav_go: "navYes", nav_stay: "navStay", handoff_start: "yes", decline: "notNow", "flow:agree": "agree", "flow:cancel": "cancel", "flow:skip": "skip" };
   function relabel(chips) {
     var out = [];
     (chips || []).forEach(function (c) {
@@ -3216,6 +3268,7 @@ var MRKX_DISC = {
     var target = PAGE_IS ? "is" : "en";
     if (S.lang === target) { save(); return; }
     var talked = S.hist.some(function (h) { return h.r === "u"; });
+    if (S.pending === "nav") { S.pending = null; S.nav = null; }
     S.lang = target; S.enTurn = false; labels();
     if (!talked) {                       // nothing to continue: just greet again in the new language
       elLog.innerHTML = ""; S.hist = []; showChips(null); S.greeted = false;
@@ -3246,6 +3299,89 @@ var MRKX_DISC = {
       if (now !== cur) { cur = now; PAGE_IS = now; if (elLog) followPageLang(); }
     }, 500);
   }
+
+  /* ---------- navigation: the assistant can open pages (always asks first) ---------- */
+  var NAV_PAGES = [
+    { p: "/", en: "Home", is: "Heim", kw: ["home", "homepage", "home page", "main page", "front page", "start page", "heim", "heimasida", "forsida"] },
+    { p: "/services", en: "Services", is: "Þjónusta", kw: ["services", "services page", "all services", "thjonusta", "thjonustu", "thjonustusida"] },
+    { p: "/services/websites", en: "Websites", is: "Vefsíður", kw: ["websites", "website service", "website page", "web development", "business website", "vefsidur", "vefsidugerd"] },
+    { p: "/services/landing-page", en: "Landing Page", is: "Lendingarsíða", kw: ["landing page", "landing pages", "landing", "lendingarsida", "lendingarsidur"] },
+    { p: "/services/seo", en: "SEO", is: "SEO", kw: ["seo", "seo page", "seo service", "search optimisation", "search optimization", "leitarvelabestun"] },
+    { p: "/services/brand-system", en: "Brand System", is: "Vörumerkjakerfi", kw: ["brand system", "brand", "branding", "vorumerkjakerfi", "vorumerki"] },
+    { p: "/services/automation-systems", en: "Automation", is: "Sjálfvirkni", kw: ["automation", "automations", "automation systems", "sjalfvirkni"] },
+    { p: "/services/mobile-app-design-development", en: "Mobile App", is: "Smáforrit", kw: ["mobile app", "mobile apps", "app development", "app design", "app page", "app service", "smaforrit", "smaforrita"] },
+    { p: "/portfolio", en: "Portfolio", is: "Verkefni", kw: ["portfolio", "our work", "your work", "projects", "case studies", "verkefni", "verkefnin"] },
+    { p: "/portfolio-case-study-road1tow", en: "Road1 Tow case study", is: "Road1 Tow verkefnið", kw: ["road1", "road 1", "road1 tow", "road 1 tow", "towing", "case study"] },
+    { p: "/about", en: "About", is: "Um okkur", kw: ["about", "about us", "about page", "um okkur"] },
+    { p: "/faq", en: "FAQ", is: "Algengar spurningar", kw: ["faq", "faqs", "frequently asked questions", "algengar spurningar"] },
+    { p: "/contact", en: "Contact", is: "Hafa samband", kw: ["contact", "contact page", "contact form", "contact us", "hafa samband", "hafdu samband", "samband"] },
+    { p: "/privacy-policy", en: "Privacy Policy", is: "Persónuverndarstefna", kw: ["privacy policy", "privacy", "personuvernd", "personuverndarstefna"] },
+    { p: "/cookie-policy", en: "Cookie Policy", is: "Vafrakökustefna", kw: ["cookie policy", "cookies page", "vafrakokur", "vafrakokustefna"] },
+    { p: "/terms-and-conditions", en: "Terms and Conditions", is: "Skilmálar", kw: ["terms and conditions", "terms", "skilmalar"] },
+    { p: "/accessibility-statement", en: "Accessibility Statement", is: "Aðgengisyfirlýsing", kw: ["accessibility statement", "accessibility page", "adgengisyfirlysing", "adgengi"] }
+  ];
+  var NAV_STRONG = /\b(take me to|bring me to|send me to|lead me to|direct me to|guide me to|get me to|move me to|forward me to|point me to|link me to|redirect me to|redirect me|navigate to|navigate me to|navigate|go to|go onto|go on|jump to|head to|head over to|farðu a|fardu a|fardu inn a|fardu med mig a|fara a|fara inn a|taktu mig a|vistadu mig a|flyttu mig a|farðu með mig á|fardu med mig)\b/;
+  var NAV_WEAK = /\b(open|show me|show|visit|let me see|can i see|i want to see|id like to see|i would like to see|pull up|opnadu|opna|synd[ua] mer|visadu mer)\b/;
+  var NAV_WHERE = /\b(where is|where can i find|where do i find|how do i get to|how do i find|hvar er|hvar finn eg)\b/;
+  function navPageIn(f) {
+    var best = null;
+    NAV_PAGES.forEach(function (pg) {
+      pg.kw.forEach(function (k) {
+        var re = new RegExp("(^|[^a-z0-9])" + k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "([^a-z0-9]|$)");
+        if (re.test(f) && (!best || k.length > best.k.length)) best = { pg: pg, k: k };
+      });
+    });
+    return best && best.pg;
+  }
+  function navIntent(raw) {
+    var f = " " + fold(raw).replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim() + " ";
+    if (f.split(" ").length > 14) return null;
+    var pageWord = /\b(page|pages|section|site|link|tab|sida|sidu|sidan|sidunni|siduna)\b/.test(f);
+    var strong = NAV_STRONG.test(f) || NAV_STRONG.test(fold(raw));
+    var weak = NAV_WEAK.test(f) && pageWord, where = NAV_WHERE.test(f) && pageWord;
+    if (!strong && !weak && !where) return null;
+    return navPageIn(f);
+  }
+  function curPath() { var p = location.pathname.replace(/\/+$/, "").replace(/^\/is(?=\/|$)/, ""); return p || "/"; }
+  function navUrl(p, isLang) { return isLang ? (p === "/" ? "/is" : "/is" + p) : p; }
+  function pageName(pg) { return S.lang === "is" ? pg.is : pg.en; }
+  function offerNav(pg) {
+    if (curPath() === pg.p && PAGE_IS === (S.lang === "is")) { S.pending = null; return say(T("navHere", { name: pageName(pg) }), S.lang === "is" ? [C_IS.services, C_IS.price] : [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }]); }
+    S.pending = "nav"; S.nav = { p: pg.p, is: S.lang === "is" };
+    return say(T("navAsk", { name: pageName(pg) }), [{ t: T("navYes"), go: "nav_go" }, { t: T("navStay"), go: "nav_stay" }]);
+  }
+  function doNav() {
+    var n = S.nav; S.pending = null; S.nav = null;
+    if (!n) return say(T("moreNone"));
+    var pg = NAV_PAGES.filter(function (x) { return x.p === n.p; })[0];
+    var url = navUrl(n.p, n.is);
+    var name = pg ? (n.is ? pg.is : pg.en) : n.p;
+    var r = say(n.lang ? T(n.is ? "navOpenIs" : "navOpenEn") : T("navOpening", { name: name }));
+    var go = function () { save(); try { window.location.assign(url + (location.hash && n.p === curPath() ? "" : "")); } catch (e) { window.location.href = url; } };
+    Promise.resolve(r).then(function () { setTimeout(go, 500); });
+    return r;
+  }
+  // "can we talk in Icelandic?" / "á ensku takk": returns "is" / "en" / null
+  function langRequest(raw) {
+    var f = " " + fold(raw).replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim() + " ";
+    var n = f.trim().split(" ").length;
+    if (n > 9 || /\b(website|websites|site|seo|price|prices|pricing|cost|build|translate my|translation of|market|customers|business)\b/.test(f)) return null;
+    var verb = /\b(speak|talk|chat|switch|change|continue|answer|reply|respond|write|use|language|please|can we|could we|lets|let s|tala|talad|talar|skipta|skiptu|breyta|halda afram|svara|skrifa|getum|getur|geturdu|takk)\b/.test(f) || n <= 3;
+    if (!verb) return null;
+    var wantIs = /\b(icelandic|islensku|islenska|islenskt)\b/.test(f), wantEn = /\b(english|ensku|enska|enskt)\b/.test(f);
+    if (wantIs === wantEn) return null;
+    return wantIs ? "is" : "en";
+  }
+  function handleLangRequest(target) {
+    var other = target === "is" ? "en" : "is";
+    var already = S.lang === target;
+    S.lang = target; S.enTurn = false; labels();
+    var pageMatches = PAGE_IS === (target === "is");
+    if (pageMatches) { S.pending = null; return say(already ? T(target === "is" ? "langAlreadyIs" : "langAlreadyEn") : T(target === "is" ? "langNowIs" : "langNowEn"), target === "is" ? [C_IS.services, C_IS.price, C_IS.analysis] : [{ t: "What do you offer?", go: "services" }, { t: "Pricing", go: "pricing" }, { t: "Free analysis", go: "free_analysis" }]); }
+    S.pending = "nav"; S.nav = { p: curPath(), is: target === "is", lang: 1 };
+    return say(T(target === "is" ? "langAskIs" : "langAskEn"), [{ t: T("navYes"), go: "nav_go" }, { t: T("navStay"), go: "nav_stay" }]);
+  }
+
   function init() {
     if (!document.body) return setTimeout(init, 50);
     load();
@@ -3260,6 +3396,7 @@ var MRKX_DISC = {
       ask: function (t) { return Promise.resolve(userSays(t, false)).then(function () { return Q; }); },
       chip: function (label, go) { return Promise.resolve(userSays(label, true, { t: label, go: go })).then(function () { return Q; }); },
       toks: function (t) { return toks(t); },
+      _rt: function (t) { var M = toks(t), c = cleanMatch(t), r = scoreAll(M, c)[0], rt = retrieve(t, topicOf(M)); return { best: r && (r.it.id + ":" + r.sc.toFixed(2)), rt: rt && (rt.d.kind + ":" + rt.d.topic + ":" + rt.d.title + " sc=" + rt.sc.toFixed(2) + " mt=" + rt.mt + " spec=" + specificHit(rt, t)), msgTopic: topicOf(M), sec: bestSection(M, topicOf(M)) }; },
       _is: function (t) { return isScore(t).slice(0, 4).map(function (x) { return x.it.id + ":" + x.sc.toFixed(2); }); },
       done: function () { return Q; },
       state: function () { return JSON.parse(JSON.stringify(S)); },
