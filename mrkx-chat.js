@@ -3050,7 +3050,7 @@ var MRKX_DISC = {
     ".launcher:hover{background:linear-gradient(180deg,rgba(96,165,250,.7),rgba(37,99,235,.5));transform:translateY(-1px)}",
     ".launcher:focus-visible,.chip:focus-visible,.send:focus-visible,.x:focus-visible,textarea:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}",
     ".launcher svg{width:45%;height:45%}",
-    ".panel{position:fixed;right:var(--lr,20px);bottom:calc(var(--lb,20px) + 70px);width:380px;max-width:calc(100vw - 24px);height:min(600px,calc(100vh - 120px));display:none;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.08) 45%,rgba(255,255,255,.05) 100%),rgba(10,15,31,.55);color:#e5e7eb;border:1px solid rgba(255,255,255,.22);border-top-color:rgba(96,165,250,.6);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 18px 56px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);overflow:hidden;z-index:2147483647}",
+    ".panel{position:fixed;right:var(--lr,20px);bottom:calc(var(--lb,20px) + 70px);width:380px;max-width:calc(100vw - 24px);height:min(600px,calc(100vh - 120px));height:min(600px,calc(100dvh - 120px));display:none;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.08) 45%,rgba(255,255,255,.05) 100%),rgba(10,15,31,.55);color:#e5e7eb;border:1px solid rgba(255,255,255,.22);border-top-color:rgba(96,165,250,.6);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 18px 56px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);overflow:hidden;z-index:2147483647}",
     ".panel.open,.panel.closing{display:flex}",
     ".panel.open{animation:pin .26s cubic-bezier(.2,.7,.2,1) both}.panel.closing{animation:pout .2s ease both;pointer-events:none}",
     "@keyframes pin{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}@keyframes pout{from{opacity:1;transform:none}to{opacity:0;transform:translateY(18px) scale(.97)}}",
@@ -3255,10 +3255,17 @@ var MRKX_DISC = {
       } else {
         elPanel.style.top = elPanel.style.bottom = elPanel.style.height = "";
         elPanel.classList.remove("kb"); elPanel.classList.remove("short"); elPanel.classList.remove("tiny");
+        /* Tablet with a browser toolbar showing: 100vh is the large viewport, so keep the top edge inside what is visible. */
+        if (S.open && !(mq && mq.matches)) {
+          var r = elPanel.getBoundingClientRect(), minTop = vv.offsetTop + 8;
+          if (r.height && r.top < minTop - 1) elPanel.style.height = Math.max(220, Math.round(r.height - (minTop - r.top))) + "px";
+        }
       }
     }
     window.__mrkxFit = fit;
     if (vv) { vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); }
+    /* Keep the launcher aligned while a browser toolbar slides in/out (one update per frame). */
+    if (vv) { var rafA = 0; var again = function () { if (rafA) return; rafA = requestAnimationFrame(function () { rafA = 0; try { alignToCookie(); } catch (e) {} }); }; vv.addEventListener("resize", again); vv.addEventListener("scroll", again); }
     window.addEventListener("resize", fit);
     window.addEventListener("orientationchange", function () { setTimeout(fit, 350); });
     elPanel.addEventListener("keydown", function (e) { if (e.key === "Escape") { toggle(false); elLauncher.focus(); } });
