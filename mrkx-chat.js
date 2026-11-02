@@ -3264,6 +3264,8 @@ var MRKX_DISC = {
     }
     window.__mrkxFit = fit;
     if (vv) { vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); }
+    /* Keep the launcher aligned while a browser toolbar slides in/out (one update per frame). */
+    if (vv) { var rafA = 0; var again = function () { if (rafA) return; rafA = requestAnimationFrame(function () { rafA = 0; try { alignToCookie(); } catch (e) {} }); }; vv.addEventListener("resize", again); vv.addEventListener("scroll", again); }
     window.addEventListener("resize", fit);
     window.addEventListener("orientationchange", function () { setTimeout(fit, 350); });
     elPanel.addEventListener("keydown", function (e) { if (e.key === "Escape") { toggle(false); elLauncher.focus(); } });
