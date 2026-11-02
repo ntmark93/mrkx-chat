@@ -3161,12 +3161,17 @@ var MRKX_DISC = {
       }
       return null;
     }
+    var probe = null;
     function alignToCookie() {
       if (!cookieBtn || !cookieBtn.isConnected) cookieBtn = findCookie(document);
       if (!cookieBtn) return false;
       var r = cookieBtn.getBoundingClientRect();
       if (!r.width || !r.height) return false;
-      var vh = document.documentElement.clientHeight, vw = document.documentElement.clientWidth;
+      /* Bottom edge of the fixed-position frame, measured with a fixed probe: on iPad/iOS browsers documentElement.clientHeight
+         does not follow the toolbar sliding in/out, but position:fixed elements (the cookie button) do. */
+      if (!probe) { probe = document.createElement("div"); probe.style.cssText = "position:fixed;left:0;bottom:0;width:1px;height:0;visibility:hidden;pointer-events:none"; root.appendChild(probe); }
+      var pt = probe.getBoundingClientRect().top;
+      var vh = pt > 0 ? pt : document.documentElement.clientHeight, vw = document.documentElement.clientWidth;
       if (r.width > 100 || r.height > 100) {
         /* The consent dialog itself is open (large): keep the launcher clear of it so it never covers its buttons. */
         host.style.removeProperty("--ls"); host.style.removeProperty("--lr");
