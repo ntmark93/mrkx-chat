@@ -3046,12 +3046,12 @@ var MRKX_DISC = {
   var CSS = [
     ":host{all:initial}",
     "*{box-sizing:border-box;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}",
-    ".launcher{position:fixed;right:var(--lr,20px);bottom:var(--lb,20px);width:var(--ls,56px);height:var(--ls,56px);border-radius:50%;border:1px solid rgba(255,255,255,.30);background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.07)),rgba(22,24,30,.30);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 24px rgba(0,0,0,.35);-webkit-backdrop-filter:blur(34px) saturate(125%) brightness(1.06);backdrop-filter:blur(34px) saturate(125%) brightness(1.06);z-index:2147483647;-webkit-tap-highlight-color:transparent;transition:transform .15s ease,background .15s ease}",
+    ".launcher{position:fixed;right:var(--lr,20px);bottom:var(--lb,20px);width:var(--ls,56px);height:var(--ls,56px);border-radius:50%;border:1px solid rgba(255,255,255,.30);background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.07)),rgba(22,24,30,.30);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 24px rgba(0,0,0,.35);-webkit-backdrop-filter:blur(34px) saturate(125%) brightness(1.06);backdrop-filter:blur(34px) saturate(125%) brightness(1.06);z-index:2147483640;-webkit-tap-highlight-color:transparent;transition:transform .15s ease,background .15s ease}",
     ".launcher:hover{background:linear-gradient(135deg,rgba(255,255,255,.32),rgba(255,255,255,.12)),rgba(22,24,30,.30)}",
     ".launcher:active{transform:scale(.95)}",
     ".launcher:focus-visible,.chip:focus-visible,.send:focus-visible,.x:focus-visible,textarea:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}",
     ".launcher svg{width:45%;height:45%}",
-    ".panel{position:fixed;right:var(--lr,20px);bottom:calc(var(--lb,20px) + 70px);width:380px;max-width:calc(100vw - 24px);height:min(600px,calc(100vh - 120px));height:min(600px,calc(100dvh - 120px));display:none;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.08) 45%,rgba(255,255,255,.05) 100%),rgba(10,15,31,.55);color:#e5e7eb;border:1px solid rgba(255,255,255,.22);border-top-color:rgba(96,165,250,.6);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 18px 56px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);overflow:hidden;z-index:2147483647}",
+    ".panel{position:fixed;right:var(--lr,20px);bottom:calc(var(--lb,20px) + 70px);width:380px;max-width:calc(100vw - 24px);height:min(600px,calc(100vh - 120px));height:min(600px,calc(100dvh - 120px));display:none;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.08) 45%,rgba(255,255,255,.05) 100%),rgba(10,15,31,.55);color:#e5e7eb;border:1px solid rgba(255,255,255,.22);border-top-color:rgba(96,165,250,.6);border-radius:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 18px 56px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);overflow:hidden;z-index:2147483640}",
     ".panel.open,.panel.closing{display:flex}",
     ".panel.open{animation:pin .26s cubic-bezier(.2,.7,.2,1) both}.panel.closing{animation:pout .2s ease both;pointer-events:none}",
     "@keyframes pin{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}@keyframes pout{from{opacity:1;transform:none}to{opacity:0;transform:translateY(18px) scale(.97)}}",
@@ -3162,31 +3162,30 @@ var MRKX_DISC = {
       }
       return null;
     }
-    var probe = null;
+    var probe = null, fin = null;
+    function useFinal() {
+      var inset = window.innerWidth >= 768 ? 40 : 24, f = fin || { b: inset, s: inset, z: 56 };   // Usercentrics' own insets
+      host.style.setProperty("--ls", f.z + "px"); host.style.setProperty("--lb", f.b + "px"); host.style.setProperty("--lr", f.s + "px");
+    }
     function alignToCookie() {
       if (!cookieBtn || !cookieBtn.isConnected) cookieBtn = findCookie(document);
-      if (!cookieBtn) return false;
+      /* Final spot of the launcher is known up front (mirror of the cookie button), so it never sits somewhere else first. */
+      if (!cookieBtn) { useFinal(); return false; }
       var r = cookieBtn.getBoundingClientRect();
-      if (!r.width || !r.height) return false;
+      if (!r.width || !r.height) { useFinal(); return false; }
       /* Bottom edge of the fixed-position frame, measured with a fixed probe: on iPad/iOS browsers documentElement.clientHeight
          does not follow the toolbar sliding in/out, but position:fixed elements (the cookie button) do. */
       if (!probe) { probe = document.createElement("div"); probe.style.cssText = "position:fixed;left:0;bottom:0;width:1px;height:0;visibility:hidden;pointer-events:none"; root.appendChild(probe); }
       var pt = probe.getBoundingClientRect().top;
       var vh = pt > 0 ? pt : document.documentElement.clientHeight, vw = document.documentElement.clientWidth;
-      if (r.width > 100 || r.height > 100) {
-        /* The consent dialog itself is open (large): keep the launcher clear of it so it never covers its buttons. */
-        host.style.removeProperty("--ls"); host.style.removeProperty("--lr");
-        if (r.width > vw * 0.6) host.style.setProperty("--lb", Math.round(vh - r.top + 12) + "px");
-        else host.style.removeProperty("--lb");
-        return true;
-      }
+      if (r.width > 100 || r.height > 100) { useFinal(); return true; }   // consent dialog open: chat is hidden, keep it at its final spot
       /* Same size as the cookie button on every device. */
-      host.style.setProperty("--ls", Math.round(Math.min(r.width, r.height)) + "px");
-      var lh = elLauncher.offsetHeight || 56;
+      var size = Math.round(Math.min(r.width, r.height));
+      var lh = size || 56;
       var bottom = Math.max(8, Math.round(vh - (r.top + r.height / 2) - lh / 2));
       var side = Math.max(8, Math.round(r.left));
-      host.style.setProperty("--lb", bottom + "px");
-      host.style.setProperty("--lr", side + "px");
+      if (Math.abs(r.width - r.height) < 2) fin = { b: bottom, s: side, z: size };   // ignore half-animated shapes
+      useFinal();
       return true;
     }
     (function poll() {
